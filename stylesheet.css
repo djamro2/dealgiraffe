@@ -1,0 +1,199 @@
+body {
+	background-color: #999;
+}
+
+#backplate {
+	background-color: white;
+	border: 2px solid black;
+	border-radius: 5%;
+	width: 60%;
+	height: 500px;
+	margin: auto;
+	margin-top: 15px;
+	
+}
+
+#div_title {
+	font-family: monospace;
+	text-align: center;
+	margin-left: 15px;
+	margin-top: 15px;
+	color: #3399FF;
+	font-size: 18px;
+}
+
+#line_one {
+	border: 2px solid black;
+	position: relative;
+	width: 99.5%;
+	height: 0px;
+}
+
+#navigation_bar {
+	width: 100%;
+	text-align: center;
+}
+
+.nav_item {
+	font-size: 16px;
+	width: 33.07%;
+	float: left;
+	text-align: center;
+	font-family: monospace;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border: 1px solid #666;
+}
+
+.nav_item:hover {
+	background-color: #999;
+}
+
+#line_two {
+	clear: both;
+	border: 2px solid black;
+	position: relative;
+	width: 99.5%;
+}
+
+.inner_text {
+	margin-left: 20px;
+}
+
+
+#img_1 {
+	text-align: center;
+	margin-top: 50px;
+}
+
+#giraffe_img_1 {
+	height: 200px;
+	width: 200px;
+	margin: auto;
+}
+
+#giraffe_img_2 {
+	height: 200px;
+	width: 200px;
+	margin: 50px;
+}
+
+#index_content {
+	width: 100%;
+}
+
+#img_2 {
+	width: 33%;
+	float: left;
+}
+
+#index_text {
+	width: 60%;
+	float: left;
+	margin-top: 33px;
+	margin-left: 25px;
+}
+
+#bottom_text {
+	margin-top: 43px;
+}
+
+#deals_banner {
+	clear: both;
+	background-color: #E6E65C;
+}
+
+#dealsText {
+	text-align: center;
+	font-family: monospace;
+	font-size: 24px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	color: 	#3385FF;
+}
+
+.deal_object {
+	border: 2px dotted #333;
+	margin: 20px;
+	height: 100px;
+	color: black;
+}
+
+.deal_object:hover {
+	background-color: #999;
+}
+
+.deal_object_img {
+	width: 100px;
+	height: 100px;
+	margin-left: 20px;
+}
+
+.deal_object_imgdiv {
+	float: left;
+	width: 16%;
+}
+
+.deal_object_infodiv{
+	float: left;
+	margin-left: 20px;
+	width: 80%;
+}
+
+.deal_object_infotitle {
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+#objects_container {
+	height: 75%;
+	overflow-y:auto;
+}
+
+#sorted_by_recent {
+	text-align: right;
+	font-size: 12px;
+	font-family: monospace;
+}
+
+#item_text {
+	float: left;
+	width: 60%;
+}
+
+#item_text_title {
+	text-decoration: underline;
+	font-weight: bold;
+	font-size: 18px;
+	margin-top: 50px;
+	color: blue;
+}
+
+#item_text_info {
+
+}
+
+#links_div {
+	clear: both;
+	margin-left: 20px;
+	font-family: monospace;
+}
+
+#links_p {
+	margin-bottom: 15px;
+}
+
+#item_imgdiv {
+	width: 33%;
+	float: left;
+}
+
+#item_img {
+	height: 200px;
+	width: 200px;
+	margin: 25px;
+}
+
+li {
+	margin: 5px;
+}
