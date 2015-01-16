@@ -1,16 +1,5 @@
 body {
-	margin-bottom: 70px;
-}
-
-.navbar-header {
-    float: left;
-    padding: 15px;
-    text-align: center;
-    width: 100%;
-}
-
-.navbar-brand {
-	float:none;
+	margin-top: 70px;
 }
 
 #brand-text {
@@ -56,6 +45,23 @@ body {
 	background-color: #999;
 }
 
+.panel-expired {
+	background-color: #FFCCCC;
+}
+
+.panel-blog {
+	margin-left: 15px;
+	margin-right: 15px;
+}
+
+.label-expired {
+	font-size: 13px;
+}
+
+.label-deal-page-expired {
+	margin-left: 15px;
+}
+
 .top-panel {
 	padding: 0;
 }
@@ -67,6 +73,35 @@ body {
 	max-width: 300px;
 }
 
+.img-front-deal {
+	min-width: 50px;
+	min-height: 50px;
+	max-height: 100px;
+	max-width: 100px;
+}
+
+.img-margin-left {
+	margin-left: 25px;
+}
+
+.margin-right {
+	margin-right: 25px;
+}
+
+.blog-item-margin-auto {
+	margin: auto;
+}
+
+.vertical-align {
+    display: flex;
+    align-items: center;
+}
+
 .amzn-ad-placement {
+	margin: auto;
+}
+
+.text-amazon-ad {
+	font-size: 16px;
 	margin: auto;
 }
