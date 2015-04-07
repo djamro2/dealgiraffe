@@ -2,3 +2,13 @@
 	border-right: 1px solid #ccc;
 	margin-left: -1px;
 }
+
+.navbar-title {
+	postion: relative;
+	width: 100%;
+	margin-left: 300%;
+	margin-top: 6%;
+	font-size: 22px;
+	font-family: 'Architects Daughter', cursive;
+	color: yellow;
+}
