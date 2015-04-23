@@ -1,0 +1,46 @@
+
+.input_button {
+	margin-top: 5px;
+}
+
+.left_col {
+	//position: fixed;
+}
+
+.line-right {
+	border-right: 1px solid #ccc;
+	margin-left: -1px;
+}
+
+.navbar-title {
+	postion: relative;
+	width: 100%;
+	margin-left: 300%;
+	margin-top: 6%;
+	font-size: 22px;
+	font-family: 'Architects Daughter', cursive;
+	color: yellow;
+}
+
+.panel_img {
+	padding: 1em;
+	margin-left: 1em;
+}
+
+.view_choice {
+	padding-left: 0.15em;
+	padding-top: 0.5em;
+}
+
+.view_choice > select, input{
+	margin-right: 2em;
+}
+
+.view_choice > a{
+	margin-right: 5px;
+	text-decoration: underline;
+}
+
+.panel_inner {
+	margin: 10px;
+}
