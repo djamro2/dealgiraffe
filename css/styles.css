@@ -1,10 +1,22 @@
 
-.input_button {
-	margin-top: 5px;
+.btn-see-it {
+	position: absolute;
+	right: 2em;
+	bottom: 1em;
+	width: 8em;
+	border: 2px solid #999;
 }
 
-.left_col {
-	//position: fixed;
+.btn-yellow {
+	background-color: yellow;
+}
+
+.inner-row {
+	position: relative;
+}
+
+.input_button {
+	margin-top: 5px;
 }
 
 .line-right {
@@ -12,19 +24,38 @@
 	margin-left: -1px;
 }
 
-.navbar-title {
-	postion: relative;
-	width: 100%;
-	margin-left: 300%;
-	margin-top: 6%;
-	font-size: 22px;
-	font-family: 'Architects Daughter', cursive;
-	color: yellow;
-}
+.navbar-title-c {
+	position: absolute;
+	margin-left: 30%;
+	padding-top: .33em;}
 
 .panel_img {
 	padding: 1em;
 	margin-left: 1em;
+}
+
+.row {
+	position: relative;
+}
+
+.show-more {
+	width: 100%;
+	height: 2em;
+	background-color: #999;
+	text-align: center;
+	margin: auto;
+}
+
+.show-more > p {
+	display: inline;
+}
+
+.show-more > span, p {
+	margin-top: 5px;
+}
+
+.show-more-text {
+	margin-top: 10px;
 }
 
 .view_choice {
