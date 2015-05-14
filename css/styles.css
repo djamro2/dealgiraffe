@@ -34,6 +34,21 @@
 	margin-left: 1em;
 }
 
+.price_row {
+
+}
+
+.price_row > p {
+	display: block;
+	float: left;	
+	//font-size: 1em;
+}
+
+#price_orig {
+	font-size: .75em;
+	padding-top: .15em;
+}
+
 .row {
 	position: relative;
 }

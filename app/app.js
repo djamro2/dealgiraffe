@@ -14,7 +14,8 @@ app.controller('DealgiraffeController', ['$scope', '$http', '$resource',
 	vm.init = function(){
 
 		$http.get('master_deals.json').success(function(data) {
-    		console.log('Success loading master_deals.json');
+   
+    		console.log('Success loading master_deals.json and hello world?');
     		console.log(data.deals);
     		vm.dealArray = data.deals;
     		for(var i = 0; i < data.deals.length; i++){

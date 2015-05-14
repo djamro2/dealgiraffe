@@ -64,8 +64,10 @@
 						<div class="col-xs-3">
 							<img class="img-rounded panel_img" ng-src="{{i.ThumbnailImage}}" alt="">
 						</div>
-						<p class="panel_inner">Price: {{i.RealPrice}}</p>
-						<p class="panel_inner">Original Price: {{i.OriginalPrice | currency}}</p>
+						<div class="price_row">
+							<p class="panel_inner">Price: {{i.RealPrice}}</p>
+							<p class="panel_inner" id="price_orig">(Original Price: {{i.OriginalPrice | currency}})</p>
+						</div>
 						<a href="#" ><button ng-click="toggleExtra()"class="btn btn-yellow btn-see-it">See it</button></a>
 					</div>
 					<div class="show-more" ng-click="toggleExtra()">
