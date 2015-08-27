@@ -1,0 +1,124 @@
+
+.btn-see-it {
+	position: relative;
+	margin: 0.5em 1em 1em 0;
+	width: 10em;
+	border: 2px solid #999;
+}
+
+.btn-yellow {
+	background-color: yellow;
+}
+
+.button-row {
+	position: relative;
+	width: 100%;
+	padding-right: 1em;
+	bottom: 0;
+	text-align: right;
+}
+
+.extra-info {
+	padding: 1em 1em 1em 2em;
+}
+
+.extra-item-row {
+	margin-top: 10px;
+}
+
+.features {
+	margin-top: 10px;
+}
+
+.inner-row {
+	position: relative;
+}
+
+.input-button {
+	margin-top: 1em;
+}
+
+.input-response {
+	color: blue;
+}
+
+.line-right {
+	border-right: 1px solid #ccc;
+	margin-left: -1px;
+}
+
+.navbar-title-c {
+	position: absolute;
+	margin-left: 30%;
+	padding-top: .33em;
+}
+
+.panel-default > .show-more-link {
+	text-decoration: none;
+	color: black;
+}
+
+.panel-default > .show-more-link:hover {
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.panel-heading {
+	color: blue;
+}
+
+.panel_img {
+	padding: 1em;
+}
+
+.panel_inner {
+	margin: 10px 10px 10px 0;
+}
+
+.panel_inner.orig-price {
+	font-size: 0.75em;
+}
+
+.price_row > p {
+	display: inline-block;
+}
+
+.row {
+	position: relative;
+}
+
+.show-more {
+	width: 100%;
+	height: 2em;
+	background-color: #999;
+	text-align: center;
+	margin: auto;
+	padding-top: 0.2em;
+	border: 1px solid #777;
+}
+
+.show-more > p {
+	display: inline;
+}
+
+.show-more > span, p {
+	margin-top: 5px;
+}
+
+.show-more-text {
+	margin-top: 10px;
+}
+
+.view_choice {
+	padding-left: 0.15em;
+	padding-top: 0.5em;
+}
+
+.view_choice > select, input{
+	margin-right: 2em;
+}
+
+.view_choice > a {
+	margin-right: 5px;
+	text-decoration: underline;
+}

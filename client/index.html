@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html ng-app="Dealgiraffe" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel='shortcut icon' href='/client/content/favicon.ico' type='image/x-icon'/ >
+	<link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+	<link type="text/css" rel="stylesheet" href="/client/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="/client/css/styles.css" />
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+	<script type="text/javascript" src="/client/scripts/angular.min.js"></script>
+	<script type="text/javascript" src="/client/scripts/angular-resource.min.js"></script>
+	<script type="text/javascript" src="/client/scripts/angular-route.min.js"></script>
+	<script type="text/javascript" src="/client/app/app.js"></script>
+	<script type="text/javascript" src="/client/app/controllers/DealGiraffeCtrl.js"></script>
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	
+	  ga('create', 'UA-63279439-1', 'auto');
+	  ga('send', 'pageview');
+	
+	</script>	
+ 	<title>Deal Giraffe</title>
+</head>
+<body ng-controller="DealgiraffeController">
+	<nav class="navbar navbar-inverse navbar-static-top">
+		<div class="contianer-fluid">
+			<div class="navbar-header">
+				<a href="/client/index.html" >
+					<img class="navbar-title-c" alt="Brand" src="/client/content/brand_capture.PNG">
+				</a>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3 line-right fixed">
+				<p style="margin-top:30px;"><strong>Deal Giraffe</strong></p>
+				<p> Deal Giraffe is a website that allows you to see the latest deals on the web for your benefit. The next time you don't want to miss out on a deal. Make sure to check Deal Giraffe!</p>
+				<p>Just a heads up! This site is very new and I've only gotten to work with the Amazon API. I will be adding other deals by hand though.</p>
+				<hr>
+				<p><strong>Submit a deal</strong><p>
+				<input type="text" ng-model="submitedURL" placeholder=" URL for deal" />
+				<button class="input-button" ng-click="sendMessage(submitedURL)">Submit deal</button>
+				<p ng-if="messageSent" class="input-response">Thank you!</p>
+				<hr>
+				<p><strong>Contact</strong></p>
+				<p>Please email dealgiraffe@gmail.com to contact us about anything</p> 
+				<hr>
+				<p><strong>Social Media</strong></p>
+				<ul>
+					<li><a href="https://twitter.com/deal_giraffe">Twitter</a></li>
+				</ul>
+				<hr>
+			</div>
+			<div class="col-md-9 lin-right scrollit">
+				<h2>Latest Deals</h2>
+				<div class="view_choice">
+					Sort by:
+					<select ng-model="sortBy" ng-init="sortBy = 0" ng-change="changeSort()">
+						<option value="0">Newest</option>
+						<option value="1">Alphabetical</option>
+						<option value="2">Price</option>
+					</select>
+					Select page:
+					<select ng-model="page" ng-init="page = 1">
+						<option ng-repeat="i in pages" value="{{i}}">{{i}}</option>
+					</select>
+					Show expired
+					<input type="checkbox" ng-model="showExpired" />
+				</div>
+				<hr>
+				<div class="panel panel-default" ng-repeat="i in dealArray" id="{{i.HrefPath}}" ng-hide="i.invalidItem || i.isExpired">
+					<div class="panel-heading"><strong>{{i.Title}}</strong></div>
+					<div class="row inner-row">
+						<div class="col-xs-3">
+							<img class="img-rounded panel_img" ng-src="{{i.ThumbnailImage}}" alt="">
+						</div>
+						<div class="col-xs-9">
+							<div class="price_row">
+								<p ng-show="!hasSalePrice" class="panel_inner">Price: {{i.RealPrice}}</p>
+								<p ng-show="hasSalePrice" class="panel_inner">Price: {{i.SalePrice | currency}}</p>
+								<p class="panel_inner orig-price" >(Original Price: {{i.OriginalPrice | currency}})</p>
+							</div>
+							<div class="price-row">
+								Percent saved: <strong>{{i.PercentSaved}}%</strong>
+							</div>
+							<div class="features">
+								Some features and notes
+								<ul>
+									<li ng-repeat="j in i.TopFourFeatures">{{j}}</li>
+								</ul>
+							</div>
+						</div>
+						<div class="button-row">
+						<a href="{{i.URL}}" ><button ng-click="toggleShowMore(i.Id)" class="btn btn-yellow btn-see-it">See it on Amazon</button></a>
+						</div>
+					</div>
+					<div ng-show="i.isOpened" class="extra-info">
+						<div class="extra-item-row">
+						Sales rank (in category): {{i.SalesRank | number}}
+						</div>
+						<div class="extra-item-row">
+						Top 5 related products (according to Amazon):
+						<ul>
+							<li ng-repeat="q in i.SimilarProducts">{{q.Title}}</li>
+						</ul>
+						</div>
+						<div class="extra-item-row">
+						Other features and notes
+						<ul>
+							<li ng-repeat="k in i.BottomSevenFeatures">{{k}}</li>
+						</ul>
+						</div>
+					</div>
+					<a href class="show-more-link">
+					<div class="show-more" ng-show="!i.isOpened" ng-click="i.isOpened = !i.isOpened; changePath(i.HrefPath)">
+						<i class="fa fa-angle-down"></i>
+						<p>Show more</p>
+						<i class="fa fa-angle-down"></i>
+					</div>
+					</a>
+					<a href class="show-more-link">
+					<div class="show-more" ng-show="i.isOpened" ng-click="i.isOpened = !i.isOpened">
+						<i class="fa fa-angle-up"></i>
+						<p>Show less</p>
+						<i class="fa fa-angle-up"></i>
+					</div>
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
