@@ -1,0 +1,92 @@
+
+.btn-see-it {
+	position: absolute;
+	right: 2em;
+	bottom: 1em;
+	width: 8em;
+	border: 2px solid #999;
+}
+
+.btn-yellow {
+	background-color: yellow;
+}
+
+.inner-row {
+	position: relative;
+}
+
+.input_button {
+	margin-top: 5px;
+}
+
+.line-right {
+	border-right: 1px solid #ccc;
+	margin-left: -1px;
+}
+
+.navbar-title-c {
+	position: absolute;
+	margin-left: 30%;
+	padding-top: .33em;}
+
+.panel_img {
+	padding: 1em;
+	margin-left: 1em;
+}
+
+.price_row {
+
+}
+
+.price_row > p {
+	display: block;
+	float: left;	
+	//font-size: 1em;
+}
+
+#price_orig {
+	font-size: .75em;
+	padding-top: .15em;
+}
+
+.row {
+	position: relative;
+}
+
+.show-more {
+	width: 100%;
+	height: 2em;
+	background-color: #999;
+	text-align: center;
+	margin: auto;
+}
+
+.show-more > p {
+	display: inline;
+}
+
+.show-more > span, p {
+	margin-top: 5px;
+}
+
+.show-more-text {
+	margin-top: 10px;
+}
+
+.view_choice {
+	padding-left: 0.15em;
+	padding-top: 0.5em;
+}
+
+.view_choice > select, input{
+	margin-right: 2em;
+}
+
+.view_choice > a{
+	margin-right: 5px;
+	text-decoration: underline;
+}
+
+.panel_inner {
+	margin: 10px;
+}

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="Dealgiraffe" lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link href='http://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+	<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="css/styles.css" />
+	<script type="text/javascript" src="scripts/angular.min.js"></script>
+	<script type="text/javascript" src="scripts/angular-resource.min.js"></script>
+	<script type="text/javascript" src="app/app.js"></script>
+	<title>Deal Giraffe</title>
+</head>
+<body ng-controller="DealgiraffeController as ctrl">
+	<nav class="navbar navbar-inverse navbar-static-top">
+		<div class="contianer-fluid">
+			<div class="navbar-header">
+				<a href="index.html" >
+					<img class="navbar-title-c" alt="Brand" src="content/brand_capture.PNG">
+				</a>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3 line-right fixed">
+				<p style="margin-top:30px;"><strong>Deal Giraffe</strong></p>
+				<p> Deal Giraffe is a website that allows you to see the latest deals on the web for your benefit. The next time you don't want to miss out on a deal. Make sure to check Deal Giraffe!</p>
+				<hr>
+				<p><strong>Submit a deal</strong><p>
+				<input type="text" placeholder="Deal URL" />
+				<button class="input_button">Submit deal</button>
+				<hr>
+				<p><strong>Contact</strong></p>
+				<p>Please email dealgiraffe@gmail.com to contact us about anything</p> 
+				<hr>
+				<p><strong>Social Media</strong></p>
+				<ul>
+					<li><a href="#">Twitter</a></li>
+					<li><a href="#">Facebook</a></li>
+				</ul>
+				<hr>
+			</div>
+			<div class="col-md-9 line-right scrollit">
+				<h2>Latest Deals</h2>
+				<div class="view_choice">
+					Select page:
+					<select ng-model="page" ng-init="page = 1">
+						<option ng-repeat="i in ctrl.pages" value="{{i}}">{{i}}</option>
+					</select>
+					Sort by:
+					<select ng-model="sortBy" ng-init="sortBy = 0">
+						<option value="0">Newest</option>
+						<option value="1">Alphabetical</option>
+						<option value="2">Price</option>
+					</select>
+					Show expired
+					<input type="checkbox" ng-model="showExpired" />
+					<a class="pull-right" ng-repeat="i in ctrl.pagesToClick" href="#">{{i}}</a>
+				</div>
+				<hr>
+				<div class="panel panel-default" ng-repeat="i in ctrl.dealArray" ng-hide="i.invalidItem">
+					<div class="panel-heading">{{i.Title}}</div>
+					<div class="row inner-row">
+						<div class="col-xs-3">
+							<img class="img-rounded panel_img" ng-src="{{i.ThumbnailImage}}" alt="">
+						</div>
+						<div class="price_row">
+							<p class="panel_inner">Price: {{i.RealPrice}}</p>
+							<p class="panel_inner" id="price_orig">(Original Price: {{i.OriginalPrice | currency}})</p>
+						</div>
+						<a href="#" ><button ng-click="toggleExtra()"class="btn btn-yellow btn-see-it">See it</button></a>
+					</div>
+					<div class="show-more" ng-click="toggleExtra()">
+						<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+						<p>Show more</p>
+						<span class="glyphicon glyphicon-menu-down" aria-hidden="true"></span>
+					</div>
+					<div ng-show="showExtra" class="extra-info">
+						This is some extra info about the item
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
