@@ -8,8 +8,18 @@ module.exports = function(passport){
             passReqToCallback : true
         },
         function(req, username, password, done) { 
-            // check in mongo if a user with username exists or not
+
             
+            // Generate a salt
+            //var salt = bCrypt.genSaltSync(10);
+            // Hash the password with the salt
+            //var hash = bCrypt.hashSync("admin", salt);  
+            //var user = new User({username: 'admin3', password: hash});
+            //user.save(function(error, result){
+               //nothing here right now 
+            //});
+
+            // check in mongo if a user with username exists or not
             User.findOne({ 'username' :  username }, 
                 function(err, user) {
                     // In case of any error, return using the done method

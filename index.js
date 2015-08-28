@@ -62,7 +62,7 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/client/index.html');
 });
 
-app.get('/admin', function(req, res){
+app.get('/adminlogin', function(req, res){
   res.sendFile(__dirname + '/client/app/views/admin.html');
 });
 
@@ -70,7 +70,7 @@ app.post('/api/sendmessage', HomeController.send);
 
 /* Handle Login POST */
 app.post('/login', passport.authenticate('login', {
-  successRedirect: '/home',
+  successRedirect: '/admin',
   failureRedirect: '/',
   failureFlash : true 
 }));
@@ -83,3 +83,15 @@ app.get('/loginSuccess', function(req, res, next) {
   res.send('Successfully authenticated');
 });
 
+// As with any middleware it is quintessential to call next()
+// if the user is authenticated
+var isAuthenticated = function (req, res, next) {
+  if (req.isAuthenticated())
+    return next();
+  res.redirect('/');
+}
+
+app.get('/admin', isAuthenticated, function(req, res){
+  res.send('Admin signed in! ' + req.user );
+});
+ 
