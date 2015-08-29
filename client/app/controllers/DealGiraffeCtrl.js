@@ -3,8 +3,8 @@
 
 var controllers = controllers || angular.module('Dealgiraffe.controllers', []);
 
-controllers.controller('DealgiraffeController', ['$scope', '$http', '$resource', '$location', '$document', '$anchorScroll',
- function($scope, $http, $resource, $location, $document, $anchorScroll){
+controllers.controller('DealgiraffeController', ['$scope', '$http', '$resource', '$location', '$document', '$anchorScroll', 'DealService',
+ function($scope, $http, $resource, $location, $document, $anchorScroll, DealService){
 
 	
 	var self = this; //export variable (optional of course)
@@ -18,14 +18,26 @@ controllers.controller('DealgiraffeController', ['$scope', '$http', '$resource',
 	var Message = $resource('/api/sendmessage');
 
 	self.init = function(){
-
-		$http.get('/client/master_deals.json').success(function(data) {
+		
+		//get all of the deals
+		DealService.query(function(result){
+			
+			console.log(result);
+			
+			var data = {
+				deals: result
+			};
    			
-			origDataArray = data.deals;
+			origDataArray = result;
 			   
-    		$scope.dealArray = data.deals;
+    		$scope.dealArray = result;
+			
     		for(var i = 0; i < data.deals.length; i++){
+				
+				data.deals[i] = data.deals[i].deal;
+				
 				$scope.dealArray[i].hasSalePrice = false;
+				
     			if(data.deals[i].Items.Item && !data.deals[i].isExpired){
 					$scope.dealArray[i].isOpened = false;
     				$scope.dealArray[i].Title = data.deals[i].Items.Item.ItemAttributes.Title;

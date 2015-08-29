@@ -10,14 +10,11 @@ module.exports = function(passport){
         function(req, username, password, done) { 
 
             
-            // Generate a salt
+            // Generate a salt and hash the password with the salt
             //var salt = bCrypt.genSaltSync(10);
-            // Hash the password with the salt
-            //var hash = bCrypt.hashSync("admin", salt);  
-            //var user = new User({username: 'admin3', password: hash});
-            //user.save(function(error, result){
-               //nothing here right now 
-            //});
+            //var hash = bCrypt.hashSync("drpepper181!", salt);  
+            //var user = new User({username: "superawesomeadmin", password: hash});
+            //user.save();
 
             // check in mongo if a user with username exists or not
             User.findOne({ 'username' :  username }, 

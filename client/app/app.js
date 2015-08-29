@@ -2,7 +2,7 @@
 
 //To start xampp do, /opt/lampp/lampp start (to stop replace start with stop)
 
-var app = angular.module('Dealgiraffe', ['ngResource', 'ngRoute', 'Dealgiraffe.controllers']);
+var app = angular.module('Dealgiraffe', ['ngResource', 'ngRoute', 'Dealgiraffe.controllers', 'Dealgiraffe.factories']);
 
 /*
 

@@ -1,18 +1,21 @@
-<html>
-  <body>
-    <form action="/login" method="post">
-      <div>
-        <label>Username:</label>
-        <input type="text" name="username" />
-        <br/>
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" name="password" />
-      </div>
-      <div>
-        <input type="submit" value="Submit" />
-      </div>
-    </form>
+<html ng-app="Dealgiraffe">
+  <head>
+    <script src="/client/scripts/angular.min.js"></script>
+    <script src="/client/scripts/angular-resource.min.js"></script>
+    <script src="/client/scripts/angular-route.min.js"></script>
+    <script src="/client/app/factories/resources.js"></script>
+    <script src="/client/app/controllers/AdminCtrl.js"></script>
+    <script src="/client/app/app.js"></script>
+  </head>
+  <body ng-controller="AdminController">
+    <div>
+      Successfully logged in to the admin panel!
+    </div>
+    <div style="margin-top: 3em;">
+      Add deal to website: <input ng-model="asin" style="margin-left: 0.5em;" type="text" />
+    </div>
+    <button ng-click="addDeal(asin)" style="margin-top: 1em;">
+      Submit
+    </button>
   </body>
 </html>

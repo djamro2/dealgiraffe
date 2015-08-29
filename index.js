@@ -10,28 +10,34 @@ var express        = require('express'),
     mongoose       = require('mongoose'),
     expressSession = require('express-session'),
     bCrypt         = require('bcrypt-nodejs'),
+    DealController = require('./server/controllers/DealController')
     app = express();
     
 var isProduction = false;
 
 if (isProduction)
 {
+
   //PRODUCTION 
   var server = app.listen(local_codes.port, local_codes.internal_ip, function(){
     var host = server.address().address;
     var port = server.address().port;
     console.log('Example app listening at http://%s:%s', host, port);
   });
+
 }
 else
 {
+ 
   //DEVELOPMENT
   var server = app.listen(8000, function(){
     var host = server.address().address;
     var port = server.address().port;
     console.log('App listening at http://%s:%s', host, port);
   });
-  mongoose.connect('mongodb://localhost/MyDatabase');
+  
+  mongoose.connect('mongodb://localhost/DealGiraffe');
+
 }
 
 //middleware
@@ -63,7 +69,7 @@ app.get('/', function (req, res) {
 });
 
 app.get('/adminlogin', function(req, res){
-  res.sendFile(__dirname + '/client/app/views/admin.html');
+  res.sendFile(__dirname + '/client/app/views/adminlogin.html');
 });
 
 app.post('/api/sendmessage', HomeController.send);
@@ -92,6 +98,9 @@ var isAuthenticated = function (req, res, next) {
 }
 
 app.get('/admin', isAuthenticated, function(req, res){
-  res.send('Admin signed in! ' + req.user );
+  res.sendFile(__dirname + '/client/app/views/admin.html');
 });
  
+ app.post('/api/deal', isAuthenticated, DealController.addDeal);
+ 
+ app.get('/api/deal', DealController.getAllDeals);
