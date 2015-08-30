@@ -1,7 +1,16 @@
+/* global angular */
+/* global _ */
 
 'use strict';
 
 var controllers = controllers || angular.module('Dealgiraffe.controllers', []);
+
+//TODO
+
+//fix href path (look at old product)
+//make list of deals on the admin panel, ability to delete deal
+//look through program, look for bugs and security flaws
+//publish! (sftp everything except node_modules, npm install, connect to correct mongodb, add my creds, delete those lines)
 
 controllers.controller('DealgiraffeController', ['$scope', '$http', '$resource', '$location', '$document', '$anchorScroll', 'DealService',
  function($scope, $http, $resource, $location, $document, $anchorScroll, DealService){
@@ -22,8 +31,6 @@ controllers.controller('DealgiraffeController', ['$scope', '$http', '$resource',
 		//get all of the deals
 		DealService.query(function(result){
 			
-			console.log(result);
-			
 			var data = {
 				deals: result
 			};
@@ -34,17 +41,18 @@ controllers.controller('DealgiraffeController', ['$scope', '$http', '$resource',
 			
     		for(var i = 0; i < data.deals.length; i++){
 				
+				var dateAdded = data.deals[i].date;
+				
 				data.deals[i] = data.deals[i].deal;
 				
 				$scope.dealArray[i].hasSalePrice = false;
 				
     			if(data.deals[i].Items.Item && !data.deals[i].isExpired){
 					$scope.dealArray[i].isOpened = false;
+					$scope.dealArray[i].dateAdded = dateAdded;
     				$scope.dealArray[i].Title = data.deals[i].Items.Item.ItemAttributes.Title;
-					if(data.deals[i].hrefPath)
-						$scope.dealArray[i].HrefPath = data.deals[i].hrefPath;
-					else 
-						$scope.dealArray[i].HrefPath = data.deals[i].Id;
+					if($scope.dealArray[i].Title)
+						$scope.dealArray[i].HrefPath = $scope.dealArray[i].Title.substring(0, 20);
 					if(data.deals[i].isExpired)
 						$scope.dealArray[i].isExpired = data.deals[i].isExpired;
 					else
@@ -101,74 +109,19 @@ controllers.controller('DealgiraffeController', ['$scope', '$http', '$resource',
 	};
 	
 	self.bubbleSortAlpha = function(_array){
-	    var swapped;
-		var array = _array;
-	    do {
-	        swapped = false;
-	        for (var i=0; i < array.length-1; i++) {
-				if(!array[i].Title)
-					array[i].Title = "zzzzzzz";
-				if (!array[i + 1].Title)
-					array[i+1].Title = "zzzzzzz";
-				var name_a = array[i].Title;
-				var name_b = array[i+1].Title;
-	            if (name_a > name_b) {
-	                var temp = array[i];
-	                array[i] = array[i+1];
-	                array[i+1] = temp;
-	                swapped = true;
-	            }
-	        }
-	    } while (swapped);
-		return array;
+		var result = _.sortByOrder(_array, 'Title', 'asc');
+		return result;
 	};
 	
 	self.bubbleSortPrice = function(_array){
-	    var swapped;
-		var array = _array;
-	    do {
-	        swapped = false;
-	        for (var i=0; i < array.length-1; i++) {
-				if(!array[i].RealPrice)
-					array[i].RealPrice = "9999";
-				if (!array[i + 1].RealPrice)
-					array[i+1].RealPrice = "9999";
-				var price_a = Number(array[i].RealPrice.replace(/[^0-9\.]+/g,""));
-				var price_b = Number(array[i+1].RealPrice.replace(/[^0-9\.]+/g,""));
-	            if (price_a > price_b) {
-	                var temp = array[i];
-	                array[i] = array[i+1];
-	                array[i+1] = temp;
-	                swapped = true;
-	            }
-	        }
-	    } while (swapped);
-		return array;
+		var result = _.sortByOrder(_array, 'RealPrice', 'asc');
+		return result;
 	};
 	
-	// I don't need the time in this case, I can sort by Id
-	// with the highest Id first
+	// sort by date
 	self.bubbleSortNewest = function(_array){
-	    var swapped;
-		var array = _array;
-	    do {
-	        swapped = false;
-	        for (var i=0; i < array.length-1; i++) {
-				if(!array[i].Id && array[i].Id != 0)
-					array[i].Id = -9999;
-				if (!array[i + 1].Id && array[i+1].Id != 0)
-					array[i+1].Id = -9999;
-				var id_a = array[i].Id;
-				var id_b = array[i+1].Id;
-	            if (id_a < id_b) {
-	                var temp = array[i];
-	                array[i] = array[i+1];
-	                array[i+1] = temp;
-	                swapped = true;
-	            }
-	        }
-	    } while (swapped);
-		return array;
+		var result = _.sortByOrder(_array, 'dateAdded', 'desc');
+		return result;
 	};
 	
 	//get the path and see if I need to make any truuuuue

@@ -1,3 +1,4 @@
+/* global app */
 /* global process */
 /* global __dirname */
 
@@ -101,6 +102,8 @@ app.get('/admin', isAuthenticated, function(req, res){
   res.sendFile(__dirname + '/client/app/views/admin.html');
 });
  
- app.post('/api/deal', isAuthenticated, DealController.addDeal);
+app.post('/api/deal', isAuthenticated, DealController.addDeal);
  
- app.get('/api/deal', DealController.getAllDeals);
+app.get('/api/deal', DealController.getAllDeals);
+
+app.delete('/api/deal/:id', isAuthenticated, DealController.removeDeal);

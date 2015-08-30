@@ -36,3 +36,14 @@ module.exports.getAllDeals = function(req, res)
 	});
 
 }
+
+module.exports.removeDeal = function(req, res)
+{
+	
+	var id = req.params.id;
+	
+	Deal.find({ _id: id}).remove().exec(function(err, result){
+		res.json(result);
+	});
+
+}

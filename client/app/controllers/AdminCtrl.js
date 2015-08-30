@@ -3,10 +3,14 @@
 
 var controllers = controllers || angular.module('Dealgiraffe.controllers', []);
 
-controllers.controller('AdminController', ['$scope', 'DealService',
- function($scope, DealService){
+controllers.controller('AdminController', ['$scope', 'DealService', '$window',
+ function($scope, DealService, $window){
 
 	self.init = function(){
+
+		$scope.allDeals = DealService.query(function(result){
+			console.log(result);
+		});
 
 	};
 	
@@ -16,9 +20,14 @@ controllers.controller('AdminController', ['$scope', 'DealService',
 			asin: asin
 		};
 		
-		
 		DealService.save(dealInfo, function(result){
 		})
+	};
+	
+	$scope.removeDeal = function(deal){
+		DealService.removeDeal({id: deal._id}, deal, function(result){
+			//$window.location.href = '';
+		});
 	}
 
 	self.init();

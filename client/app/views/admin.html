@@ -9,7 +9,7 @@
   </head>
   <body ng-controller="AdminController">
     <div>
-      Successfully logged in to the admin panel!
+      Successfully logged in to the admin panel! <a href="/">(Go back to the home page)</a>
     </div>
     <div style="margin-top: 3em;">
       Add deal to website: <input ng-model="asin" style="margin-left: 0.5em;" type="text" />
@@ -17,5 +17,14 @@
     <button ng-click="addDeal(asin)" style="margin-top: 1em;">
       Submit
     </button>
+    
+    <div style="margin-top: 3em;">
+      <p>List of deals</p> </hr>
+      <div ng-repeat="deal in allDeals">
+        <span>{{deal.deal.Items.Item.ItemAttributes.Title}}</span>
+        <button style="margin-left: 10px;" ng-click="removeDeal(deal)">Delete</button>
+      </div>
+    </div>
+    
   </body>
 </html>
