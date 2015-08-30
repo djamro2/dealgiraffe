@@ -1,6 +1,7 @@
 
 
 var nodemailer = require('nodemailer');
+var local_codes = require('../../local_codes')
 
 var emailsSent = 0;
 
@@ -17,7 +18,7 @@ module.exports.send = function(req, res){
 	  service: 'gmail',
 	  auth: {
 	    user: 'dealgiraffe@gmail.com',
-	    pass: 'giraffepass44!' //don't push to github!
+	    pass: local_codes.d
 	  }
 	});
 	
