@@ -13,33 +13,14 @@ var express        = require('express'),
     bCrypt         = require('bcrypt-nodejs'),
     DealController = require('./server/controllers/DealController')
     app = express();
-    
-var isProduction = false;
 
-if (isProduction)
-{
 
-  //PRODUCTION 
-  var server = app.listen(local_codes.port, local_codes.internal_ip, function(){
-    var host = server.address().address;
-    var port = server.address().port;
-    console.log('Example app listening at http://%s:%s', host, port);
-  });
-
-}
-else
-{
- 
-  //DEVELOPMENT
-  var server = app.listen(8000, function(){
+// open server for listening
+var server = app.listen(local_codes.port_site, local_codes.internal_ip, function(){
     var host = server.address().address;
     var port = server.address().port;
     console.log('App listening at http://%s:%s', host, port);
-  });
-  
-  mongoose.connect('mongodb://localhost/DealGiraffe');
-
-}
+});
 
 //middleware
 app.use(bodyParser.urlencoded({ extended: true }));
