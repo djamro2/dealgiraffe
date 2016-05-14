@@ -1,6 +1,3 @@
-/* global app */
-/* global process */
-/* global __dirname */
 
 var express        = require('express'),
     bodyParser     = require('body-parser'),
@@ -79,12 +76,23 @@ var isAuthenticated = function (req, res, next) {
   res.redirect('/');
 }
 
-app.get('/admin', isAuthenticated, function(req, res){
-  res.sendFile(__dirname + '/client/app/views/admin.html');
+// app.get('/admin', isAuthenticated, function(req, res){
+//   res.sendFile(__dirname + '/client/app/views/admin.html');
+// });
+
+// get rid of the isAuthenticated for now
+app.get('/admin', function(req, res){
+    res.sendFile(__dirname + '/client/app/views/admin.html');
 });
- 
+
+app.get('/admin/ViewAllItems', function(req, res){
+    res.sendFile(__dirname + '/client/app/views/admin_view_all_items.html');
+});
+
 app.post('/api/deal', isAuthenticated, DealController.addDeal);
  
 app.get('/api/deal', DealController.getAllDeals);
+
+app.get('/api/getinfo/:id', DealController.getProductInfo);
 
 app.delete('/api/deal/:id', isAuthenticated, DealController.removeDeal);

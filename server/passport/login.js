@@ -9,10 +9,9 @@ module.exports = function(passport){
         },
         function(req, username, password, done) { 
 
-            
             // Generate a salt and hash the password with the salt
             //var salt = bCrypt.genSaltSync(10);
-            //var hash = bCrypt.hashSync(password, salt);  
+            //var hash = bCrypt.hashSync(password, salt);
             //var user = new User({username: username, password: hash});
             //user.save();
 

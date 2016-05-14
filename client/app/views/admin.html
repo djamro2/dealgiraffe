@@ -1,30 +1,25 @@
-<html ng-app="Dealgiraffe">
-  <head>
-    <script src="/client/scripts/angular.min.js"></script>
-    <script src="/client/scripts/angular-resource.min.js"></script>
-    <script src="/client/scripts/angular-route.min.js"></script>
-    <script src="/client/app/factories/resources.js"></script>
-    <script src="/client/app/controllers/AdminCtrl.js"></script>
-    <script src="/client/app/app.js"></script>
-  </head>
-  <body ng-controller="AdminController">
-    <div>
-      Successfully logged in to the admin panel! <a href="/">(Go back to the home page)</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/client/css/updater_admin.css">
+  <title>DealGiraffe - Admin</title>
+</head>
+<body>
+
+  <div class="main-content-col">
+
+    <h2 class="updater-admin-header">DealGiraffe Admin Panel</h2>
+
+    <div class="links-panel">
+
+      <h3>Actions</h3>
+
+      <a href="/admin/ViewAllItems">View All Items</a>
+
     </div>
-    <div style="margin-top: 3em;">
-      Add deal to website: <input ng-model="asin" style="margin-left: 0.5em;" type="text" />
-    </div>
-    <button ng-click="addDeal(asin)" style="margin-top: 1em;">
-      Submit
-    </button>
-    
-    <div style="margin-top: 3em;">
-      <p>List of deals</p> </hr>
-      <div ng-repeat="deal in allDeals">
-        <span>{{deal.deal.Items.Item.ItemAttributes.Title}}</span>
-        <button style="margin-left: 10px;" ng-click="removeDeal(deal)">Delete</button>
-      </div>
-    </div>
-    
-  </body>
+
+  </div>
+
+</body>
 </html>

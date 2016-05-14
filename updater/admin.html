@@ -2,13 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/client/css/updater_admin.css">
     <title>Updater - Admin</title>
 </head>
-
 <body>
 
-<p>Admin file for the html stuff</p>
+    <div class="main-content-col">
+
+        <h2 class="updater-admin-header">Updater Admin Panel</h2>
+
+        <form action="/addProductItem/" method="POST">
+
+            <div class="admin-input-row">
+                <span>Add Product by ASIN:</span>
+                <input class="asin-input" placeholder="asin" name="asin" type="text">
+                <button type="submit">Submit</button>
+            </div>
+
+        </form>
+
+    </div>
 
 </body>
-
 </html>

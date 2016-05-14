@@ -12,6 +12,6 @@ module.exports = mongoose.model('IndexedProduct',{
     force_frontpage: Boolean,
     page_views: Number,
     raw_data: Object,
-    price: [{ price: String, date: Date}],
-    rank: [{ rank: String, data: Date}]
+    price_new: [{ price: Number, date: Date}],
+    rank: [{ rank: Number, date: Date}]
 });
