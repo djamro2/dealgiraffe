@@ -1,12 +1,13 @@
 
 /* root elements */
 
-html, body {
+html {
     height: 100%;
+    overflow: auto;
 }
 
 body {
-    background: rgb(240, 240, 240);
+    min-height: 100%;
 }
 
 /* id's */
@@ -23,9 +24,12 @@ body {
     height: 3em;
 }
 
+.container-all {
+    background: rgb(240, 240, 240);
+}
+
 .main-col {
     max-width: 960px;
-    height: 100%;
     margin: 0 auto;
     background: white;
 }
@@ -94,6 +98,7 @@ body {
 
 .price-chart {
     padding: 0 1rem;
+    padding-bottom: 2rem;
 }
 
 /* resize specifications */

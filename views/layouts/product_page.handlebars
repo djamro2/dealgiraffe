@@ -14,6 +14,8 @@
     <!-- js dependencies -->
     <script type="text/javascript" src="/client/scripts/moment.min.js"></script>
     <script type="text/javascript" src="/client/scripts/moment-duration-format.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="/client/scripts/d3_price_graph.js"></script>
 
     <!-- angular dependencies-->
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
@@ -24,18 +26,20 @@
     <script src="/client/scripts/angular-route.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
 
-    <!-- angular code -->
-    <script type="text/javascript" src="/client/app/app_product.js"></script>
-    <script type="text/javascript" src="/client/app/factories/resources.js"></script>
-    <script type="text/javascript" src="/client/app/controllers/ProductCtrl.js"></script>
-
     <title>{{title}}</title>
 
 </head>
 
 <body>
 
-    {{{body}}}
+    <div class="container-all">
+        {{{body}}}
+    </div>
+
+    <!-- angular code, run after body is loaded -->
+    <script type="text/javascript" src="/client/app/app_product.js"></script>
+    <script type="text/javascript" src="/client/app/factories/resources.js"></script>
+    <script type="text/javascript" src="/client/app/controllers/ProductCtrl.js"></script>
 
 </body>
 
