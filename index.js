@@ -1,16 +1,21 @@
 
-var express        = require('express'),
-    bodyParser     = require('body-parser'),
-    HomeController = require('./server/controllers/HomeController'),
-    local_codes    = require('./local_codes'),
-    passport       = require('passport'),
-    LocalStrategy  = require('passport-local').Strategy,
-    mongoose       = require('mongoose'),
-    expressSession = require('express-session'),
-    bCrypt         = require('bcrypt-nodejs'),
-    DealController = require('./server/controllers/DealController')
-    app = express();
+// global resources 
+var express        = require('express');
+var mongoose       = require('mongoose');
+var bodyParser     = require('body-parser');
+var passport       = require('passport');
+var LocalStrategy  = require('passport-local').Strategy;
+var expressSession = require('express-session');
+var bCrypt         = require('bcrypt-nodejs');
+var flash          = require('connect-flash');
+var handlebars     = require('express-handlebars');
 
+// local resources
+var HomeController = require('./server/controllers/HomeController');
+var DealController = require('./server/controllers/ProductController');
+var local_codes    = require('./local_codes');
+var initPassport   = require('./server/passport/init');
+var app            = express();
 
 // open server for listening
 var server = app.listen(local_codes.port_site, local_codes.internal_ip, function(){
@@ -19,80 +24,35 @@ var server = app.listen(local_codes.port_site, local_codes.internal_ip, function
     console.log('App listening at http://%s:%s', host, port);
 });
 
-//middleware
+// connect to mongoose
+mongoose.connect('mongodb://localhost/DealGiraffe');
+
+// middleware - json responses
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// middleware - passport
 app.use(expressSession({
-  secret: 'mySecretKey',
-  resave: true,
-  saveUninitialized: true
+    secret: 'mySecretKey',
+    resave: true,
+    saveUninitialized: true
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Using the flash middleware provided by connect-flash to store messages in session
-// and displaying in templates
-var flash = require('connect-flash');
+// Using the flash middleware provided by connect-flash to store messages in session and displaying in templates
 app.use(flash());
 
+// static files
 app.use('/client', express.static(__dirname + '/client'));
 
+// handlebar engine
+app.engine('handlebars', handlebars({defaultLayout: 'product_page'}));
+app.set('view engine', 'handlebars');
+
 // Initialize Passport
-var initPassport = require('./server/passport/init');
 initPassport(passport);
 
-//routing (will be moved to it's own file later)
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/client/index.html');
-});
+// routing (needs to be after middleware)
+require('./server/routes')(app);
 
-app.get('/adminlogin', function(req, res){
-  res.sendFile(__dirname + '/client/app/views/adminlogin.html');
-});
-
-app.post('/api/sendmessage', HomeController.send);
-
-/* Handle Login POST */
-app.post('/login', passport.authenticate('login', {
-  successRedirect: '/admin',
-  failureRedirect: '/',
-  failureFlash : true 
-}));
-
-app.get('/loginFailure', function(req, res, next) {
-  res.send('Failed to authenticate');
-});
-
-app.get('/loginSuccess', function(req, res, next) {
-  res.send('Successfully authenticated');
-});
-
-// As with any middleware it is quintessential to call next()
-// if the user is authenticated
-var isAuthenticated = function (req, res, next) {
-  if (req.isAuthenticated())
-    return next();
-  res.redirect('/');
-}
-
-// app.get('/admin', isAuthenticated, function(req, res){
-//   res.sendFile(__dirname + '/client/app/views/admin.html');
-// });
-
-// get rid of the isAuthenticated for now
-app.get('/admin', function(req, res){
-    res.sendFile(__dirname + '/client/app/views/admin.html');
-});
-
-app.get('/admin/ViewAllItems', function(req, res){
-    res.sendFile(__dirname + '/client/app/views/admin_view_all_items.html');
-});
-
-app.post('/api/deal', isAuthenticated, DealController.addDeal);
- 
-app.get('/api/deal', DealController.getAllDeals);
-
-app.get('/api/getinfo/:id', DealController.getProductInfo);
-
-app.delete('/api/deal/:id', isAuthenticated, DealController.removeDeal);

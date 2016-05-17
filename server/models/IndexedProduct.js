@@ -8,6 +8,7 @@ module.exports = mongoose.model('IndexedProduct',{
     date_created: {type: Date, default: Date.now},
     last_time_updated: {type: Date, default: Date.now},
     asin: String,
+    category: String,
     hidden: Boolean,
     force_frontpage: Boolean,
     page_views: Number,

@@ -1,27 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="en" ng-app="DealGiraffe">
+
 <head>
+
+    <!-- meta tags -->
     <meta charset="UTF-8">
+
+    <!-- style sheets-->
     <link rel="stylesheet" href="/client/css/updater_admin.css">
+
+    <!-- angular dependencies-->
+    <script type="text/javascript" src="/client/scripts/angular.min.js"></script>
+    <script type="text/javascript" src="/client/scripts/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/client/scripts/angular-route.min.js"></script>
+
+    <!-- angular code -->
+    <script type="text/javascript" src="/client/app/app.js"></script>
+    <script type="text/javascript" src="/client/app/factories/resources.js"></script>
+    <script type="text/javascript" src="/client/app/controllers/AdminCtrl.js"></script>
+
     <title>Updater - Admin</title>
+
 </head>
-<body>
+
+<body ng-controller="AdminController">
 
     <div class="main-content-col">
 
         <h2 class="updater-admin-header">Updater Admin Panel</h2>
 
-        <form action="/addProductItem/" method="POST">
-
-            <div class="admin-input-row">
-                <span>Add Product by ASIN:</span>
-                <input class="asin-input" placeholder="asin" name="asin" type="text">
-                <button type="submit">Submit</button>
-            </div>
-
-        </form>
+        <div class="item-list">
+            this is the item list {{2+2}}
+        </div>
 
     </div>
 
 </body>
+
 </html>

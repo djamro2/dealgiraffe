@@ -1,25 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html lang="en" ng-app="DealGiraffe">
+
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/client/css/updater_admin.css">
-  <title>DealGiraffe - Admin</title>
+
+    <!-- meta tags -->
+    <meta charset="UTF-8">
+
+    <!-- style sheets-->
+    <link rel="stylesheet" href="/client/css/dealgiraffe_admin.css">
+
+    <!-- js dependencies -->
+    <script type="text/javascript" src="/client/scripts/moment.min.js"></script>
+    <script type="text/javascript" src="/client/scripts/moment-duration-format.js"></script>
+
+    <!-- angular dependencies-->
+    <script type="text/javascript" src="/client/scripts/angular.min.js"></script>
+    <script type="text/javascript" src="/client/scripts/angular-resource.min.js"></script>
+    <script type="text/javascript" src="/client/scripts/angular-route.min.js"></script>
+
+    <!-- angular code -->
+    <script type="text/javascript" src="/client/app/app.js"></script>
+    <script type="text/javascript" src="/client/app/factories/resources.js"></script>
+    <script type="text/javascript" src="/client/app/controllers/AdminCtrl.js"></script>
+
+    <title>DealGiraffe - Admin</title>
+
 </head>
-<body>
 
-  <div class="main-content-col">
+<body ng-controller="AdminController">
 
-    <h2 class="updater-admin-header">DealGiraffe Admin Panel</h2>
+    <div class="main-content-col">
 
-    <div class="links-panel">
+        <h2 class="updater-admin-header">DealGiraffeAdmin Panel</h2>
 
-      <h3>Actions</h3>
+        <div class="admin-action-panel">
 
-      <a href="/admin/ViewAllItems">View All Items</a>
+            <h3>Admin Actions</h3>
+
+            <a href="localhost:3031/admin">
+                <p>Updater Admin Panel</p>
+            </a>
+
+            <a href="/">
+                <p>Add Items To Index</p>
+            </a>
+
+            <a href="/">
+                <p>Schedule Items To Process</p>
+            </a>
+
+        </div>
+
+        <div class="item-list">
+
+            <h3>List of items in database</h3>
+
+            <div class="product-item" ng-repeat="product in products">
+
+                <a ng-href="/product/{{product.asin}}" class="product-item-link">
+                    <p class="product-item-title">{{$index + 1}}{{" " + product.raw_data.ItemAttributes.Title}}</p>
+                </a>
+
+                <p class="product-item-price">Price (new): {{getCurrentPrice(product) | currency}} (price point #{{product.total_pricepoints}}) </p>
+
+                <p class="product-item-latestupdate">
+                    Latest Update Time: {{formatDateTime(product.latest_update_time, "h:mma MM/DD/YYYY")}}
+                    ({{getDateTimeDifference(product.latest_update_time)}}) ago
+                </p>
+
+                <button class="product-item-button">Hide</button>
+
+                <button class="product-item-button">Delete</button>
+
+                <button class="product-item-button">Force front-page</button>
+
+            </div>
+
+        </div>
 
     </div>
 
-  </div>
-
 </body>
+
 </html>

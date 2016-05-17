@@ -1,0 +1,99 @@
+
+/* root elements */
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background: rgb(240, 240, 240);
+}
+
+/* id's */
+
+/* reusable classes */
+
+.right-align-row {
+    text-align: right;
+}
+
+/* general classes */
+
+.col-top-content {
+    height: 3em;
+}
+
+.main-col {
+    max-width: 960px;
+    height: 100%;
+    margin: 0 auto;
+    background: white;
+}
+
+.main-navbar {
+    background: #333;
+}
+
+.main-navbar-list {
+    color: white;
+    list-style: none;
+    padding-left: 0;
+}
+
+.main-navbar-list > li {
+    border-right: 1px solid white;
+    font-size: 1.2em;
+    padding: .75rem .75rem;
+}
+
+.main-navbar-list > li:hover {
+    background: #999;
+    cursor: pointer;
+}
+
+.product-details {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #666;
+}
+
+.product-details-features {
+    margin-top: 0;
+}
+
+.product-details-image {
+
+}
+
+.product-details-price {
+    font-weight: 700;
+    margin-top: 0;
+}
+
+.product-details-review {
+    margin-top: 0;
+}
+
+.product-details-see-more {
+    width: 6rem;
+    height: 2.25rem;
+    background: yellow;
+    color: black;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-right: 2rem;
+}
+
+.product-details-see-more:hover {
+    cursor: pointer;
+}
+
+.product-details-text {
+    padding: 0 1.5rem;
+    font-size: 1.1em;
+}
+
+.price-chart {
+    padding: 0 1rem;
+}
+
+/* resize specifications */

@@ -60,7 +60,7 @@ var get_index_products_priority = function(callback){
  * Reusable function to add a product to the list of indexed products, based on it's asin
  * If force_add it set to true, no conditions will checked, added as long as it exists
  */
-var add_to_products_index = function(item, force_add, callback) {
+var add_to_products_index = function(item, search_query) {
 
     // check for valid item
     if (!item) {
@@ -88,6 +88,7 @@ var add_to_products_index = function(item, force_add, callback) {
 
     var newProductParams = {
         asin: item.ASIN,
+        category: 'PCHardware',
         hidden: false,
         force_frontpage: false,
         page_views: 0,
@@ -236,7 +237,7 @@ var execute_query = function(query) {
             check_asin_exists(item_asin, item, function(exists, correct_item){
 
                 if (!exists) {
-                    add_to_products_index(correct_item);
+                    add_to_products_index(correct_item, query.search_query);
                     return;
                 }
 

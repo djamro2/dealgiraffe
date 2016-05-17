@@ -1,18 +1,7 @@
-/* global angular */
-/* global _ */
 
 'use strict';
 
-var controllers = controllers || angular.module('Dealgiraffe.controllers', []);
-
-//TODO
-
-//fix href path (look at old product)
-//make list of deals on the admin panel, ability to delete deal
-//look through program, look for bugs and security flaws
-//publish! (sftp everything except node_modules, npm install, connect to correct mongodb, add my creds, delete those lines)
-
-controllers.controller('DealgiraffeController', ['$scope', '$http', '$resource', '$location', '$document', '$anchorScroll', 'DealService',
+app.controller('DealGiraffeController', ['$scope', '$http', '$resource', '$location', '$document', '$anchorScroll', 'DealService',
  function($scope, $http, $resource, $location, $document, $anchorScroll, DealService){
 
 	
