@@ -12,6 +12,10 @@ body {
 
 /* id's */
 
+#price-graph {
+    margin: auto;
+}
+
 /* reusable classes */
 
 .right-align-row {
@@ -19,6 +23,34 @@ body {
 }
 
 /* general classes */
+
+.area {
+    fill: rgba(51, 102, 255, .6);
+}
+
+.area-line {
+    fill: none;
+    stroke: black;
+    stroke-width: 3px;
+}
+
+.area-null {
+    fill: rgba(220, 220, 220, .8);
+}
+
+.axis path {
+    fill: none;
+    stroke: #777;
+    shape-rendering: crispEdges;
+}
+.axis text {
+    font-family: Lato;
+    font-size: 13px;
+}
+
+.axis-label {
+    font-size: 1.2em!important;
+}
 
 .col-top-content {
     height: 3em;
@@ -70,6 +102,7 @@ body {
 
 .product-details-price {
     font-weight: 700;
+    font-size: 1.1rem;
     margin-top: 0;
 }
 
@@ -93,12 +126,15 @@ body {
 
 .product-details-text {
     padding: 0 1.5rem;
-    font-size: 1.1em;
 }
 
 .price-chart {
     padding: 0 1rem;
     padding-bottom: 2rem;
+}
+
+.price-graph-container {
+    text-align: center;
 }
 
 /* resize specifications */

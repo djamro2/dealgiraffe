@@ -14,7 +14,7 @@ app.controller('ProductController', ['$scope', 'ProductService', function($scope
      * Does the work of parsing through a product and assigning relevant fields to the scope
      */
     self.get_product_parameters = function(product) {
-        $scope.main_image = product.raw_data.LargeImage.URL;
+        $scope.main_image = product.large_data.Items.Item.LargeImage.URL;
     };
 
     /*
@@ -28,6 +28,7 @@ app.controller('ProductController', ['$scope', 'ProductService', function($scope
         ProductService.GetProduct({id: asin}, function(product) {
             self.get_product_parameters(product);
             init_data(product);
+            console.log(product);
         });
         
     };

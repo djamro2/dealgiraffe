@@ -12,17 +12,17 @@ var bodyParser = require('body-parser');
 var util       = require('util');
 var aws        = require('aws-lib');
 var moment     = require('moment');
-var app        = express();
 
 // local resources
 var IndexedProduct = require('../server/models/IndexedProduct');
 var local_codes    = require('../local_codes');
+var app        = express();
 
 // global properties
-var cycle_time = 20000; /* recheck list x milliseconds */
-var min_wait_time = 2; /* in minutes */
-var max_db_items = 100; /* low number for now */
+var prodAdv     = aws.createProdAdvClient(local_codes.a, local_codes.b, local_codes.c);
+var cycle_time  = 60000; /* recheck list x milliseconds */
 var cycle_count = 0; /* keeping a running count of num cycles */
+var time_between_adding = 2000;
 
 // pool of queries to run. Each task has a search query, next page to run (0-indexed)
 var queries = [];
@@ -45,76 +45,6 @@ var server = app.listen(local_codes.port_updater, local_codes.internal_ip, funct
 });
 
 /*
- * Helper function to return the sorted list of products
- * Sorted based on last time updated
- */
-var get_index_products_priority = function(callback){
-    IndexedProduct.find({})
-        .sort('-last_time_updated')
-        .exec(function(err, indexed_products) {
-            callback(indexed_products);
-        });
-};
-
-/*
- * Reusable function to add a product to the list of indexed products, based on it's asin
- * If force_add it set to true, no conditions will checked, added as long as it exists
- */
-var add_to_products_index = function(item, search_query) {
-
-    // check for valid item
-    if (!item) {
-        log("No valid item given in add_to_products_index");
-        return;
-    }
-
-    var currentRank, currentPriceNew;
-
-    // salesrank
-    if (item.SalesRank && !isNaN(item.SalesRank))
-        currentRank = Number(item.SalesRank);
-    else
-        currentRank = -1;
-
-    // set the price, if it exists
-    if (item.OfferSummary &&
-        item.OfferSummary.LowestNewPrice &&
-        item.OfferSummary.LowestNewPrice.Amount) {
-        currentPriceNew = Number(item.OfferSummary.LowestNewPrice.Amount);
-    } else {
-        currentPriceNew = -1;
-        log("Could not find a price for asin: " + item.ASIN);
-    }
-
-    var newProductParams = {
-        asin: item.ASIN,
-        category: 'PCHardware',
-        hidden: false,
-        force_frontpage: false,
-        page_views: 0,
-        raw_data: item,
-        price_new: [{price: currentPriceNew, date: new Date()}],
-        rank: [{rank: currentRank, date: new Date()}]
-    };
-
-    var newProduct = new IndexedProduct(newProductParams);
-
-    newProduct.save(function(err, newProduct){
-
-        if (err) {
-            log("Error adding product to index. Error: " + err);
-            return;
-        }
-
-        log("Added new item with ASIN: " + newProduct.asin);
-
-        if (callback)
-            callback(newProduct);
-    });
-
-};
-
-/*
  * Simple helper function to log to the console
  */
 var log = function(text) {
@@ -122,9 +52,11 @@ var log = function(text) {
 };
 
 /*
- * given a specific asin, check if it is alredy in the index
+ * given a specific asin, check if it is already in the index
  */
-var check_asin_exists = function(asin, item_data, callback) {
+var check_asin_exists = function(item_data, callback) {
+
+    var asin = item_data.ASIN;
 
     IndexedProduct.findOne({asin: asin})
         .exec(function(err, item) {
@@ -140,42 +72,145 @@ var check_asin_exists = function(asin, item_data, callback) {
 };
 
 /*
+ * Set the response group to Large and get the product data pertaining to that asin
+ */
+var get_large_product_data = function(asin, callback) {
+
+    var params = {
+        ResponseGroup: "Large",
+        ItemId: asin
+    };
+
+    prodAdv.call("ItemLookup", params, function(err, item_response) {
+
+        if (err) {
+            log("Error with an item lookup for getting large product data with asin: " + asin);
+            return;
+        }
+
+        if (typeof(callback) == "function") {
+            callback(item_response);
+        }
+    });
+
+};
+
+/*
+ * Parse through the offers data and return the three sets of prices as an object
+ */
+var get_pricing_data = function(offers_item) {
+
+    // object to be returned
+    var result = {
+        price_amazon_new: 0,
+        price_third_new: 0,
+        price_third_used: 0
+    };
+
+    // check valid
+    if (!offers_item) {
+        log("Offers item did not exist!");
+        return;
+    }
+
+    // get price amazon new
+    if (offers_item.Offers &&
+        offers_item.Offers.Offer &&
+        offers_item.Offers.Offer.OfferListing.Price.Amount) {
+        result.price_amazon_new = offers_item.Offers.Offer.OfferListing.Price.Amount;
+    } else {
+        log("Could not get the price_amazon_new data for asin: " + offers_item.ASIN);
+    }
+
+    // get price third new
+    if (offers_item.OfferSummary &&
+        offers_item.OfferSummary.LowestNewPrice) {
+        result.price_third_new = offers_item.OfferSummary.LowestNewPrice.Amount;
+    } else {
+        log("Could not get the price_third_new data for asin: " + offers_item.ASIN);
+    }
+
+    // get price third used
+    if (offers_item.OfferSummary &&
+        offers_item.OfferSummary.LowestUsedPrice) {
+        result.price_third_used = offers_item.OfferSummary.LowestUsedPrice.Amount;
+    } else {
+        log("Could not get the price_third_used data for asin: " + offers_item.ASIN);
+    }
+
+    return result;
+};
+
+/*
+ * Reusable function to add a product to the list of indexed products, based on it's asin
+ * If force_add it set to true, no conditions will checked, added as long as it exists
+ */
+var add_to_products_index = function(offers_item, callback) {
+
+    // check for valid item
+    if (!offers_item) {
+        log("No valid item given in add_to_products_index");
+        return;
+    }
+
+    // initial fields for new item
+    var newProductParams = {
+        asin: offers_item.ASIN,
+        hidden: false,
+        force_frontpage: false,
+        page_views: 0,
+        price_amazon_new: [],
+        price_third_new: [],
+        price_third_used: [],
+        offers_data: offers_item,
+        query: offers_item.query,
+        large_data: null /* still need to set */
+    };
+
+    // get the 'large' response group
+    get_large_product_data(offers_item.ASIN, function(large_product_data) {
+
+        newProductParams.large_data = large_product_data.Items.Item;
+
+        var newProduct = new IndexedProduct(newProductParams);
+        newProduct.save(function(err, newProduct){
+
+            if (err) {
+                log("Error adding product to index. Error: " + err);
+                return;
+            }
+
+            log("Added new item with ASIN: " + newProduct.asin);
+
+            if ( typeof(callback) == "function")
+                callback();
+        });
+
+    });
+
+};
+
+/*
  * Already found out that this item is in the index. Update the price and rank info
  */
-var update_product_index = function(raw_item, callback) {
+var update_product_index = function(offers_item) {
 
-    IndexedProduct.findOne({asin: raw_item.ASIN})
+    IndexedProduct.findOne({asin: offers_item.ASIN})
         .exec(function(err, item) {
 
-            // ensure correct respone
+            // ensure correct response
             if (err || !item) {
-                log("Error finding item that should have existed. ASIN given: " + raw_item.ASIN);
+                log("Error finding item that should have existed. ASIN given: " + offers_item.ASIN);
                 return;
             }
 
             // get the newest data
-            var currentRank, currentPriceNew;
-
-            // set the sales rank, if it exists
-            if (raw_item.SalesRank) {
-                currentRank = Number(raw_item.SalesRank);
-            } else {
-                currentRank = -1;
-            }
-
-            // set the price, if it exists
-            if (raw_item.OfferSummary &&
-                raw_item.OfferSummary.LowestNewPrice &&
-                raw_item.OfferSummary.LowestNewPrice.Amount) {
-                currentPriceNew = Number(raw_item.OfferSummary.LowestNewPrice.Amount);
-            } else {
-                currentPriceNew = -1;
-                log("Could not find a price for asin: " + raw_item.ASIN);
-            }
+            var prices = get_pricing_data(offers_item);
 
             // add to the array
-            item.price_new.push({price: currentPriceNew, date: new Date()});
-            item.rank.push({rank: currentRank, date: new Date()});
+            item.price_amazon_new.push({price: prices.price_amazon_new, date: new Date()});
+            item.price_third_new.push({price: prices.price_third_new, date: new Date()});
+            item.price_third_used.push({price: prices.price_third_used, date: new Date()});
 
             // save the item
             item.save(function(err, updated_item) {
@@ -193,6 +228,17 @@ var update_product_index = function(raw_item, callback) {
 };
 
 /*
+ * Find the next page to run for this particular query. Will increment it, or
+ * move it back to 1 under certain conditions
+ */
+var increment_next_page = function(query, total_pages) {
+    query.next_page_to_run++;
+    if (query.next_page_to_run > 10 || (total_pages && query.next_page_to_run > total_pages) ) {
+        query.next_page_to_run = 1;
+    }
+};
+
+/*
  * Given a query, which has next_page_to_run, and search_query
  * Use that info to construct the next query
  */
@@ -200,51 +246,59 @@ var execute_query = function(query) {
 
     // compose the parameters for this request
     var params = {
-        SearchIndex: 'PCHardware',
-        ResponseGroup: 'Large',
+        ResponseGroup: 'OfferFull',
+        SearchIndex: query.search_index,
         Keywords: query.search_query,
         ItemPage: query.next_page_to_run
     };
 
     // search for all the items
-    var prodAdv = aws.createProdAdvClient(local_codes.a, local_codes.b, local_codes.c);
     prodAdv.call("ItemSearch", params, function(err, items_data) {
 
         if (err) {
-            log("Error in processsing the ItemSearch. Error: " + err);
+            log("Error in processing the ItemSearch. Error: " + err);
             return;
         }
 
         // keep track of the total pages to go over and change
-        var total_pages = items_data.Items.TotalPages;
-        query.next_page_to_run++;
-        if (query.next_page_to_run > 10 || (total_pages && query.next_page_to_run > total_pages) ) {
-            query.next_page_to_run = 1;
-        }
+        increment_next_page(query, items_data.Items.TotalPages);
 
-        for (var i = 0; i < items_data.Items.Item.length; i++) {
+        /* delayed for loop */
+
+        var i = 0;
+        var delayed_loop = setInterval(function(){
+
+            // check if interval should end
+            if ( i >= items_data.Items.Item.length) {
+                clearInterval(delayed_loop); return;
+            }
 
             // check for valid data
             if (!items_data || !items_data.Items.Item || !items_data.Items.Item[i]) {
-                break;
+                clearInterval(delayed_loop); return;
             }
 
-            // get the raw_data
-            var item = items_data.Items.Item[i];
-            var item_asin = item.ASIN;
-
             // add new item to db, or update it
-            check_asin_exists(item_asin, item, function(exists, correct_item){
+            check_asin_exists(items_data.Items.Item[i], function(exists, offers_item){
 
-                if (!exists) {
-                    add_to_products_index(correct_item, query.search_query);
-                    return;
+                if (!exists) { /* doesn't exist, add base item first */
+
+                    offers_item.query = query;
+                    add_to_products_index(offers_item, function(){
+                        update_product_index(offers_item);
+                    });
+
+                } else {
+
+                    update_product_index(offers_item);
+
                 }
 
-                update_product_index(correct_item);
             });
 
-        }
+            i++;
+
+        }, time_between_adding);
 
     });
 
@@ -256,66 +310,38 @@ var execute_query = function(query) {
  */
 var next_cycle = function() {
 
-    // the first item of the queries array is the highest-priority (set at the end of last cycle)
     var next_query = queries[0];
-
-    // run the next query
     execute_query(next_query);
-
-    // change the first item to be the last
     queries.push(queries.shift());
 
     cycle_count++;
 };
 
-/* routes */
+// routes
+require('./routes')(app);
 
-/*
- * Return the html page for the admin controls for the updater
- */
-app.get('/admin', function(req, res) {
-    res.sendFile(__dirname + '/admin.html');
-});
+// exports
+module.exports.add_to_products_index = add_to_products_index;
 
-/*
- * Add the product item to the database
- */
-app.post('/addProductItem', function(req, res) {
-
-    var asin = req.body.asin;
-
-    add_to_products_index(asin, false, function(new_item){
-        res.json(new_item);
-    });
-
-});
-
-// just for testing purposes
-app.get('/sampleRequest/:asin', function(req, res){
-
-    var prodAdv = aws.createProdAdvClient(local_codes.a, local_codes.b, local_codes.c);
-
-    var params = {
-        ResponseGroup: "Large",
-        Keywords: 'Graphics Card',
-        SearchIndex: 'PCHardware',
-        ItemPage: 9
-    };
-
-    prodAdv.call("ItemSearch", params, function(err, item_response) {
-        res.json(item_response);
-    });
-
-});
 
 /* set the tasks for this process here */
 
 var query0 = {
     next_page_to_run: 1,
-    search_query: 'Graphics Card'
+    search_query: 'Graphics Card',
+    search_index: 'PCHardware',
+    category: 'Graphics Cards' /* an optional parameter I have to categorize items */
+};
+
+var query1 = {
+    next_page_to_run: 1,
+    search_query: 'SLI Graphics Card',
+    search_index: 'PCHardware',
+    category: 'Graphics Cards'
 };
 
 queries.push(query0);
+queries.push(query1);
 
 // executing code
 next_cycle();

@@ -26,7 +26,7 @@ app.controller('AdminController', ['$scope', 'ProductService', function($scope, 
 	 */
 	$scope.getCurrentPrice = function(product) {
 
-		var prices = product.price_new;
+		var prices = product.price_amazon_new;
 
 		if (!prices) {
 			return -1;

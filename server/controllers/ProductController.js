@@ -9,10 +9,13 @@ var IndexedProduct = require('../models/IndexedProduct');
  */
 var get_product_parameters = function(product) {
 
-	product.title               = product.raw_data.ItemAttributes.Title;
-	product.price_new_formatted = product.raw_data.OfferSummary.LowestNewPrice.FormattedPrice;
-	product.editorial_review    = product.raw_data.EditorialReviews.EditorialReview.Content;
-	product.features            = product.raw_data.ItemAttributes.Feature;
+	var large_data = product.large_data;
+
+	product.title               = large_data.ItemAttributes.Title;
+	product.price_new_formatted = large_data.OfferSummary.LowestNewPrice.FormattedPrice;
+	product.editorial_review    = large_data.EditorialReviews.EditorialReview.Content;
+	product.features            = large_data.ItemAttributes.Feature;
+	
 	product.string_data         = JSON.stringify(product);
 
 	return product;

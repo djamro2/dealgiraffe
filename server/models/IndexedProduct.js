@@ -7,12 +7,14 @@ var mongoose = require('mongoose');
 module.exports = mongoose.model('IndexedProduct',{
     date_created: {type: Date, default: Date.now},
     last_time_updated: {type: Date, default: Date.now},
-    asin: String,
-    category: String,
-    hidden: Boolean,
-    force_frontpage: Boolean,
     page_views: Number,
-    raw_data: Object,
-    price_new: [{ price: Number, date: Date}],
-    rank: [{ rank: Number, date: Date}]
+    item_clicks: Number,
+    asin: String,
+    force_frontpage: Boolean,
+    query: Object,
+    large_data: Object,
+    offers_data: Object,
+    price_amazon_new: [{ price: Number, date: Date}],
+    price_third_new: [{ price: Number, date: Date}],
+    price_third_used: [{ price: Number, date: Date}]
 });

@@ -1,5 +1,11 @@
+
 body, html {
     min-height: 100%;
+}
+
+.admin-action-panel > a {
+    color: black;
+    text-decoration: none;
 }
 
 .admin-input-row {
@@ -35,7 +41,7 @@ body, html {
 
 .product-item-link {
     text-decoration: none;
-    color: black;
+    color: black!important;
 }
 
 .product-item-title {

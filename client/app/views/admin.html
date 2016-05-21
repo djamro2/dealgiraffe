@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
 
     <!-- style sheets-->
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
     <link rel="stylesheet" href="/client/css/dealgiraffe_admin.css">
 
     <!-- js dependencies -->
@@ -37,23 +38,23 @@
 
     <div class="main-content-col">
 
-        <h2 class="updater-admin-header">DealGiraffeAdmin Panel</h2>
+        <h2 class="updater-admin-header">DealGiraffe Admin Panel</h2>
 
         <div class="admin-action-panel">
 
             <h3>Admin Actions</h3>
 
-            <a href="localhost:3031/admin">
-                <p>Updater Admin Panel</p>
-            </a>
+            <button>Go to updater admin</button> <br> <br>
+            <button>Add Items to Index</button> <br> <br>
+            <button>Schedule Items To Process</button>
 
-            <a href="/">
-                <p>Add Items To Index</p>
-            </a>
+        </div>
 
-            <a href="/">
-                <p>Schedule Items To Process</p>
-            </a>
+        <div class="admin-stats">
+
+            <h3>Database Statistics</h3>
+
+            <p>Total Items: {{products.length}}</p>
 
         </div>
 
@@ -64,7 +65,7 @@
             <div class="product-item" ng-repeat="product in products">
 
                 <a ng-href="/product/{{product.asin}}" class="product-item-link">
-                    <p class="product-item-title">{{$index + 1}}{{" " + product.raw_data.ItemAttributes.Title}}</p>
+                    <p class="product-item-title">{{$index + 1}}{{" " + product.large_data.ItemAttributes.Title}}</p>
                 </a>
 
                 <p class="product-item-price">Price (new): {{getCurrentPrice(product) | currency}} (price point #{{product.total_pricepoints}}) </p>
