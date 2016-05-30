@@ -2,7 +2,7 @@
 
 var nodemailer = require('nodemailer');
 
-var local_codes = require('../../local_codes')
+var local_codes = require('../../local_codes');
 
 /*
  * Send over email to myself using nodemailer

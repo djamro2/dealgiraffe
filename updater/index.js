@@ -15,6 +15,7 @@ var moment     = require('moment');
 
 // local resources
 var IndexedProduct = require('../server/models/IndexedProduct');
+var QueueTask      = require('../server/models/QueueTask');
 var local_codes    = require('../local_codes');
 var app        = express();
 
@@ -22,7 +23,7 @@ var app        = express();
 var prodAdv     = aws.createProdAdvClient(local_codes.a, local_codes.b, local_codes.c);
 var cycle_time  = 60000; /* recheck list x milliseconds */
 var cycle_count = 0; /* keeping a running count of num cycles */
-var time_between_adding = 2000;
+var timeBetweenAdding = 2000;
 
 // pool of queries to run. Each task has a search query, next page to run (0-indexed)
 var queries = [];
@@ -44,9 +45,7 @@ var server = app.listen(local_codes.port_updater, local_codes.internal_ip, funct
     console.log('App listening at http://%s:%s', host, port);
 });
 
-/*
- * Simple helper function to log to the console
- */
+// Simple helper function to log to the console
 var log = function(text) {
     console.log("%d: %s", cycle_count, text);
 };
@@ -231,39 +230,39 @@ var update_product_index = function(offers_item) {
  * Find the next page to run for this particular query. Will increment it, or
  * move it back to 1 under certain conditions
  */
-var increment_next_page = function(query, total_pages) {
-    query.next_page_to_run++;
-    if (query.next_page_to_run > 10 || (total_pages && query.next_page_to_run > total_pages) ) {
-        query.next_page_to_run = 1;
+var incrementCurrentPage = function(query, total_pages) {
+    query.currentPage++;
+    if (query.currentPage > 10 || (total_pages && query.currentPages > total_pages) ) {
+        query.currentPage = 1;
     }
+    query.save(function(err, response){
+       if (err) {
+           console.log("Query page not incremented: " + err);
+       }
+    });
 };
 
 /*
  * Given a query, which has next_page_to_run, and search_query
  * Use that info to construct the next query
  */
-var execute_query = function(query) {
+var executeQuery = function(query) {
 
     // compose the parameters for this request
     var params = {
         ResponseGroup: 'OfferFull',
-        SearchIndex: query.search_index,
-        Keywords: query.search_query,
-        ItemPage: query.next_page_to_run
+        SearchIndex: query.searchIndex,
+        Keywords: query.searchQuery,
+        ItemPage: query.currentPage
     };
 
     // search for all the items
     prodAdv.call("ItemSearch", params, function(err, items_data) {
 
-        if (err) {
-            log("Error in processing the ItemSearch. Error: " + err);
-            return;
-        }
+        if (err)
+            return log("Error in processing the ItemSearch. Error: " + err);
 
-        // keep track of the total pages to go over and change
-        increment_next_page(query, items_data.Items.TotalPages);
-
-        /* delayed for loop */
+        incrementCurrentPage(query, items_data.Items.TotalPages);
 
         var i = 0;
         var delayed_loop = setInterval(function(){
@@ -280,39 +279,38 @@ var execute_query = function(query) {
 
             // add new item to db, or update it
             check_asin_exists(items_data.Items.Item[i], function(exists, offers_item){
-
                 if (!exists) { /* doesn't exist, add base item first */
-
                     offers_item.query = query;
                     add_to_products_index(offers_item, function(){
                         update_product_index(offers_item);
                     });
-
                 } else {
-
                     update_product_index(offers_item);
-
                 }
-
             });
 
             i++;
-
-        }, time_between_adding);
-
+        }, timeBetweenAdding);
     });
-
 };
 
 /*
  * The handler for the 'while' loop that will call the next query.
  * All the action happens here
  */
-var next_cycle = function() {
+var nextCycle = function() {
 
-    var next_query = queries[0];
-    execute_query(next_query);
-    queries.push(queries.shift());
+    QueueTask.find({})
+        .sort('lastRunTime')
+        .exec(function(err, queueTasks) {
+            if (err) {
+                return console.log("Error in finding tasks: " + err);
+            }
+            if (!queueTasks || !queueTasks[0]) {
+                return console.log("Couldn't find any queue items");
+            }
+            executeQuery(queueTasks[0])
+        });
 
     cycle_count++;
 };
@@ -323,26 +321,8 @@ require('./routes')(app);
 // exports
 module.exports.add_to_products_index = add_to_products_index;
 
-
 /* set the tasks for this process here */
 
-var query0 = {
-    next_page_to_run: 1,
-    search_query: 'Graphics Card',
-    search_index: 'PCHardware',
-    category: 'Graphics Cards' /* an optional parameter I have to categorize items */
-};
-
-var query1 = {
-    next_page_to_run: 1,
-    search_query: 'SLI Graphics Card',
-    search_index: 'PCHardware',
-    category: 'Graphics Cards'
-};
-
-queries.push(query0);
-queries.push(query1);
-
 // executing code
-next_cycle();
-setInterval(next_cycle, cycle_time);
+nextCycle();
+setInterval(nextCycle, cycle_time);

@@ -5,8 +5,9 @@
 var passport = require('passport');
 var path     = require('path');
 
-var HomeController    = require('./controllers/HomeController');
-var ProductController = require('./controllers/ProductController');
+var HomeController      = require('./controllers/HomeController');
+var ProductController   = require('./controllers/ProductController');
+var QueueTaskController = require('./controllers/QueueTaskController');
 
 /*
  * Check to see if the current user has an authentication cookie
@@ -28,7 +29,7 @@ module.exports = function(app) {
 
     // TODO: add back in authentication
     app.get('/admin', function(req, res){
-        res.sendFile(path.resolve(__dirname + '/../client/app/views/admin.html'));
+        res.sendFile(path.resolve(__dirname + '/../client/app/views/admin_react.html'));
     });
 
     app.get('/adminlogin', function(req, res){
@@ -58,17 +59,15 @@ module.exports = function(app) {
     }));
 
     /* API routes */
-
     app.post('/api/SendEmail', HomeController.SendEmail);
-
     app.get('/api/GetAllProducts', ProductController.GetAllProducts);
-
-    app.post('/api/DeleteProduct/:id', ProductController.DeleteProduct);
-
+    app.get('/api/GetAllProductInfo', ProductController.GetAllProductInfo);
     app.get('/api/GetProduct/:id', ProductController.GetProduct);
-
+    app.post('/api/DeleteProduct/:id', ProductController.DeleteProduct);
     app.post('/api/HideProduct/:id', ProductController.HideProduct);
-
     app.post('/api/ForceFrontPageProduct/:id', ProductController.ForceFrontPageProduct);
-
+    app.get('/api/GetAllQueueItems', QueueTaskController.GetAllQueueItems);
+    app.post('/api/AddQueueItem', QueueTaskController.AddQueueItem);
+    app.delete('/api/DeleteQueueItem', QueueTaskController.DeleteQueueItem);
+    app.post('/api/TogglePauseQueueItem', QueueTaskController.TogglePauseQueueItem);
 };

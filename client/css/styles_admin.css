@@ -1,0 +1,36 @@
+
+/* root elements */
+
+html {
+    height: 100%;
+}
+
+html, body {
+    min-height: 100%;
+}
+
+/* id */
+
+/* reusable classes */
+
+.no-link-style {
+    color: inherit!important;
+    text-decoration: none!important;
+}
+
+.no-link-style:hover {
+    color: inherit!important;
+    text-decoration: none!important;
+    cursor: pointer;
+}
+
+/* general classes */
+
+.admin-dashboard-container {
+    background: rgb(240, 240, 240);
+}
+
+.module-name {
+    font-weight: 400;
+    margin-top: 0!important;
+}
