@@ -46,21 +46,18 @@ module.exports.DeleteProduct = function(req, res) {
 /*
  * Use asin to find an indexed product and set hidden to true
  */
-module.exports.ForceFrontPageProduct = function(req, res) {
+module.exports.ToggleFrontPageProduct = function(req, res) {
+	var id = req.body.id;
 
-	var asin = req.params.id;
-
-	IndexedProduct.findOne({asin:asin})
+	IndexedProduct.findOne({_id:id})
 		.exec(function(err, result){
 
 			if (err) {
 				console.log("Error: " + err);
-				res.send("Error: " + err);
-				return;
+				return res.send("Error: " + err);
 			}
 
 			result.force_frontpage = true;
-
 			result.save(function(err, final_result){
 				res.json(final_result);
 			});
@@ -69,14 +66,52 @@ module.exports.ForceFrontPageProduct = function(req, res) {
 
 };
 
-/*
- * Use asin to retrieve an indexed product
- */
+// Use asin to retrieve an indexed product
 module.exports.GetProduct = function(req, res) {
-
 	var asin = req.params.id;
-
 	IndexedProduct.findOne({asin:asin})
+		.exec(function(err, result){
+			if (err) {
+				console.log("Error: " + err);
+				return res.send("Error: " + err);
+			}
+			res.json(result);
+		});
+};
+
+// Get products based on start page, end page, and sort by
+module.exports.GetProducts = function(req, res) {
+
+	var sortQuery= "";
+	var sortBy = req.params.sortby;
+	var startPage = req.params.startpage;
+	var endPage = req.params.endpage;
+
+	switch(sortBy) {
+		case 'newest':
+			sortQuery = '-date_created';
+			break;
+		case 'oldest':
+			sortQuery = 'date_created';
+			break;
+		case 'pageViews':
+			sortQuery = '-page_views';
+			break;
+		case 'alphabetical': /* not sure if this will work */
+			sortQuery = 'large_data.ItemAttributes.Title';
+			break;
+		case 'recentlyUpdated':
+			sortQuery = '-last_time_updated';
+			break;
+		case 'oldestUpdated':
+			sortQuery ='last_time_updated';
+			break;
+	}
+
+	IndexedProduct.find({})
+		.skip(startPage)
+		.limit(endPage - startPage)
+		.sort(sortQuery)
 		.exec(function(err, result){
 
 			if (err) {
@@ -97,13 +132,10 @@ module.exports.GetAllProducts = function(req, res) {
 
 	IndexedProduct.find({})
 		.exec(function(err, result){
-				
 			if (err) {
 				console.log("Error: " + err);
-				res.send("Error: " + err);
-				return;
+				return res.status(500).send("Error: " + err);
 			}
-	
 			res.json(result);
 	});
 

@@ -27,6 +27,7 @@ const AddItemDialog = React.createClass({
                 this.setState({
                     open: false
                 });
+                location.reload();
             }.bind(this)
         });
     },

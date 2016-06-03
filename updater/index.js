@@ -17,24 +17,19 @@ var moment     = require('moment');
 var IndexedProduct = require('../server/models/IndexedProduct');
 var QueueTask      = require('../server/models/QueueTask');
 var local_codes    = require('../local_codes');
-var app        = express();
+var app            = express();
 
 // global properties
 var prodAdv     = aws.createProdAdvClient(local_codes.a, local_codes.b, local_codes.c);
-var cycle_time  = 60000; /* recheck list x milliseconds */
+var cycle_time  = 120000; /* recheck list x milliseconds */
 var cycle_count = 0; /* keeping a running count of num cycles */
-var timeBetweenAdding = 2000;
-
-// pool of queries to run. Each task has a search query, next page to run (0-indexed)
-var queries = [];
+var timeBetweenAdding = 5000; /* used within for loop */
 
 // connect to mongoose
 mongoose.connect('mongodb://localhost/DealGiraffe');
 
-// middleware - static files
+// middleware
 app.use('/client', express.static(__dirname + '/../client/'));
-
-// middleware - send json responses
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -54,27 +49,21 @@ var log = function(text) {
  * given a specific asin, check if it is already in the index
  */
 var check_asin_exists = function(item_data, callback) {
-
     var asin = item_data.ASIN;
-
     IndexedProduct.findOne({asin: asin})
         .exec(function(err, item) {
-
             if (err || !item) {
                 callback(false, item_data);
                 return;
             }
-
             callback(true, item_data);
         });
-
 };
 
 /*
  * Set the response group to Large and get the product data pertaining to that asin
  */
 var get_large_product_data = function(asin, callback) {
-
     var params = {
         ResponseGroup: "Large",
         ItemId: asin
@@ -91,7 +80,6 @@ var get_large_product_data = function(asin, callback) {
             callback(item_response);
         }
     });
-
 };
 
 /*
@@ -211,6 +199,9 @@ var update_product_index = function(offers_item) {
             item.price_third_new.push({price: prices.price_third_new, date: new Date()});
             item.price_third_used.push({price: prices.price_third_used, date: new Date()});
 
+            // update last time updater
+            item.last_time_updated = new Date();
+
             // save the item
             item.save(function(err, updated_item) {
 
@@ -231,15 +222,25 @@ var update_product_index = function(offers_item) {
  * move it back to 1 under certain conditions
  */
 var incrementCurrentPage = function(query, total_pages) {
-    query.currentPage++;
-    if (query.currentPage > 10 || (total_pages && query.currentPages > total_pages) ) {
-        query.currentPage = 1;
+
+    if (query.temp) {
+        query.remove(function(err, response){
+            if (err) {
+                console.log("Error removing query: " + err);
+            }
+        });
+    } else {
+        query.currentPage++;
+        if (query.currentPage > 10 || (total_pages && query.currentPages > total_pages)) {
+            query.currentPage = 1;
+        }
+        query.lastRunTime = new Date();
+        query.save(function (err, response) {
+            if (err) {
+                console.log("Query page not incremented: " + err);
+            }
+        });
     }
-    query.save(function(err, response){
-       if (err) {
-           console.log("Query page not incremented: " + err);
-       }
-    });
 };
 
 /*
@@ -258,10 +259,11 @@ var executeQuery = function(query) {
 
     // search for all the items
     prodAdv.call("ItemSearch", params, function(err, items_data) {
-
-        if (err)
+        if (err) {
             return log("Error in processing the ItemSearch. Error: " + err);
+        }
 
+        var productQuery = query; /* save copy in case it gets deleted */
         incrementCurrentPage(query, items_data.Items.TotalPages);
 
         var i = 0;
@@ -280,7 +282,7 @@ var executeQuery = function(query) {
             // add new item to db, or update it
             check_asin_exists(items_data.Items.Item[i], function(exists, offers_item){
                 if (!exists) { /* doesn't exist, add base item first */
-                    offers_item.query = query;
+                    offers_item.query = productQuery;
                     add_to_products_index(offers_item, function(){
                         update_product_index(offers_item);
                     });

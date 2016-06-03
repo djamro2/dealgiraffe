@@ -54,5 +54,9 @@ app.set('view engine', 'handlebars');
 initPassport(passport);
 
 // routing (needs to be after middleware)
-require('./server/routes')(app);
+require('./server/routes/admin')(app);
+require('./server/routes/home')(app);
+require('./server/routes/productItem')(app);
+require('./server/routes/productPage')(app);
+require('./server/routes/queryItem')(app);
 

@@ -7,11 +7,16 @@ html {
 
 html, body {
     min-height: 100%;
+    padding-bottom: 2rem;
 }
 
 /* id */
 
 /* reusable classes */
+
+.no-border-bottom {
+    border-bottom: none!important;
+}
 
 .no-link-style {
     color: inherit!important;
@@ -33,4 +38,30 @@ html, body {
 .module-name {
     font-weight: 400;
     margin-top: 0!important;
+}
+
+.select-label {
+    display: inline-block;
+    width: 200px;
+}
+
+.table-container {
+    overflox-x: scroll;
+    width: 100%;
+}
+
+.table-controls-container {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 2rem;
+}
+
+.table-flex-title {
+    color: rgb(158, 158, 158);
+}
+
+.table-icon-menu {
+    text-align: center;
+    max-height: 43px;
+    border-bottom: 1px solid rgb(230, 230, 230);
 }

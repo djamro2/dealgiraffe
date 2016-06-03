@@ -4,6 +4,7 @@ import GeneralStats from './GeneralStats';
 import QueryControls from './QueryControls';
 import ProductControls from './ProductControls';
 
+// child of PaperModule
 const ModuleContent = React.createClass({
 
     render: function() {

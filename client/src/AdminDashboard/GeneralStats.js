@@ -36,7 +36,7 @@ const GeneralStats = React.createClass({
         });
     },
     componentDidMount: function() {
-        var serverResponse = $.get("/api/GetAllProductInfo", function(response){
+        $.get("/api/GetAllProductInfo", function(response){
             this.setState({
                 totalProducts: response.totalProducts,
                 lastTimeUpdated: formatDate(response.lastTimeUpdated, "MM/DD/YYYY h:mma"),

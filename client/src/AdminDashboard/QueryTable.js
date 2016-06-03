@@ -1,12 +1,52 @@
 
 import React from 'react';
-import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconButton from 'material-ui/IconButton';
 import formatDate from './../lib/formatDate';
 
+const styles = {
+    tableFlex: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        overflowX: 'scroll',
+        overflowY: 'hidden',
+        paddingBottom: '10px'
+    },
+    tableFlexColumn: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-start'
+    },
+    tableFlexColumnItem: {
+        padding: '12px 20px',
+        borderBottom: '1px solid rgb(230, 230, 230)',
+        textAlign: 'center',
+        whiteSpace: 'nowrap'
+    }
+};
+
+const maxLength = function(text, limit) {
+    if (text.length <= limit) {
+        return text;
+    }
+    var nextText = text.substring(0, limit);
+    nextText += "...";
+    return nextText;
+};
+
+// return none if last day is 1969, otherwise format correctly date
+const getFormattedDate = function(date, format) {
+    var dateObj = new Date(date);
+    if ( !isNaN(dateObj.getFullYear()) && dateObj.getFullYear() === 1969) {
+        return "none";
+    }
+    return formatDate(date, format);
+};
+
+// convert a bool to its english translation
 const toEnglish = function(bool) {
     if (!bool || bool==="" || bool==false)
         return "no";
@@ -63,15 +103,12 @@ const QueryTable = React.createClass({
     },
     componentWillMount: function() {
         this.setState({
-            selectable: false,
-            height: '300px',
             queueItems: [
                 {searchQuery:'loading...'}
             ]
         });
     },
     componentDidMount: function() {
-        $('.mui-body-table').css('overflow-x', 'auto');
         var serverResponse = $.get("/api/GetAllQueueItems", function(response){
             this.setState({
                 queueItems: response
@@ -80,53 +117,114 @@ const QueryTable = React.createClass({
     },
     render: function() {
         return (
-            <Table
-                height={this.state.height}
-                selectable={this.state.selectable}
-                bodyStyle={{width: '-fit-content'}}
-            >
-                <TableHeader>
-                    <TableRow>
-                        <TableHeaderColumn>Search Query</TableHeaderColumn>
-                        <TableHeaderColumn>Search Index</TableHeaderColumn>
-                        <TableHeaderColumn>Category</TableHeaderColumn>
-                        <TableHeaderColumn>Current Page</TableHeaderColumn>
-                        <TableHeaderColumn>Last Run Time</TableHeaderColumn>
-                        <TableHeaderColumn>Paused?</TableHeaderColumn>
-                        <TableHeaderColumn>Actions</TableHeaderColumn>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
 
-                    {this.state.queueItems.map(function(item) {
+            <div className="table-container">
 
-                        return (
-                            <TableRow key={item._id}>
-                                <TableRowColumn>{item.searchQuery}</TableRowColumn>
-                                <TableRowColumn>{item.searchIndex}</TableRowColumn>
-                                <TableRowColumn>{item.category}</TableRowColumn>
-                                <TableRowColumn>{item.currentPage}</TableRowColumn>
-                                <TableRowColumn>{formatDate(item.lastRunTime, "MM/DD h:mma")}</TableRowColumn>
-                                <TableRowColumn>{toEnglish(item.paused)}</TableRowColumn>
-                                <TableRowColumn>
-                                    <IconMenu
-                                        iconButtonElement={
-                                            <IconButton><MoreVertIcon/></IconButton>
-                                        }
-                                        targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                                        anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-                                    >
-                                        <MenuItem primaryText="Pause" onClick={() => this.handleTogglePause(item._id)} />
-                                        <MenuItem primaryText="Delete" onClick={() => this.handleDelete(item._id)}/>
-                                    </IconMenu>
-                                </TableRowColumn>
-                            </TableRow>
-                        );
+                <div className="table-flex" style={styles.tableFlex}>
 
-                    }.bind(this) )};
+                    <div className="table-flex-column" style={styles.tableFlexColumn}>
+                        <div className="table-flex-column-item table-flex-title" style={styles.tableFlexColumnItem}>Search Query</div>
+                        {this.state.queueItems.map(function(item, i){
+                            return (
+                                <div key={item._id}
+                                     className={ (i === (this.state.queueItems.length-1) ? "no-border-bottom" : "") }
+                                     style={styles.tableFlexColumnItem}
+                                >
+                                    { maxLength(item.searchQuery, 25) }
+                                </div>
+                            );
+                        }.bind(this))}
+                    </div>
 
-                </TableBody>
-            </Table>
+                    <div className="table-flex-column" style={styles.tableFlexColumn}>
+                        <div className="table-flex-column-item table-flex-title" style={styles.tableFlexColumnItem}>Search Index</div>
+                        {this.state.queueItems.map(function(item, i){
+                            return (
+                                <div key={item._id}
+                                     className={ (i === (this.state.queueItems.length-1) ? "no-border-bottom" : "") }
+                                     style={styles.tableFlexColumnItem}>
+                                    {item.searchIndex}
+                                </div>
+                            );
+                        }.bind(this))}
+                    </div>
+
+                    <div className="table-flex-column" style={styles.tableFlexColumn}>
+                        <div className="table-flex-column-item table-flex-title" style={styles.tableFlexColumnItem}>Category</div>
+                        {this.state.queueItems.map(function(item, i){
+                            return (
+                                <div key={item._id}
+                                     className={ (i === (this.state.queueItems.length-1) ? "no-border-bottom" : "") }
+                                     style={styles.tableFlexColumnItem}>
+                                    {item.category}
+                                </div>
+                            );
+                        }.bind(this))}
+                    </div>
+
+                    <div className="table-flex-column" style={styles.tableFlexColumn}>
+                        <div className="table-flex-column-item table-flex-title" style={styles.tableFlexColumnItem}>Current Page</div>
+                        {this.state.queueItems.map(function(item, i){
+                            return (
+                                <div key={item._id}
+                                     className={ (i === (this.state.queueItems.length-1) ? "no-border-bottom" : "") }
+                                     style={styles.tableFlexColumnItem}>
+                                    {item.currentPage}
+                                </div>
+                            );
+                        }.bind(this))}
+                    </div>
+
+                    <div className="table-flex-column" style={styles.tableFlexColumn}>
+                        <div className="table-flex-column-item table-flex-title" style={styles.tableFlexColumnItem}>Last Run Time</div>
+                        {this.state.queueItems.map(function(item, i){
+                            return (
+                                <div key={item._id}
+                                     className={ (i === (this.state.queueItems.length-1) ? "no-border-bottom" : "") }
+                                     style={styles.tableFlexColumnItem}>
+                                    {getFormattedDate(item.lastRunTime, "MM/DD h:mma")}
+                                </div>
+                            );
+                        }.bind(this))}
+                    </div>
+
+                    <div className="table-flex-column" style={styles.tableFlexColumn}>
+                        <div className="table-flex-column-item table-flex-title" style={styles.tableFlexColumnItem}>Paused?</div>
+                        {this.state.queueItems.map(function(item, i){
+                            return (
+                                <div key={item._id}
+                                     className={ (i === (this.state.queueItems.length-1) ? "no-border-bottom" : "") }
+                                     style={styles.tableFlexColumnItem}>
+                                    {toEnglish(item.paused)}
+                                </div>
+                            );
+                        }.bind(this))}
+                    </div>
+
+                    <div className="table-flex-column" style={styles.tableFlexColumn}>
+                        <div className="table-flex-column-item table-flex-title" style={styles.tableFlexColumnItem}>Actions</div>
+                        {this.state.queueItems.map(function(item, i){
+                            return (
+                                <IconMenu
+                                    key={item._id}
+                                    className={ (i === (this.state.queueItems.length-1) ? "no-border-bottom table-icon-menu" : "table-icon-menu") }
+                                    iconButtonElement={
+                                        <IconButton><MoreVertIcon/></IconButton>
+                                    }
+                                    targetOrigin={{horizontal: 'right', vertical: 'top'}}
+                                    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+                                >
+                                    <MenuItem primaryText="Pause" onClick={() => this.handleTogglePause(item._id)} />
+                                    <MenuItem primaryText="Delete" onClick={() => this.handleDelete(item._id)}/>
+                                </IconMenu>
+                            );
+                        }.bind(this))}
+                    </div>
+
+                </div>
+
+            </div>
+
         );
     }
 
