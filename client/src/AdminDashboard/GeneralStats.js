@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Divider from 'material-ui/Divider';
+import numeral from 'numeral';
 import formatDate from '../lib/formatDate';
 
 const styles = {
@@ -40,11 +41,17 @@ const GeneralStats = React.createClass({
             this.setState({
                 totalProducts: response.totalProducts,
                 lastTimeUpdated: formatDate(response.lastTimeUpdated, "MM/DD/YYYY h:mma"),
-                dbSize: (String(formatSize(response.dbSize)) + 'MB')
+                dbSize: (String(formatSize(response.dbSize)) + 'MB'),
+                cycleTime: response.cycleTime
             });
         }.bind(this));
     },
     render: function() {
+
+        if (!this.state) {
+            return false;
+        }
+
         return (
             <div style={styles.styleContainer}>
                 <div style={styles.styleLeft}>
@@ -59,11 +66,12 @@ const GeneralStats = React.createClass({
                 <div style={styles.styleRight}>
                     <p>Database Size: {this.state.dbSize} </p>
                     <Divider />
+                    <p>Cycle Time: {numeral(Number(this.state.cycleTime)).format('0,0')}ms</p>
+                    <Divider />
                 </div>
             </div>
         );
     }
-    
 });
 
 export default GeneralStats;

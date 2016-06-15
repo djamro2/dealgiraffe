@@ -9,7 +9,8 @@ const config = {
 
     // the file(s) to transpile
     entry: {
-        AdminDashboard: ['./client/src/AdminDashboard.js']
+        AdminDashboard: ['./client/src/AdminDashboard.js'],
+        ProductPage: ['./client/src/ProductPage/index.js']
     },
 
     // don't have to add extension for require by adding this feature

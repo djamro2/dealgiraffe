@@ -142,16 +142,16 @@ const ProductTable = React.createClass({
                         </div>
                         {this.state.products.map(function(item, i){
                             return (
-                                <div key={item._id}
-                                     className={ (i === (this.state.products.length-1) ? "no-border-bottom" : "") }
-                                     style={styles.tableFlexColumnItem}
-                                >
-                                    <a href={"/product/" + item.asin}
-                                       className="no-link-style"
-                                       title={item.large_data.ItemAttributes.Title}>
-                                        { maxLength(item.large_data.ItemAttributes.Title, 25)}
-                                    </a>
-                                </div>
+                                <a href={"/product/" + item.asin}
+                                   key={item._id}
+                                   className="no-link-style"
+                                   title={item.large_data.ItemAttributes.Title}>
+                                    <div className={ (i === (this.state.products.length-1) ? "no-border-bottom" : "") }
+                                         style={styles.tableFlexColumnItem}
+                                    >
+                                        {maxLength(item.large_data.ItemAttributes.Title, 25)}
+                                    </div>
+                                </a>
                             );
                         }.bind(this))}
                     </div>

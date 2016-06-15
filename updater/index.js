@@ -1,9 +1,3 @@
-/**
- * Created by Daniel on 5/11/2016.
- */
-
-/* main runner for the indexing/updater process */
-/* is separate from the main site for modularity, security and reliability */
 
 // global resources
 var mongoose   = require('mongoose');
@@ -17,13 +11,13 @@ var moment     = require('moment');
 var IndexedProduct = require('../server/models/IndexedProduct');
 var QueueTask      = require('../server/models/QueueTask');
 var local_codes    = require('../local_codes');
+var settings       = require('./settings');
 var app            = express();
 
 // global properties
+var self = this;
+self.cycleCount = 0;
 var prodAdv     = aws.createProdAdvClient(local_codes.a, local_codes.b, local_codes.c);
-var cycle_time  = 120000; /* recheck list x milliseconds */
-var cycle_count = 0; /* keeping a running count of num cycles */
-var timeBetweenAdding = 5000; /* used within for loop */
 
 // connect to mongoose
 mongoose.connect('mongodb://localhost/DealGiraffe');
@@ -42,13 +36,11 @@ var server = app.listen(local_codes.port_updater, local_codes.internal_ip, funct
 
 // Simple helper function to log to the console
 var log = function(text) {
-    console.log("%d: %s", cycle_count, text);
+    console.log("%d: %s", self.cycleCount, text);
 };
 
-/*
- * given a specific asin, check if it is already in the index
- */
-var check_asin_exists = function(item_data, callback) {
+// given a specific asin, check if it is already in the index
+var checkAsinExists = function(item_data, callback) {
     var asin = item_data.ASIN;
     IndexedProduct.findOne({asin: asin})
         .exec(function(err, item) {
@@ -60,10 +52,8 @@ var check_asin_exists = function(item_data, callback) {
         });
 };
 
-/*
- * Set the response group to Large and get the product data pertaining to that asin
- */
-var get_large_product_data = function(asin, callback) {
+// Set the response group to Large and get the product data pertaining to that asin
+var getLargeProductData = function(asin, callback) {
     var params = {
         ResponseGroup: "Large",
         ItemId: asin
@@ -85,7 +75,7 @@ var get_large_product_data = function(asin, callback) {
 /*
  * Parse through the offers data and return the three sets of prices as an object
  */
-var get_pricing_data = function(offers_item) {
+var getPricingData = function(offers_item) {
 
     // object to be returned
     var result = {
@@ -128,15 +118,12 @@ var get_pricing_data = function(offers_item) {
     return result;
 };
 
-/*
- * Reusable function to add a product to the list of indexed products, based on it's asin
- * If force_add it set to true, no conditions will checked, added as long as it exists
- */
-var add_to_products_index = function(offers_item, callback) {
-
+// Reusable function to add a product to the list of indexed products, based on it's asin
+// If force_add it set to true, no conditions will checked, added as long as it exists
+var addToProductsIndex = function(offers_item, callback) {
     // check for valid item
     if (!offers_item) {
-        log("No valid item given in add_to_products_index");
+        log("No valid item given in addToProductsIndex");
         return;
     }
 
@@ -155,13 +142,11 @@ var add_to_products_index = function(offers_item, callback) {
     };
 
     // get the 'large' response group
-    get_large_product_data(offers_item.ASIN, function(large_product_data) {
-
-        newProductParams.large_data = large_product_data.Items.Item;
+    getLargeProductData(offers_item.ASIN, function(largeProductData) {
+        newProductParams.large_data = largeProductData.Items.Item;
 
         var newProduct = new IndexedProduct(newProductParams);
         newProduct.save(function(err, newProduct){
-
             if (err) {
                 log("Error adding product to index. Error: " + err);
                 return;
@@ -169,22 +154,17 @@ var add_to_products_index = function(offers_item, callback) {
 
             log("Added new item with ASIN: " + newProduct.asin);
 
-            if ( typeof(callback) == "function")
+            if ( typeof(callback) == "function") {
                 callback();
+            }
         });
-
     });
-
 };
 
-/*
- * Already found out that this item is in the index. Update the price and rank info
- */
-var update_product_index = function(offers_item) {
-
+// Already found out that this item is in the index. Update the price and rank info
+var updateProductIndex = function(offers_item) {
     IndexedProduct.findOne({asin: offers_item.ASIN})
         .exec(function(err, item) {
-
             // ensure correct response
             if (err || !item) {
                 log("Error finding item that should have existed. ASIN given: " + offers_item.ASIN);
@@ -192,7 +172,7 @@ var update_product_index = function(offers_item) {
             }
 
             // get the newest data
-            var prices = get_pricing_data(offers_item);
+            var prices = getPricingData(offers_item);
 
             // add to the array
             item.price_amazon_new.push({price: prices.price_amazon_new, date: new Date()});
@@ -204,7 +184,6 @@ var update_product_index = function(offers_item) {
 
             // save the item
             item.save(function(err, updated_item) {
-
                 if (err) {
                     log("Could not update item. Err: " + err);
                     return;
@@ -212,19 +191,14 @@ var update_product_index = function(offers_item) {
 
                 log("Updated item with ASIN " + updated_item.asin);
             });
-
         });
-
 };
 
-/*
- * Find the next page to run for this particular query. Will increment it, or
- * move it back to 1 under certain conditions
- */
+// Find the next page to run for this particular query. Will increment it, or
+// move it back to 1 under certain conditions
 var incrementCurrentPage = function(query, total_pages) {
-
     if (query.temp) {
-        query.remove(function(err, response){
+        query.remove(function(err){
             if (err) {
                 console.log("Error removing query: " + err);
             }
@@ -243,13 +217,9 @@ var incrementCurrentPage = function(query, total_pages) {
     }
 };
 
-/*
- * Given a query, which has next_page_to_run, and search_query
- * Use that info to construct the next query
- */
+// Given a query, which has next_page_to_run, and search_query
+// Use that info to construct the next query
 var executeQuery = function(query) {
-
-    // compose the parameters for this request
     var params = {
         ResponseGroup: 'OfferFull',
         SearchIndex: query.searchIndex,
@@ -257,51 +227,41 @@ var executeQuery = function(query) {
         ItemPage: query.currentPage
     };
 
-    // search for all the items
     prodAdv.call("ItemSearch", params, function(err, items_data) {
         if (err) {
             return log("Error in processing the ItemSearch. Error: " + err);
         }
-
         var productQuery = query; /* save copy in case it gets deleted */
         incrementCurrentPage(query, items_data.Items.TotalPages);
 
         var i = 0;
-        var delayed_loop = setInterval(function(){
-
-            // check if interval should end
+        var delayedLoop = setInterval(function(){
             if ( i >= items_data.Items.Item.length) {
-                clearInterval(delayed_loop); return;
+                clearInterval(delayedLoop); return;
             }
-
-            // check for valid data
             if (!items_data || !items_data.Items.Item || !items_data.Items.Item[i]) {
-                clearInterval(delayed_loop); return;
+                clearInterval(delayedLoop); return;
             }
 
-            // add new item to db, or update it
-            check_asin_exists(items_data.Items.Item[i], function(exists, offers_item){
+            checkAsinExists(items_data.Items.Item[i], function(exists, offers_item){
                 if (!exists) { /* doesn't exist, add base item first */
                     offers_item.query = productQuery;
-                    add_to_products_index(offers_item, function(){
-                        update_product_index(offers_item);
+                    addToProductsIndex(offers_item, function(){
+                        updateProductIndex(offers_item);
                     });
                 } else {
-                    update_product_index(offers_item);
+                    updateProductIndex(offers_item);
                 }
             });
 
             i++;
-        }, timeBetweenAdding);
+        }, settings.timeBetweenAddingToDB);
     });
 };
 
-/*
- * The handler for the 'while' loop that will call the next query.
- * All the action happens here
- */
+// The handler for the 'while' loop that will call the next query.
+// All the action happens here
 var nextCycle = function() {
-
     QueueTask.find({})
         .sort('lastRunTime')
         .exec(function(err, queueTasks) {
@@ -313,18 +273,9 @@ var nextCycle = function() {
             }
             executeQuery(queueTasks[0])
         });
-
-    cycle_count++;
+    console.log('Cycle Count: ' + self.cycleCount);
+    self.cycleCount++;
 };
 
-// routes
-require('./routes')(app);
-
-// exports
-module.exports.add_to_products_index = add_to_products_index;
-
-/* set the tasks for this process here */
-
-// executing code
 nextCycle();
-setInterval(nextCycle, cycle_time);
+setInterval(nextCycle, settings.cycleTime);

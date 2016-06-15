@@ -45,6 +45,7 @@ app.use(flash());
 
 // static files
 app.use('/client', express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/client'));
 
 // handlebar engine
 app.engine('handlebars', handlebars({defaultLayout: 'product_page'}));

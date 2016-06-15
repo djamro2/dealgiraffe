@@ -30,7 +30,7 @@ module.exports.GetAllQueueItems = function(req, res) {
             }
             res.send(tasks);
         });
-}
+};
 
 // delete a queue items
 module.exports.DeleteQueueItem = function(req, res) {

@@ -1,6 +1,11 @@
+
 # Dependency directory
-# https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
 
-#local codes
+# local codes
 local_codes.js
+
+# shouldn't include build. Run npm run build instead
+client/build
+client/build/
+client/build/*

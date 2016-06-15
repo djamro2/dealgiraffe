@@ -1,6 +1,8 @@
 
 var aws = require('aws-lib');
+var path = require('path');
 
+var settings = require('./../../updater/settings');
 var local_codes = require('../../local_codes');
 var IndexedProduct = require('../models/IndexedProduct');
 var getProductDbSize = require('./../lib/getProductDbSize');
@@ -23,12 +25,9 @@ var get_product_parameters = function(product) {
  * Use asin to find an indexed product and set hidden to true
  */
 module.exports.DeleteProduct = function(req, res) {
-
 	var asin = req.params.id;
-
 	IndexedProduct.findOne({asin:asin})
 		.exec(function(err, result){
-
 			if (err) {
 				console.log("Error: " + err);
 				res.send("Error: " + err);
@@ -38,9 +37,7 @@ module.exports.DeleteProduct = function(req, res) {
 			result.remove(function(err, final_result){
 				res.json(final_result);
 			});
-
 		});
-
 };
 
 /*
@@ -48,10 +45,8 @@ module.exports.DeleteProduct = function(req, res) {
  */
 module.exports.ToggleFrontPageProduct = function(req, res) {
 	var id = req.body.id;
-
 	IndexedProduct.findOne({_id:id})
 		.exec(function(err, result){
-
 			if (err) {
 				console.log("Error: " + err);
 				return res.send("Error: " + err);
@@ -61,9 +56,7 @@ module.exports.ToggleFrontPageProduct = function(req, res) {
 			result.save(function(err, final_result){
 				res.json(final_result);
 			});
-
 		});
-
 };
 
 // Use asin to retrieve an indexed product
@@ -81,7 +74,6 @@ module.exports.GetProduct = function(req, res) {
 
 // Get products based on start page, end page, and sort by
 module.exports.GetProducts = function(req, res) {
-
 	var sortQuery= "";
 	var sortBy = req.params.sortby;
 	var startPage = req.params.startpage;
@@ -122,14 +114,12 @@ module.exports.GetProducts = function(req, res) {
 
 			res.json(result);
 		});
-
 };
 
 /*
  * Return all of the indexed products
  */
 module.exports.GetAllProducts = function(req, res) {
-
 	IndexedProduct.find({})
 		.exec(function(err, result){
 			if (err) {
@@ -138,14 +128,12 @@ module.exports.GetAllProducts = function(req, res) {
 			}
 			res.json(result);
 	});
-
 };
 
 /*
  * Returns an object contains info and stats about the db
  */
 module.exports.GetAllProductInfo = function(req, res) {
-
 	var result = {
 		totalProducts: 0,
 		dbSize: 0,
@@ -153,14 +141,12 @@ module.exports.GetAllProductInfo = function(req, res) {
 	};
 
 	getProductDbInfo(function(err, totalProducts, lastTimeUpdated){
-
 		if (err) {
 			console.log(err);
 			return res.status(500).send(err);
 		}
 
 		getProductDbSize(function(err, dbSize) {
-
 			if (err) {
 				console.log(err);
 				return res.status(500).send(err);
@@ -169,23 +155,21 @@ module.exports.GetAllProductInfo = function(req, res) {
 			result.dbSize = dbSize;
 			result.totalProducts = totalProducts;
 			result.lastTimeUpdated = lastTimeUpdated;
+			result.cycleCount = settings.cycleCount;
+			result.cycleTime = settings.cycleTime;
 
 			return res.json(result);
 		});
 	});
-
 };
 
 /*
  * Use asin to find an indexed product and set hidden to true
  */
 module.exports.HideProduct = function(req, res) {
-
 	var asin = req.params.id;
-
 	IndexedProduct.findOne({asin:asin})
 		.exec(function(err, result){
-
 			if (err) {
 				console.log("Error: " + err);
 				res.send("Error: " + err);
@@ -193,29 +177,13 @@ module.exports.HideProduct = function(req, res) {
 			}
 
 			result.hidden = true;
-
 			result.save(function(err, final_result){
 				res.json(final_result);
 			});
-
 		});
-
 };
 
-/*
- * Render the product page using express handlebars
- */
+// Render the product page using express handlebars
 module.exports.ProductPage = function(req, res) {
-
-	var id = req.params.id;
-	
-	IndexedProduct.findOne({asin: id})
-		.exec(function(err, result){
-
-			product = get_product_parameters(result);
-
-			res.render('product_content', product);
-
-		});
-
+	res.sendFile(path.resolve('client/views/productPage.html'));
 };

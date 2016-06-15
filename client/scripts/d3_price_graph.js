@@ -1,11 +1,3 @@
-/**
- * Created by djamr on 5/17/2016.
- */
-
-// static variables
-
-//var parseDate = d3.time.format("%Y-%m-%d-T%H:%M:%S.%LZ").parse;
-//var parseDate2 = d3.time.format("%d-%b-%y").parse;
 
 var width = 800;
 var height = 400;
@@ -39,36 +31,24 @@ var line = d3.svg.line()
     .x(function(d) { return xScale(d.date_parsed); })
     .y(function(d) { return yScale(d.price) + 1.5; });
 
-/*
- * Called from a script tag to load data from express handlebars
- */
-var init_data = function(_data) {
+// Called from a script tag to load data from express handlebars
+var initGraphData = function(_data) {
     data = _data;
     graph = d3.select("#price-graph");
     render_graph(data, graph);
 };
 
-/*
- * Given a string, return a format that d3 finds acceptable
- */
+// Given a string, return a format that d3 finds acceptable
 var parseDate = function(datetime){
-
     var m_datetime = moment( new Date(datetime)).format("MM-DD-YYYY-HH:mm:ss");
-
     var parseDateFormat = d3.time.format("%m-%d-%Y-%H:%M:%S");
-    var final_datetime = parseDateFormat.parse(m_datetime);
-
-    return final_datetime;
+    return parseDateFormat.parse(m_datetime);
 };
 
-/*
- * Helper function to process the data and return it in array form
- * Will be data relevant to the 'type' passed in
- */
+// Helper function to process the data and return it in array form
+// Will be data relevant to the 'type' passed in
 var process_data = function(data, type) {
-
     var result = [];
-
     switch (type) {
 
         case 'price_new':
@@ -86,10 +66,8 @@ var process_data = function(data, type) {
     return result;
 };
 
-/*
- * To ensure that the y domain covers enough height, this will add a correct
- * amount of padding based on the end points
- */
+// To ensure that the y domain covers enough height, this will add a correct
+// amount of padding based on the end points
 var pad_y_domain = function(domain) {
 
     // no price change
@@ -107,9 +85,7 @@ var pad_y_domain = function(domain) {
     return domain;
 };
 
-/*
- * Isolate any logic of drawing axes and their labels to this function
- */
+// Isolate any logic of drawing axes and their labels to this function
 var draw_axes = function(graph) {
 
     // x-axis
@@ -144,14 +120,10 @@ var draw_axes = function(graph) {
         .attr("class", "axis-label")
         .style("text-anchor", "end")
         .text("Price ($)");
-
 };
 
-/*
- * Isolate any logic of drawing the grid to this function
- */
+// Isolate any logic of drawing the grid to this function
 var draw_grid = function(graph) {
-
     // add the horizontal lines to the graph
     graph.selectAll("line.horizontalGrid")
         .data(yScale.ticks(4))
@@ -187,26 +159,18 @@ var draw_grid = function(graph) {
                 "stroke" : "#999",
                 "stroke-width" : "1px"
             });
-
 };
 
-/*
- * Append a path as an area. This area represents the real data portion
- */
+// Append a path as an area. This area represents the real data portion
 var draw_data_area = function(data) {
-
     graph.append("path")
         .datum(data)
         .attr("class", "area")
         .attr("d", area);
-
 };
 
-/*
- * Append a path as an area. This area represents the null data portion
- */
+// Append a path as an area. This area represents the null data portion
 var draw_null_area = function(data, x_domain_max) {
-
     // data to be in place of data where there are no values yet
     var data_null = [
         {price: data[data.length-1].price, date_parsed: x_domain_max},           /* start */
@@ -217,24 +181,17 @@ var draw_null_area = function(data, x_domain_max) {
         .datum(data_null)
         .attr("class", "area-null")
         .attr("d", area);
-
 };
 
-/*
- * This is the line draw on top of the area. Done to let the area stand out more
- */
+// This is the line draw on top of the area. Done to let the area stand out more
 var draw_outline_area_path = function(data) {
-
     graph.append("path")
         .datum(data)
         .attr("class", "area-line")
         .attr("d", line);
-
 };
 
-/*
- * Main runner to create the graph. Pass in data after it was initialized
- */
+// Main runner to create the graph. Pass in data after it was initialized
 var render_graph = function(data, graph) {
 
     // obtain the correct data
@@ -258,5 +215,4 @@ var render_graph = function(data, graph) {
     draw_null_area(data_price_new, x_domain_max);
 
     draw_outline_area_path(data_price_new);
-
 };

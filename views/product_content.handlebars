@@ -2,15 +2,12 @@
 <div class="main-col" ng-controller="ProductController" ng-init="get_product_info('{{asin}}')">
 
     <div class="col-top-content" layout="column">
-
         <div class="banner" flex layout="row" layout-align="center center">
             <p>DealGiraffe</p>
         </div>
-
     </div>
 
     <div class="main-navbar">
-
         <ul class="main-navbar-list" layout="row" layout-align="start center">
             <li>HOME</li>
             <li>PC HARDWARE</li>
@@ -18,49 +15,34 @@
             <li>SUBMIT ITEM</li>
             <li>CONTACT</li>
         </ul>
-
     </div>
 
     <div class="product-details" layout="row">
-
         <div flex="50" class="product-details-image" layout="column" layout-align="center center">
-
-            <img ng-src="[[main_image]]" >
-
+            <img ng-src="[[main_image]]" />
         </div>
-
         <div flex="50" class="product-details-text" layout="column" layout-align="start">
-
             <h2>{{title}}</h2>
-
             <p class="product-details-price">{{price_new_formatted}} (new)</p>
-
             <p class="product-details-review">{{editorial_review}}</p>
-
             <ul class="product-details-features">
                 {{#each features}}
                     <li>{{this}}</li>
                 {{/each}}
             </ul>
-
             <div layout="row" layout-align="start">
                 <span class="product-details-see-more" layout="row" layout-align="center center">
                     See More
                 </span>
             </div>
-
         </div>
-
     </div>
 
     <div class="price-chart">
-
         <h2>PRICE GRAPH</h2>
-
         <div class="price-graph-container">
             <svg id="price-graph" width="800" height="400"></svg>
         </div>
-
     </div>
 
 </div>
