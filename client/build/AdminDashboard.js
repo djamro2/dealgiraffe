@@ -56656,7 +56656,7 @@
 	    },
 	    render: function render() {
 	        // don't do anything if state doesn't exist yet
-	        if (!this.state || !this.state.products) {
+	        if (!this.state || !this.state.products || !this.state.products.map) {
 	            return _react2.default.createElement('span', null);
 	        }
 

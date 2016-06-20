@@ -31,11 +31,12 @@ var line = d3.svg.line()
     .x(function(d) { return xScale(d.date_parsed); })
     .y(function(d) { return yScale(d.price) + 1.5; });
 
+var graph;
+
 // Called from a script tag to load data from express handlebars
-var initGraphData = function(_data) {
-    data = _data;
+var initGraphData = function(data) {
     graph = d3.select("#price-graph");
-    render_graph(data, graph);
+    renderGraph(data, graph);
 };
 
 // Given a string, return a format that d3 finds acceptable
@@ -47,7 +48,7 @@ var parseDate = function(datetime){
 
 // Helper function to process the data and return it in array form
 // Will be data relevant to the 'type' passed in
-var process_data = function(data, type) {
+var processData = function(data, type) {
     var result = [];
     switch (type) {
 
@@ -124,6 +125,7 @@ var draw_axes = function(graph) {
 
 // Isolate any logic of drawing the grid to this function
 var draw_grid = function(graph) {
+
     // add the horizontal lines to the graph
     graph.selectAll("line.horizontalGrid")
         .data(yScale.ticks(4))
@@ -192,10 +194,10 @@ var draw_outline_area_path = function(data) {
 };
 
 // Main runner to create the graph. Pass in data after it was initialized
-var render_graph = function(data, graph) {
+var renderGraph = function(data, graph) {
 
     // obtain the correct data
-    var data_price_new = process_data(data, 'price_new');
+    var data_price_new = processData(data, 'price_new');
 
     // update the domain for the scales
     var x_domain_min = d3.min(data_price_new, function(d){return d.date_parsed;});
@@ -207,12 +209,8 @@ var render_graph = function(data, graph) {
     yScale.domain(y_domain);
 
     draw_axes(graph);
-
     draw_grid(graph);
-
     draw_data_area(data_price_new);
-
     draw_null_area(data_price_new, x_domain_max);
-
     draw_outline_area_path(data_price_new);
 };

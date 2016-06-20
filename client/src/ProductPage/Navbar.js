@@ -1,18 +1,27 @@
 
 import React from 'react';
 
-export default class Navbar extends React.Component {
+const defaultProps = {
+    tabs: []
+};
+
+class Navbar extends React.Component {
     render() {
         return (
             <div className="main-navbar">
                 <ul className="main-navbar-list">
-                    <li>HOME</li>
-                    <li>PC HARDWARE</li>
-                    <li>GAMING</li>
-                    <li>SUBMIT ITEM</li>
-                    <li>CONTACT</li>
+                    {this.props.tabs.map(function(item) {
+                        return (
+                            <a href={item.link} key={item.name}>
+                                <li className="main-navbar-list-item white">{item.name}</li>
+                            </a>
+                        );
+                    }.bind(this))}
                 </ul>
             </div>
         );
     }
 };
+
+Navbar.defaultProps = defaultProps;
+export default Navbar;

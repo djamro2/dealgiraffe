@@ -1,4 +1,206 @@
 
+/* root elements */
+
+html {
+	height: 100%;
+	overflow: auto;
+}
+
+body {
+	min-height: 100%;
+}
+
+/* id's */
+
+#price-graph {
+	overflow: visible;
+	margin: auto;
+	width: 800px;
+	height: 400px;
+}
+
+/* reusable classes */
+
+.paper-label {
+	padding: 1rem;
+}
+
+.right-align-row {
+	text-align: right;
+}
+
+.white {
+	color: white;
+}
+
+/* general - DealGiraffe product page */
+
+.area {
+	fill: rgba(51, 102, 255, .6);
+}
+
+.area-line {
+	fill: none;
+	stroke: black;
+	stroke-width: 3px;
+}
+
+.area-null {
+	fill: rgba(220, 220, 220, .8);
+}
+
+.axis path {
+	fill: none;
+	stroke: #777;
+	shape-rendering: crispEdges;
+}
+.axis text {
+	font-family: Lato;
+	font-size: 13px;
+}
+
+.axis-label {
+	font-size: 1.2em!important;
+}
+
+.col-top-content {
+	height: 3em;
+}
+
+.container-all {
+	background: rgb(240, 240, 240);
+}
+
+.main-col {
+	max-width: 960px;
+	margin: 0 auto;
+	background: white;
+	font-family: 'Hind Siliguri', sans-serif;
+}
+
+.main-navbar {
+	background: #333;
+}
+
+.main-navbar-list {
+	color: white;
+	list-style: none;
+	padding-left: 0;
+}
+
+.main-navbar-list-item {
+	border-right: 1px solid white;
+	font-size: 1.2em;
+	padding: .25rem .75rem;
+	display: inline-block;
+}
+
+.main-navbar-list-item:hover {
+	background: #999;
+	cursor: pointer;
+}
+
+.product-content-container {
+	padding: 1rem;
+	display: flex;
+	flex-direction: row;
+}
+
+.product-content-container .card {
+	flex-grow: 0;
+}
+
+.product-content-container .product-info {
+	flex-basis: 50%;
+	flex-grow: 1;
+	flex-shrink: 0;
+	padding-left: 1rem;
+}
+
+.product-content-container .product-info ul{
+	padding-left: 1.5rem;
+}
+
+.product-content-container .product-info .prices-container {
+	position: relative;
+}
+
+.product-content-container .product-info .price {
+	color: #999;
+	margin-bottom: 6px;
+	display: block;
+}
+
+.product-content-container .product-info .price:first-child {
+	color: black;
+	font-weight: 600;
+	font-size: 2.5rem;
+	margin-bottom: 5px;
+}
+
+.product-text-bottom {
+	display: none;
+	padding: 1rem;
+}
+
+.product-content-container .product-info .summary {
+	padding-top: 8px;
+}
+
+.read-more-container {
+	margin-top: 2rem;
+	text-align: center;
+}
+
+.product-content-container .read-more-container button{
+	min-width: 50%;
+}
+
+.product-details {
+	padding-bottom: 2rem;
+	border-bottom: 1px solid #666;
+}
+
+.product-details-features {
+	margin-top: 0;
+}
+
+.product-details-price {
+	font-weight: 700;
+	font-size: 1.1rem;
+	margin-top: 0;
+}
+
+.product-details-review {
+	margin-top: 0;
+}
+
+.product-details-see-more {
+	width: 6rem;
+	height: 2.25rem;
+	background: yellow;
+	color: black;
+	border: 1px solid black;
+	border-radius: 5px;
+	margin-right: 2rem;
+}
+
+.product-details-see-more:hover {
+	cursor: pointer;
+}
+
+.product-details-text {
+	padding: 0 1.5rem;
+}
+
+.price-graph-container {
+	padding: 0 1rem;
+	padding-bottom: 2rem;
+	text-align: center;
+}
+
+/* general - DealGiraffe home page */
+
 .btn-see-it {
 	position: relative;
 	margin: 0.5em 1em 1em 0;
@@ -121,4 +323,43 @@
 .view_choice > a {
 	margin-right: 5px;
 	text-decoration: underline;
+}
+
+/* media queries */
+
+/* anything smaller than 700px */
+@media(max-width: 700px) {
+	.product-content-container .product-text-right {
+		display: none!important;
+	}
+
+	.product-text-bottom {
+		display: block!important;
+	}
+
+	.product-content-container .product-info {
+		flex-grow: 0;
+		flex-basis: 0;
+	}
+
+	.prices-container {
+		text-align: right;
+	}
+}
+
+/* anything smaller than 520px */
+@media(max-width: 520px) {
+	.product-content-container {
+		flex-direction: column;
+		padding-bottom: 0;
+	}
+
+	.prices-container {
+		padding-top: 1rem;
+		text-align: left;
+	}
+
+	.product-text-bottom {
+		padding-top: 0;
+	}
 }

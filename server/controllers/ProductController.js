@@ -8,9 +8,7 @@ var IndexedProduct = require('../models/IndexedProduct');
 var getProductDbSize = require('./../lib/getProductDbSize');
 var getProductDbInfo = require('./../lib/getProductDbInfo');
 
-/*
- * back-end function to parse through a product and make the important info easily accessible
- */
+// back-end function to parse through a product and make the important info easily accessible
 var get_product_parameters = function(product) {
 	var large_data = product.large_data;
 	product.title               = large_data.ItemAttributes.Title;
@@ -21,9 +19,7 @@ var get_product_parameters = function(product) {
 	return product;
 };
 
-/*
- * Use asin to find an indexed product and set hidden to true
- */
+// Use asin to find an indexed product and set hidden to true
 module.exports.DeleteProduct = function(req, res) {
 	var asin = req.params.id;
 	IndexedProduct.findOne({asin:asin})
@@ -40,9 +36,7 @@ module.exports.DeleteProduct = function(req, res) {
 		});
 };
 
-/*
- * Use asin to find an indexed product and set hidden to true
- */
+// Use asin to find an indexed product and set hidden to true
 module.exports.ToggleFrontPageProduct = function(req, res) {
 	var id = req.body.id;
 	IndexedProduct.findOne({_id:id})
@@ -101,8 +95,8 @@ module.exports.GetProducts = function(req, res) {
 	}
 
 	IndexedProduct.find({})
-		.skip(startPage)
-		.limit(endPage - startPage)
+		.skip(+startPage)
+		.limit(+(endPage - startPage))
 		.sort(sortQuery)
 		.exec(function(err, result){
 
@@ -116,9 +110,7 @@ module.exports.GetProducts = function(req, res) {
 		});
 };
 
-/*
- * Return all of the indexed products
- */
+// Return all of the indexed products
 module.exports.GetAllProducts = function(req, res) {
 	IndexedProduct.find({})
 		.exec(function(err, result){
@@ -130,9 +122,7 @@ module.exports.GetAllProducts = function(req, res) {
 	});
 };
 
-/*
- * Returns an object contains info and stats about the db
- */
+// Returns an object contains info and stats about the db
 module.exports.GetAllProductInfo = function(req, res) {
 	var result = {
 		totalProducts: 0,
@@ -163,9 +153,7 @@ module.exports.GetAllProductInfo = function(req, res) {
 	});
 };
 
-/*
- * Use asin to find an indexed product and set hidden to true
- */
+// Use asin to find an indexed product and set hidden to true
 module.exports.HideProduct = function(req, res) {
 	var asin = req.params.id;
 	IndexedProduct.findOne({asin:asin})

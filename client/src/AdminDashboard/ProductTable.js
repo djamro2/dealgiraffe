@@ -123,7 +123,7 @@ const ProductTable = React.createClass({
     },
     render: function() {
         // don't do anything if state doesn't exist yet
-        if (!this.state || !this.state.products) {
+        if (!this.state || !this.state.products || !this.state.products.map) {
             return (
                 <span></span>
             );
