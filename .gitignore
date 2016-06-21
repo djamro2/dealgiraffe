@@ -9,3 +9,6 @@ local_codes.js
 client/build
 client/build/
 client/build/*
+
+# google verification file
+client/google8c3581f55aae1c66.html

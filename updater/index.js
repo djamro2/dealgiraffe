@@ -234,6 +234,11 @@ var executeQuery = function(query) {
         var productQuery = query; /* save copy in case it gets deleted */
         incrementCurrentPage(query, items_data.Items.TotalPages);
 
+        // check to see if call found no items
+        if (!items_data.Items || !items_data.Items.Item) {
+            return log('No items returned');
+        }
+
         var i = 0;
         var delayedLoop = setInterval(function(){
             if ( i >= items_data.Items.Item.length) {
