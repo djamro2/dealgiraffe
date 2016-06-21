@@ -9,7 +9,6 @@ var isAuthenticated = function (req, res, next) {
 };
 
 module.exports = function(app) {
-
     // login to the admin panel
     app.get('/login', function(req, res){
         res.sendFile(path.resolve(__dirname + '/../../client/views/login.html'));
@@ -26,5 +25,4 @@ module.exports = function(app) {
         failureRedirect: '/login?fail=1',
         failureFlash : true
     }));
-
 };

@@ -11,7 +11,7 @@ var isAuthenticated = function (req, res, next) {
 };
 
 module.exports = function(app) {
-
+    // in case updater stops, restart from new instance
     app.post('/restartUpdater', isAuthenticated, QueryTaskController.RestartUpdater);
 
     // return all of the queue items in the db
@@ -28,5 +28,4 @@ module.exports = function(app) {
 
     // make a new query so a certain is found
     app.post('/api/PrioritizeProduct',  isAuthenticated, QueryTaskController.PrioritizeProduct);
-    
 };

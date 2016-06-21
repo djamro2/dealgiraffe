@@ -11,7 +11,6 @@ var isAuthenticated = function (req, res, next) {
 };
 
 module.exports = function(app) {
-
     // return a specific product
     app.get('/api/GetProduct/:id', ProductController.GetProduct);
 
@@ -32,5 +31,4 @@ module.exports = function(app) {
 
     // toggle the force_frontpage attribute of a product
     app.post('/api/ToggleFrontPageProduct', isAuthenticated, ProductController.ToggleFrontPageProduct);
-
 };

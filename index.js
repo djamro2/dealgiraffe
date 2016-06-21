@@ -4,15 +4,11 @@ var express        = require('express');
 var mongoose       = require('mongoose');
 var bodyParser     = require('body-parser');
 var passport       = require('passport');
-var LocalStrategy  = require('passport-local').Strategy;
 var expressSession = require('express-session');
-var bCrypt         = require('bcrypt-nodejs');
 var flash          = require('connect-flash');
 var handlebars     = require('express-handlebars');
 
 // local resources
-var HomeController = require('./server/controllers/HomeController');
-var DealController = require('./server/controllers/ProductController');
 var local_codes    = require('./local_codes');
 var initPassport   = require('./server/passport/init');
 var app            = express();
