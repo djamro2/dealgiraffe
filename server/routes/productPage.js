@@ -6,5 +6,5 @@ var ProductController = require('./../controllers/ProductController');
 
 module.exports = function(app) {
     // product page
-    app.get('/product/:id', ProductController.ProductPage);
+    app.get('/product', ProductController.ProductPage);
 };

@@ -142,7 +142,7 @@ const ProductTable = React.createClass({
                         </div>
                         {this.state.products.map(function(item, i){
                             return (
-                                <a href={"/product/" + item.asin}
+                                <a href={"/product?id=" + item.asin}
                                    key={item._id}
                                    className="no-link-style"
                                    title={item.large_data.ItemAttributes.Title}>

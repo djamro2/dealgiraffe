@@ -56679,7 +56679,7 @@
 	                    this.state.products.map(function (item, i) {
 	                        return _react2.default.createElement(
 	                            'a',
-	                            { href: "/product/" + item.asin,
+	                            { href: "/product?id=" + item.asin,
 	                                key: item._id,
 	                                className: 'no-link-style',
 	                                title: item.large_data.ItemAttributes.Title },

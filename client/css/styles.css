@@ -75,6 +75,28 @@ body {
 	background: rgb(240, 240, 240);
 }
 
+.footer {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 8px;
+	margin-top: 24px;
+	font-size: .8em;
+	color: #999;
+}
+
+.footer li {
+	display: inline;
+}
+
+.footer li a {
+	text-decoration: none;
+	color: deepskyblue;
+}
+
+.footer li .text {
+	padding: 0 1rem;
+}
+
 .main-col {
 	max-width: 960px;
 	margin: 0 auto;

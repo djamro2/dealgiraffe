@@ -5,6 +5,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
 
 import numeral from 'numeral';
+import queryString from 'query-string';
 import getMuiTheme from 'material-ui/styles/getMuiTheme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {deepOrange500} from 'material-ui/styles/colors';
@@ -81,7 +82,8 @@ class ProductContent extends React.Component {
 
     componentDidMount() {
         // get the product info
-        $.get("/api/GetProduct/B013LDXEMS", function(response){
+        var params = queryString.parse(location.search);
+        $.get("/api/GetProduct/" + params.id, function(response){
             this.parseProduct(response);
             initGraphData(response);
         }.bind(this));
