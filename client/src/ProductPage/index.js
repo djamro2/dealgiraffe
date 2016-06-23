@@ -1,34 +1,43 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import queryString from 'query-string';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin(); /* remove this after React 1.0 comes out */
 
 // puts all the individual components into final version
-import Banner from './Banner';
-import Navbar from './Navbar';
-import Footer from './Footer';
-import ProductContent from './ProductContent';
+import Banner from '../components/Banner';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
+import ProductInfo from './ProductInfo';
+import ProductGraph from './ProductGraph';
 
-// settings product page settings
-const navbarTabs = [
-    {name: 'Home', link: '/'},
-    {name: 'PC Hardware', link: '/pchardware'},
-    {name: 'Gaming', link: '/gaming'},
-    {name: 'Submit Item', link: '/submit'},
-    {name: 'Contact', link: '/contact'}
-];
+// muitheme imports
+import getMuiTheme from 'material-ui/styles/getMuiTheme';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {deepOrange500} from 'material-ui/styles/colors';
+const muiTheme = getMuiTheme({
+    palette: {accent1Color: deepOrange500}
+});
 
-const FullPage = (
-    <div className="main-col">
-        <Banner />
-        <Navbar tabs={navbarTabs} />
-        <ProductContent />
-        <Footer />
-    </div>
-);
+function FullPage({product}) {
+    return (
+        <MuiThemeProvider muiTheme={muiTheme}>
+            <div className="main-col">
+                <Banner />
+                <Navbar />
+                <ProductInfo product={product}/>
+                <ProductGraph product={product}/>
+                <Footer />
+            </div>
+        </MuiThemeProvider>
+    );
+};
 
-ReactDOM.render(
-    FullPage,
-    document.getElementById('app')
-);
+var params = queryString.parse(location.search);
+$.get("/api/GetProduct/" + params.id, function(product){
+    ReactDOM.render(
+        <FullPage product={product} />,
+        document.getElementById('app')
+    );
+}.bind(this));

@@ -51,7 +51,6 @@ var parseDate = function(datetime){
 var processData = function(data, type) {
     var result = [];
     switch (type) {
-
         case 'price_new':
             result = data.price_amazon_new;
             result.forEach(function(d){
@@ -59,9 +58,7 @@ var processData = function(data, type) {
                 d.date_parsed = parseDate(d.date);
             });
             break;
-
         // add more in the future
-
     }
 
     return result;
