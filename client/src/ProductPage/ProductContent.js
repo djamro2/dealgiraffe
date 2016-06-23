@@ -23,6 +23,9 @@ const getFormattedPrice = function(price){
 const getPricingInfo = function(product) {
     var result = [];
     var addPrice = function(label, priceObj, pretext) {
+        if (!priceObj.price) {
+            return;
+        }
         result.push({
             label: label,
             price: priceObj.price,

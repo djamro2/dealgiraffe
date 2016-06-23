@@ -19,6 +19,16 @@ var get_product_parameters = function(product) {
 	return product;
 };
 
+// increase the page_views field by one. done separetely to avoid risk
+var incrementPageViews = function(dbItem) {
+	dbItem.page_views++;
+	dbItem.save(function(err, result) {
+		if (err) {
+			console.log('Error: ' + err);
+		}
+	});
+};
+
 // Use asin to find an indexed product and set hidden to true
 module.exports.DeleteProduct = function(req, res) {
 	var asin = req.params.id;
@@ -62,6 +72,7 @@ module.exports.GetProduct = function(req, res) {
 				console.log("Error: " + err);
 				return res.send("Error: " + err);
 			}
+			incrementPageViews(result);
 			res.json(result);
 		});
 };

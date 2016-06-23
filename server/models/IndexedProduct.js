@@ -1,6 +1,3 @@
-/**
- * Created by Daniel on 5/11/2016.
- */
 
 var mongoose = require('mongoose');
 
