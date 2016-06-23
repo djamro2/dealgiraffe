@@ -1,6 +1,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin(); /* remove this after React 1.0 comes out */
 
@@ -8,16 +9,46 @@ injectTapEventPlugin(); /* remove this after React 1.0 comes out */
 import Banner from '../components/Banner';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import SearchBox from './SearchBox';
+import ProductItems from './ProductItems';
+import muiTheme from '../lib/defaultMuiTheme';
 
-const FullPage = (
-    <div className="main-col">
-        <Banner />
-        <Navbar />
-        <Footer />
-    </div>
-);
+function FullPage({items}) {
+    return (
+        <MuiThemeProvider muiTheme={muiTheme}>
+            <div className="main-col">
+                <Banner />
+                <Navbar />
+                <SearchBox />
+                <ProductItems items={items}/>
+                <Footer />
+            </div>
+        </MuiThemeProvider>
+    );
+};
 
-ReactDOM.render(
-    FullPage,
-    document.getElementById('app')
-);
+function getHomePageItems(callback) {
+    var tempItems = [
+        {title: 'Sample Title', priceText: '$5.00'},
+        {title: 'Sample Title', priceText: '$5.00'},
+        {title: 'Sample Title', priceText: '$5.00'},
+        {title: 'Sample Title', priceText: '$5.00'},
+        {title: 'Sample Title', priceText: '$5.00'},
+        {title: 'Sample Title', priceText: '$5.00'},
+        {title: 'Sample Title', priceText: '$5.00'},
+        {title: 'Sample Title', priceText: '$5.00'},
+        {title: 'Sample Title', priceText: '$5.00'},
+        {title: 'Sample Title', priceText: '$5.00'}
+    ];
+    return callback(null, tempItems);
+}
+
+getHomePageItems(function(err, items) {
+    if (err) {
+        console.log('Error getting items: ' + err);
+    }
+    ReactDOM.render(
+        <FullPage items={items} />,
+        document.getElementById('app')
+    );
+});

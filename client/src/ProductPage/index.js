@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import queryString from 'query-string';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin(); /* remove this after React 1.0 comes out */
 
@@ -11,14 +12,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ProductInfo from './ProductInfo';
 import ProductGraph from './ProductGraph';
-
-// muitheme imports
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {deepOrange500} from 'material-ui/styles/colors';
-const muiTheme = getMuiTheme({
-    palette: {accent1Color: deepOrange500}
-});
+import muiTheme from '../lib/defaultMuiTheme';
 
 function FullPage({product}) {
     return (
