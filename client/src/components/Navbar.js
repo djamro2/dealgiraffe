@@ -1,24 +1,28 @@
 
 import React from 'react';
-
-// set the title and link of tabs
-const navbarTabs = [
-    {name: 'Home', link: '/'},
-    {name: 'PC Hardware', link: '/pchardware'},
-    {name: 'Gaming', link: '/gaming'},
-    {name: 'Submit Item', link: '/submit'},
-    {name: 'Contact', link: '/contact'}
-];
+import navbarTabsConfig from '../config/navbarTabs';
+let navbarTabs = navbarTabsConfig;
 
 class Navbar extends React.Component {
+    componentWillMount() {
+        if (this.props && this.props.navbarTabs) {
+            navbarTabs = this.props.navbarTabs;
+        }
+    }
+
     render() {
         return (
             <div className="main-navbar">
                 <ul className="main-navbar-list">
-                    {navbarTabs.map(function(item) {
+                    {navbarTabs.map(function(item, i) {
+                        let extraClasses = "";
+                        if (i === (navbarTabs.length-1)) {
+                            extraClasses += " last-item";
+                        }
+                        const className = "main-navbar-list-item white" + extraClasses;
                         return (
                             <a href={item.link} key={item.name}>
-                                <li className="main-navbar-list-item white">{item.name}</li>
+                                <li className={className}>{item.name}</li>
                             </a>
                         );
                     }.bind(this))}

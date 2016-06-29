@@ -20,6 +20,9 @@ module.exports = function(app) {
     // return all products
     app.get('/api/GetAllProducts', isAuthenticated, ProductController.GetAllProducts);
 
+    // return the 20 most recent indexed items
+    app.get('/api/GetHomepageProducts', ProductController.GetHomepageProducts);
+
     // get general info about all db
     app.get('/api/GetAllProductInfo', isAuthenticated, ProductController.GetAllProductInfo);
 

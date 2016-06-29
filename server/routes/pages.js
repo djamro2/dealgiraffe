@@ -9,4 +9,9 @@ module.exports = function(app) {
     app.get('/', function (req, res) {
         res.sendFile(path.resolve(__dirname + '/../../client/views/home.html'));
     });
+
+    // contact page
+    app.get('/contact', function (req, res) {
+        res.sendFile(path.resolve(__dirname + '/../../client/views/contact.html'));
+    });
 };

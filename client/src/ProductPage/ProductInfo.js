@@ -3,16 +3,8 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import numeral from 'numeral';
 
-// helper to convert number info currency
-const getFormattedPrice = function(price){
-    if (!price || isNaN(price)) {
-        return "$0.00";
-    }
-    var updatedPrice = (Number(price)/100);
-    return numeral(updatedPrice).format('$0,0.00');
-};
+import formatPrice from '../lib/formatPrice';
 
 // return an array of all the available prices
 const getPricingInfo = function(product) {
@@ -25,7 +17,7 @@ const getPricingInfo = function(product) {
             label: label,
             price: priceObj.price,
             date: priceObj.date,
-            text: (pretext + getFormattedPrice(priceObj.price))
+            text: (pretext + formatPrice(priceObj.price))
         });
     };
 
@@ -48,7 +40,7 @@ const styles = {
     }
 };
 
-function ProductText({classChild, bulletPoints, summary}) {
+function ProductText({classChild, bulletPoints, summary, link}) {
     return (
         <div className={classChild}>
             <p className="summary">{summary}</p>
@@ -60,7 +52,9 @@ function ProductText({classChild, bulletPoints, summary}) {
                 }.bind(this))}
             </ul>
             <div className="read-more-container">
-                <RaisedButton label="Read More" primary={true} style={styles.readMoreStyle} />
+                <a href={link}>
+                    <RaisedButton label="Read More" primary={true} style={styles.readMoreStyle} />
+                </a>
             </div>
         </div>
     );
@@ -68,46 +62,35 @@ function ProductText({classChild, bulletPoints, summary}) {
 
 class ProductInfo extends React.Component {
 
-    // 'massage' data in product and set to state
-    parseProduct(product) {
-        this.setState({
-            product: product,
-            productImage: product.large_data.LargeImage.URL,
-            productTitle: product.large_data.ItemAttributes.Title,
-            bulletPoints: product.large_data.ItemAttributes.Feature,
-            summary: product.large_data.EditorialReviews.EditorialReview.Content,
-            prices: getPricingInfo(product)
-        });
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            product: {},
-            productImage: "",
-            productTitle: "",
-            bulletPoints: [],
-            summary: "",
-            prices: []
-        }
-    }
-
-    componentWillMount() {
-        this.parseProduct(this.props.product);
-    }
-
     render() {
+
+        var product, productImage, productTitle, bulletPoints, summary, prices, link;
+
+        try {
+            product = this.props.product;
+            productImage = product.large_data.LargeImage.URL;
+            productTitle = product.large_data.ItemAttributes.Title;
+            bulletPoints = product.large_data.ItemAttributes.Feature;
+            summary = product.large_data.EditorialReviews.EditorialReview.Content;
+            link = product.large_data.DetailPageURL;
+            prices = getPricingInfo(product);
+        } catch (e) {
+            console.error(e);
+        }
+
         return (
             <Paper zDepth={2}>
                 <div className="product-content-container">
                     <Card className="card">
-                        <CardMedia overlay={<CardTitle title={this.state.productTitle} />} >
-                            <img src={this.state.productImage} />
-                        </CardMedia>
+                        <a href={link}>
+                            <CardMedia overlay={<CardTitle title={productTitle} />} >
+                                <img src={productImage} />
+                            </CardMedia>
+                        </a>
                     </Card>
                     <div className="product-info">
                         <div className="prices-container">
-                            {this.state.prices.map(function(item, i) {
+                            {prices.map(function(item, i) {
                                 return (
                                     <span className="price" key={item.label}>{item.text}</span>
                                 );
@@ -115,14 +98,18 @@ class ProductInfo extends React.Component {
                         </div>
                         <ProductText
                             classChild="product-text-right"
-                            summary={this.state.summary}
-                            bulletPoints={this.state.bulletPoints}/>
+                            summary={summary}
+                            bulletPoints={bulletPoints}
+                            link={link}
+                        />
                     </div>
                 </div>
                 <ProductText
                     classChild="product-text-bottom"
-                    summary={this.state.summary}
-                    bulletPoints={this.state.bulletPoints}/>
+                    summary={summary}
+                    bulletPoints={bulletPoints}
+                    link={link}
+                />
             </Paper>
         );
     }

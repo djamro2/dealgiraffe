@@ -3,11 +3,11 @@
 
 html {
 	height: 100%;
-	overflow: auto;
 }
 
 body {
 	min-height: 100%;
+	margin: 0;
 }
 
 /* id's */
@@ -78,8 +78,6 @@ body {
 .footer {
 	display: flex;
 	justify-content: center;
-	margin-bottom: 8px;
-	margin-top: 24px;
 	font-size: .8em;
 	color: #999;
 }
@@ -98,6 +96,9 @@ body {
 }
 
 .main-col {
+	position: relative;
+	min-height: 94vh;
+	padding-bottom: 6vh; /* to accomodate for footer */
 	max-width: 960px;
 	margin: 0 auto;
 	background: white;
@@ -115,8 +116,13 @@ body {
 	margin-top: 0;
 }
 
+.main-navbar-list a {
+	text-underline: none;
+	text-decoration: none;
+}
+
 .main-navbar-list-item {
-	border-right: 1px solid white;
+	border-right: 1px solid #999;
 	font-size: 1.2em;
 	padding: .25rem .75rem;
 	display: inline-block;
@@ -291,6 +297,15 @@ body {
 
 /* anything smaller than 520px */
 @media(max-width: 520px) {
+	.main-navbar-list-item {
+		display: block;
+		text-align: center;
+	}
+
+	.main-navbar-list-item:not(.last-item) {
+		border-bottom: 1px solid #999;
+	}
+
 	.product-content-container {
 		flex-direction: column;
 		padding-bottom: 0;

@@ -5,10 +5,10 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin(); /* remove this after React 1.0 comes out */
 
-// puts all the individual components into final version
-import Banner from '../components/Banner';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+// puts all the individual Components into final version
+import Banner from '../Components/Banner';
+import Navbar from '../Components/Navbar';
+import Footer from '../Components/Footer';
 import SearchBox from './SearchBox';
 import ProductItems from './ProductItems';
 import muiTheme from '../lib/defaultMuiTheme';

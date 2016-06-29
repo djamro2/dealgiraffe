@@ -17,11 +17,22 @@ var app            = express();
 var server = app.listen(local_codes.port_site, local_codes.internal_ip, function(){
     var host = server.address().address;
     var port = server.address().port;
-    console.log('App listening at http://%s:%s', host, port);
+    console.log('DealGiraffe listening at http://%s:%s', host, port);
 });
 
-// connect to mongoose
+// connect to mongodb
 mongoose.connect('mongodb://localhost/DealGiraffe');
+
+// Serve hot-reloading bundle to client with webpack hot loading
+if (local_codes.env === 'development') {
+    var webpack = require('webpack');
+    var config = require('./webpack.config');
+    var compiler = webpack(config);
+    app.use(require("webpack-dev-middleware")(compiler, {
+        noInfo: false, publicPath: config.output.publicPath, hot: true
+    }));
+    app.use(require("webpack-hot-middleware")(compiler));
+}
 
 // middleware - json responses
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -52,8 +63,7 @@ initPassport(passport);
 
 // routing (needs to be after middleware)
 require('./server/routes/admin')(app);
-require('./server/routes/home')(app);
+require('./server/routes/pages')(app);
 require('./server/routes/productItem')(app);
 require('./server/routes/productPage')(app);
 require('./server/routes/queryItem')(app);
-

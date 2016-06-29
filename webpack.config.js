@@ -9,9 +9,22 @@ const config = {
 
     // the file(s) to transpile
     entry: {
-        AdminDashboard: ['./client/src/AdminDashboard.js'],
-        ProductPage: ['./client/src/ProductPage/index.js'],
-        HomePage: ['./client/src/HomePage/index.js']
+        AdminDashboard: [
+            'webpack-hot-middleware/client',
+            './client/src/AdminDashboard.js'
+        ],
+        ContactPage: [
+            'webpack-hot-middleware/client',
+            './client/src/ContactPage/index.js'
+        ],
+        HomePage: [
+            'webpack-hot-middleware/client',
+            './client/src/HomePage/index.js'
+        ],
+        ProductPage: [
+            'webpack-hot-middleware/client',
+            './client/src/ProductPage/index.js'
+        ]
     },
 
     // don't have to add extension for require by adding this feature
@@ -22,6 +35,7 @@ const config = {
     // output config
     output: {
         path: buildPath,
+        publicPath: '/client/build/',
         filename: '[name].js'
     },
 
@@ -31,15 +45,20 @@ const config = {
         loaders: [
             {
                 test: /\.js$/, // All .js files
-                loaders: ['babel-loader'], //react-hot is like browser sync and babel loads jsx and es6-7
+                loaders: ['react-hot', 'babel-loader'], //react-hot is like browser sync and babel loads jsx and es6-7
                 exclude: [nodeModulesPath]
             },
             {
                 test: /\.css$/,
                 loader: "style-loader!css-loader"
             }
-        ],
+        ]
     },
+
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(),
+        new webpack.NoErrorsPlugin()
+    ]
 };
 
 module.exports = config;
