@@ -1,17 +1,12 @@
-/**
- * Created by djamr on 6/2/2016.
- */
 
 var path = require('path');
 
 module.exports = function(app) {
-    // home page
-    app.get('/', function (req, res) {
-        res.sendFile(path.resolve(__dirname + '/../../client/views/home.html'));
-    });
-
-    // contact page
-    app.get('/contact', function (req, res) {
-        res.sendFile(path.resolve(__dirname + '/../../client/views/contact.html'));
+    var staticPages = ['/', '/contact', '/search', '/graphicscards', '/home'];
+    staticPages.map(function(page) {
+        app.get(page, function (req, res) {
+            page === '/' ? page = '/home' : true;
+            res.sendFile(path.resolve(__dirname + '/../../client/views' + page + '.html'));
+        });
     });
 };

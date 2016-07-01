@@ -16,13 +16,11 @@ import muiTheme from '../lib/defaultMuiTheme';
 
 function setPageTitle(product) {
     let title = '';
-
     try {
         title = product.large_data.ItemAttributes.Title;
     } catch(e) {
         console.error(e);
     }
-    
     if (title) {
         document.title = title;
     }

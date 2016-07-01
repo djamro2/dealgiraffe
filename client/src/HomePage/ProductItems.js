@@ -1,5 +1,14 @@
 
 import React from 'react';
+import Paper from 'material-ui/Paper';
+
+const styles = {
+    paperStyles: {
+        width: '100%',
+        height: '100%',
+        padding: '.5rem'
+    }
+};
 
 class ProductItems extends React.Component {
     render() {
@@ -9,7 +18,9 @@ class ProductItems extends React.Component {
                 {items.map(function(item, i){
                     return (
                         <li key={i}>
-                            {item.title}
+                            <Paper zDepth={2} style={styles.paperStyles}>
+                                {item.title}
+                            </Paper>
                         </li>
                     );
                 }.bind(this))}

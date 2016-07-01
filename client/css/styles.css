@@ -247,9 +247,6 @@ body {
 	width: 250px;
 	height: 350px;
 	margin: 1rem .5rem;
-	background-color: lightyellow;
-	border: 1px solid black;
-	padding: .5rem;
 }
 
 .search-box {
@@ -259,13 +256,16 @@ body {
 	align-items: center;
 	padding: 2rem 1rem 1rem 1rem;
 	border-radius: 10px;
-	border: 1px solid dodgerblue;
 	background-color: lightcyan;
 }
 
 .search-box input {
 	width: 80%;
 	padding: .5rem;
+}
+
+.search-box input:focus {
+	outline: none;
 }
 
 .search-box .search-button {

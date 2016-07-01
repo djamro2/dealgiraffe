@@ -17,6 +17,10 @@ const config = {
             'webpack-hot-middleware/client',
             './client/src/ContactPage/index.js'
         ],
+        GraphicsCardsPage: [
+            'webpack-hot-middleware/client',
+            './client/src/GraphicsCardsPage/index.js'
+        ],
         HomePage: [
             'webpack-hot-middleware/client',
             './client/src/HomePage/index.js'
@@ -24,6 +28,10 @@ const config = {
         ProductPage: [
             'webpack-hot-middleware/client',
             './client/src/ProductPage/index.js'
+        ],
+        SearchPage: [
+            'webpack-hot-middleware/client',
+            './client/src/SearchPage/index.js'
         ]
     },
 

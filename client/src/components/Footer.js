@@ -7,11 +7,23 @@ const footerItems = [
     {title: 'Copyright 2016 DealGiraffe'}
 ];
 
+const styles = {
+    componentStyles: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        margin: 0,
+        height: '5vh',
+        lineHeight: '5vh'
+    }
+};
+
 // renders a horizontal list of text from footerItems
 class Footer extends React.Component {
     render () {
         return (
-            <ul className="footer">
+            <ul className="footer" style={styles.componentStyles}>
                 {footerItems.map(function(item, i){
                     if (i !== 0) {
                         if (item.link) {
