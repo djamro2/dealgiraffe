@@ -1,26 +1,20 @@
 
 import React from 'react';
-import Paper from 'material-ui/Paper';
+import ProductCard from '../Components/ProductCard';
 
-const styles = {
-    paperStyles: {
-        width: '100%',
-        height: '100%',
-        padding: '.5rem'
-    }
-};
+const styles = {};
 
 class ProductItems extends React.Component {
     render() {
-        var items = this.props.items;
+        var products = this.props.products;
         return (
             <ul className="product-items">
-                {items.map(function(item, i){
+                {products.map(function(product, i){
                     return (
                         <li key={i}>
-                            <Paper zDepth={2} style={styles.paperStyles}>
-                                {item.title}
-                            </Paper>
+                            <ProductCard
+                                product={product}
+                            />
                         </li>
                     );
                 }.bind(this))}

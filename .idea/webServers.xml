@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="19d9a98b-1593-421f-ba3e-8f238a491a8c" name="personal_site_server" url="http://162.243.247.79">
+        <fileTransfer host="162.243.247.79" port="22" privateKey="C:\Users\djamr\Desktop\workspace\SSH\ssh_portable_02252016_private.ppk" accessType="SFTP" username="root" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

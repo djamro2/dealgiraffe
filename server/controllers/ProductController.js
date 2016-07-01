@@ -195,8 +195,3 @@ module.exports.HideProduct = function(req, res) {
 			});
 		});
 };
-
-// Render the product page using express handlebars
-module.exports.ProductPage = function(req, res) {
-	res.sendFile(path.resolve('client/views/productPage.html'));
-};

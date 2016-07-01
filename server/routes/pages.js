@@ -2,7 +2,7 @@
 var path = require('path');
 
 module.exports = function(app) {
-    var staticPages = ['/', '/contact', '/search', '/graphicscards', '/home'];
+    var staticPages = ['/', '/contact', '/search', '/graphicscards', '/home', '/product'];
     staticPages.map(function(page) {
         app.get(page, function (req, res) {
             page === '/' ? page = '/home' : true;

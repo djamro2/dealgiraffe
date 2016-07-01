@@ -12,43 +12,27 @@ import Footer from '../Components/Footer';
 import SearchBox from './SearchBox';
 import ProductItems from './ProductItems';
 import muiTheme from '../lib/defaultMuiTheme';
+import parseResponse from '../lib/parseResponse'
 
-function FullPage({items}) {
+function FullPage({products}) {
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
             <div className="main-col">
                 <Banner />
                 <Navbar />
                 <SearchBox />
-                <ProductItems items={items}/>
+                <ProductItems products={products}/>
                 <Footer />
             </div>
         </MuiThemeProvider>
     );
 };
 
-function getHomePageItems(callback) {
-    var tempItems = [
-        {title: 'Sample Title', priceText: '$5.00'},
-        {title: 'Sample Title', priceText: '$5.00'},
-        {title: 'Sample Title', priceText: '$5.00'},
-        {title: 'Sample Title', priceText: '$5.00'},
-        {title: 'Sample Title', priceText: '$5.00'},
-        {title: 'Sample Title', priceText: '$5.00'},
-        {title: 'Sample Title', priceText: '$5.00'},
-        {title: 'Sample Title', priceText: '$5.00'},
-        {title: 'Sample Title', priceText: '$5.00'},
-        {title: 'Sample Title', priceText: '$5.00'}
-    ];
-    return callback(null, tempItems);
-}
-
-getHomePageItems(function(err, items) {
-    if (err) {
-        console.log('Error getting items: ' + err);
-    }
+$.get("/api/GetHomepageProducts/", function(products){
+    products = parseResponse(products);
+    console.log(products);
     ReactDOM.render(
-        <FullPage items={items} />,
+        <FullPage products={products} />,
         document.getElementById('app')
     );
-});
+}.bind(this));

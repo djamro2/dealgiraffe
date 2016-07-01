@@ -24,7 +24,7 @@ var server = app.listen(local_codes.port_site, local_codes.internal_ip, function
 mongoose.connect('mongodb://localhost/DealGiraffe');
 
 // Serve hot-reloading bundle to client with webpack hot loading
-if (local_codes.env === 'development') {
+if (process.env.NODE_ENV === 'development') {
     var webpack = require('webpack');
     var config = require('./webpack.config');
     var compiler = webpack(config);
@@ -65,5 +65,4 @@ initPassport(passport);
 require('./server/routes/admin')(app);
 require('./server/routes/pages')(app);
 require('./server/routes/productItem')(app);
-require('./server/routes/productPage')(app);
 require('./server/routes/queryItem')(app);
