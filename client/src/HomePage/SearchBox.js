@@ -41,9 +41,15 @@ class SearchBox extends React.Component {
         window.location.href = '/search?query=' + this.state.searchVal;
     }
 
+    componentWillMount() {
+        if (this.props.style) {
+            styles.parentStyles = this.props.style;
+        }
+    }
+
     render() {
         return(
-            <Paper zDepth={2} className="search-box">
+            <Paper style={styles.parentStyles} zDepth={2} className="search-box">
                 <input
                     style={styles.inputStyles}
                     type="text"

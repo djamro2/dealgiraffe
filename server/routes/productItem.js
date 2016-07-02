@@ -20,8 +20,11 @@ module.exports = function(app) {
     // return all products
     app.get('/api/GetAllProducts', isAuthenticated, ProductController.GetAllProducts);
 
-    // return the 20 most recent indexed items
+    // return the 24 most recent indexed items
     app.get('/api/GetHomepageProducts', ProductController.GetHomepageProducts);
+
+    // return the 24 most recent indexed items for the graphics cards page
+    app.get('/api/GetGraphicsPageProducts', ProductController.GetGraphicsPageProducts);
 
     // get general info about all db
     app.get('/api/GetAllProductInfo', isAuthenticated, ProductController.GetAllProductInfo);

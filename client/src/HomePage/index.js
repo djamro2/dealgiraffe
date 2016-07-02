@@ -18,9 +18,9 @@ function FullPage({products}) {
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
             <div className="main-col">
-                <Banner />
-                <Navbar />
-                <SearchBox />
+                <Banner style={{margin: '0 .5rem'}} />
+                <Navbar style={{margin: '0 .5rem'}} />
+                <SearchBox style={{margin: '0 .5rem'}} />
                 <ProductItems products={products}/>
                 <Footer />
             </div>
@@ -30,7 +30,6 @@ function FullPage({products}) {
 
 $.get("/api/GetHomepageProducts/", function(products){
     products = parseResponse(products);
-    console.log(products);
     ReactDOM.render(
         <FullPage products={products} />,
         document.getElementById('app')

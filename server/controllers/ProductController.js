@@ -121,18 +121,32 @@ module.exports.GetProducts = function(req, res) {
 		});
 };
 
-// get the 20 most recently indexed items (for now, refine later)
+// get the 24 most recently indexed items (for now, refine later)
 module.exports.GetHomepageProducts = function(req, res) {
 	IndexedProduct.find({})
 		.sort('-date_created')
-		.limit(20)
+		.limit(24)
 		.exec(function(err, result) {
 			if (err) {
 				console.log("Error: " + err);
 				return res.status(500).send("Error: " + err);
 			}
 			res.json(result);
-		})
+		});
+};
+
+// get 24 items specifically for the graphics cards page (for now, get the most recent)
+module.exports.GetGraphicsPageProducts = function(req, res) {
+	IndexedProduct.find({'query.category': 'Graphics Cards'})
+		.sort('-date_created')
+		.limit(24)
+		.exec(function(err, result) {
+			if (err) {
+				console.log("Error: " + err);
+				return res.status(500).send("Error: " + err);
+			}
+			res.json(result);
+		});
 };
 
 // Return all of the indexed products

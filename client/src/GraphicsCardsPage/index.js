@@ -10,21 +10,26 @@ import Banner from '../Components/Banner';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 import muiTheme from '../lib/defaultMuiTheme';
+import parseResponse from '../lib/parseResponse';
+import ProductItems from '../HomePage/ProductItems';
 
-function FullPage({items}) {
+function FullPage({products}) {
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
             <div className="main-col search-page">
-                <Banner />
-                <Navbar />
+                <Banner style={{margin: '0 .5rem'}} />
+                <Navbar style={{margin: '0 .5rem'}} />
+                <ProductItems products={products} />
                 <Footer />
             </div>
         </MuiThemeProvider>
     );
 }
 
-
-ReactDOM.render(
-    <FullPage />,
-    document.getElementById('app')
-);
+$.get("/api/GetGraphicsPageProducts/", function(products){
+    products = parseResponse(products);
+    ReactDOM.render(
+        <FullPage products={products} />,
+        document.getElementById('app')
+    );
+}.bind(this));

@@ -3,16 +3,22 @@ import React from 'react';
 import navbarTabsConfig from '../config/navbarTabs';
 let navbarTabs = navbarTabsConfig;
 
+const styles = {};
+
 class Navbar extends React.Component {
+
     componentWillMount() {
         if (this.props && this.props.navbarTabs) {
             navbarTabs = this.props.navbarTabs;
+        }
+        if (this.props.style) {
+            styles.parentStyles = this.props.style;
         }
     }
 
     render() {
         return (
-            <div className="main-navbar">
+            <div className="main-navbar" style={styles.parentStyles}>
                 <ul className="main-navbar-list">
                     {navbarTabs.map(function(item, i) {
                         let extraClasses = "";
