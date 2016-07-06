@@ -9,8 +9,8 @@ injectTapEventPlugin(); /* remove this after React 1.0 comes out */
 import Banner from '../Components/Banner';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
-import SearchBox from './SearchBox';
-import ProductItems from './ProductItems';
+import SearchBox from '../Components/SearchBox';
+import ProductItemsGrid from '../Components/ProductItemsGrid';
 import muiTheme from '../lib/defaultMuiTheme';
 import parseResponse from '../lib/parseResponse'
 
@@ -21,7 +21,7 @@ function FullPage({products}) {
                 <Banner style={{margin: '0 .5rem'}} />
                 <Navbar style={{margin: '0 .5rem'}} />
                 <SearchBox style={{margin: '0 .5rem'}} />
-                <ProductItems products={products}/>
+                <ProductItemsGrid products={products}/>
                 <Footer />
             </div>
         </MuiThemeProvider>

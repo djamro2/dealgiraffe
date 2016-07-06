@@ -11,7 +11,6 @@ const styles = {
 };
 
 class SearchBox extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -44,6 +43,11 @@ class SearchBox extends React.Component {
     componentWillMount() {
         if (this.props.style) {
             styles.parentStyles = this.props.style;
+        }
+        if (this.props.searchQuery) {
+            this.setState({
+                searchVal: this.props.searchQuery
+            });
         }
     }
 

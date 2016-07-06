@@ -1,7 +1,8 @@
 
 var mongoose = require('mongoose');
+var textSearch = require('mongoose-text-search');
 
-module.exports = mongoose.model('IndexedProduct',{
+var IndexedProductSchema = mongoose.Schema({
     date_created: {type: Date, default: Date.now},
     last_time_updated: {type: Date, default: Date.now},
     page_views: Number,
@@ -15,3 +16,9 @@ module.exports = mongoose.model('IndexedProduct',{
     price_third_new: [{ price: Number, date: Date}],
     price_third_used: [{ price: Number, date: Date}]
 });
+
+IndexedProductSchema.plugin(textSearch);
+IndexedProductSchema.index({ 'large_data.ItemAttributes.Title' : 'text'});
+
+module.exports = mongoose.model('IndexedProduct', IndexedProductSchema)
+

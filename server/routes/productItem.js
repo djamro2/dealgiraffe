@@ -29,6 +29,9 @@ module.exports = function(app) {
     // get general info about all db
     app.get('/api/GetAllProductInfo', isAuthenticated, ProductController.GetAllProductInfo);
 
+    // given a searchQuery, currentPage, orderByValue, get a set of items
+    app.get('/api/GetSearchItems', ProductController.GetSearchItems);
+
     // delete a product by id
     app.post('/api/DeleteProduct/:id', isAuthenticated, ProductController.DeleteProduct);
 

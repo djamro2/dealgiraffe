@@ -12,3 +12,8 @@ client/build/*
 
 # google verification file
 client/google8c3581f55aae1c66.html
+
+# local files
+.idea
+.idea/
+.idea/*

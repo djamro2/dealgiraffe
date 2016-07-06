@@ -11,7 +11,7 @@ import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
 import muiTheme from '../lib/defaultMuiTheme';
 import parseResponse from '../lib/parseResponse';
-import ProductItems from '../HomePage/ProductItems';
+import ProductItemsGrid from '../Components/ProductItemsGrid';
 
 function FullPage({products}) {
     return (
@@ -19,7 +19,7 @@ function FullPage({products}) {
             <div className="main-col search-page">
                 <Banner style={{margin: '0 .5rem'}} />
                 <Navbar style={{margin: '0 .5rem'}} />
-                <ProductItems products={products} />
+                <ProductItemsGrid products={products} />
                 <Footer />
             </div>
         </MuiThemeProvider>

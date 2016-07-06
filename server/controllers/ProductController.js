@@ -19,6 +19,22 @@ var get_product_parameters = function(product) {
 	return product;
 };
 
+// given a searchQuery, return a qArr
+var formatQuery = function(query) {
+	var q = query.toLowerCase();
+	var qData = q.split(' ');
+	var qArr = [];
+	for (var i = 0; i < qData.length; i++ ) {
+		var sQ = qData[i];
+		var rQ = new RegExp(sQ, "i" );
+		qArr.push(rQ);
+	}
+	if ( qData.length > 1 ) {
+		qArr.push(new RegExp(q, "i"));
+	}
+	return qArr;
+};
+
 // increase the page_views field by one. done separetely to avoid risk
 var incrementPageViews = function(dbItem) {
 	dbItem.page_views++;
@@ -94,7 +110,7 @@ module.exports.GetProducts = function(req, res) {
 		case 'pageViews':
 			sortQuery = '-page_views';
 			break;
-		case 'alphabetical': /* not sure if this will work */
+		case 'alphabetical':
 			sortQuery = 'large_data.ItemAttributes.Title';
 			break;
 		case 'recentlyUpdated':
@@ -110,13 +126,11 @@ module.exports.GetProducts = function(req, res) {
 		.limit(+(endPage - startPage))
 		.sort(sortQuery)
 		.exec(function(err, result){
-
 			if (err) {
 				console.log("Error: " + err);
 				res.send("Error: " + err);
 				return;
 			}
-
 			res.json(result);
 		});
 };
@@ -147,6 +161,65 @@ module.exports.GetGraphicsPageProducts = function(req, res) {
 			}
 			res.json(result);
 		});
+};
+
+// given a searchQuery, orderByValue, currentPage, and amountPerPage, find a set of items
+// that matches the query
+module.exports.GetSearchItems = function(req, res) {
+	var searchQuery = req.query.searchQuery;
+	var orderBy = req.query.orderByValue;
+
+	// inclusive value
+	var firstItem = (Number(req.query.currentPage) - 1) * Number(req.query.amountPerPage);
+
+	switch(orderBy) {
+		case 'relevance':
+			// don't change
+			break;
+		case 'alphabetical':
+			orderBy = 'large_data.ItemAttributes.Title';
+			break;
+		case 'price':
+			// to do
+			break;
+		case 'popular':
+			orderBy = '-page_views';
+			break;
+		case 'recent':
+			orderBy = '-date_created';
+			break;
+	}
+
+	var qArr = formatQuery(searchQuery);
+	var conditions = { 'large_data.ItemAttributes.Title': {$in: qArr } };
+	if (orderBy === 'relevance') { /* separate because no sorting */
+		IndexedProduct.find(conditions)
+			.limit(Number(req.query.amountPerPage) || 30)
+			.skip(firstItem || 0)
+			.exec(QueryResult);
+	} else {
+		IndexedProduct.find(conditions)
+			.limit(Number(req.query.amountPerPage) || 30)
+			.skip(firstItem || 0)
+			.sort(orderBy)
+			.exec(QueryResult);
+	}
+
+	function QueryResult(err, foundProducts) {
+		if (err) {
+			console.log("Error: " + err);
+			return res.status(500).send("Error: " + err);
+		}
+
+		// get the total number of found products
+		IndexedProduct.count(conditions, function(err, count) {
+			if (err) {
+				console.log("Error: " + err);
+				return res.status(500).send("Error: " + err);
+			}
+			res.json({products: foundProducts, count: count});
+		});
+	}
 };
 
 // Return all of the indexed products

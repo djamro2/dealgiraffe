@@ -24,12 +24,12 @@ var server = app.listen(local_codes.port_site, local_codes.internal_ip, function
 mongoose.connect('mongodb://localhost/DealGiraffe');
 
 // Serve hot-reloading bundle to client with webpack hot loading
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV !== 'production') {
     var webpack = require('webpack');
     var config = require('./webpack.config');
     var compiler = webpack(config);
     app.use(require("webpack-dev-middleware")(compiler, {
-        noInfo: false, publicPath: config.output.publicPath, hot: true
+        noInfo: true, publicPath: config.output.publicPath
     }));
     app.use(require("webpack-hot-middleware")(compiler));
 }
@@ -53,10 +53,6 @@ app.use(flash());
 // static files
 app.use('/client', express.static(__dirname + '/client'));
 app.use(express.static(__dirname + '/client'));
-
-// handlebar engine
-app.engine('handlebars', handlebars({defaultLayout: 'product_page'}));
-app.set('view engine', 'handlebars');
 
 // Initialize Passport
 initPassport(passport);

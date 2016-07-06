@@ -29,8 +29,36 @@ body {
 	text-align: right;
 }
 
+.bold {
+	font-weight: 600;
+}
+
+.flex {
+	flex-grow: 1;
+}
+
 .white {
 	color: white;
+}
+
+.pdl-8 {
+	padding-left: 8px;
+}
+
+.pdl-10 {
+	padding-left: 10px;
+}
+
+.pdt-8 {
+	padding-top: 8px;
+}
+
+.pdt-10 {
+	padding-top: 10px;
+}
+
+.mgr-10 {
+	margin-right: 10px;
 }
 
 /* general - DealGiraffe product page */
