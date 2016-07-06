@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --config webpack.config.js --progress --colors",
+    "production": "webpack --config webpackProduction.config.js --progress --colors",
     "start": "node index"
   },
   "repository": {
