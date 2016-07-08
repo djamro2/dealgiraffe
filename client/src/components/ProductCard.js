@@ -3,13 +3,16 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 
 const styles = {
-    cardStyle: {
+    card: {
         width: '100%',
         height: '100%',
         padding: '.5rem',
         position: 'relative'
     },
-    imgStyle: {
+    img: {
+        width: 'inherit'
+    },
+    imgLink: {
         width: 'inherit'
     },
     titleSpan: {
@@ -42,8 +45,10 @@ class ProductCard extends React.Component {
         var product = this.props.product;
         var title = truncateTitle(product.title, 50);
         return (
-            <Paper style={styles.cardStyle} zDepth={2} >
-                <img style={styles.imgStyle} src={product.image} alt={product.title} />
+            <Paper style={styles.card} zDepth={2} >
+                <a href={product.pageURL} style={styles.imgLink}>
+                    <img style={styles.img} src={product.image} alt={product.title} />
+                </a>
                 <span style={styles.titleSpan}>
                     <a href={product.pageURL} style={styles.titleLink}>{title}</a>
                 </span>
