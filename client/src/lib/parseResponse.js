@@ -1,6 +1,10 @@
 
 // reusable function to parse general fields in typically database items
-function parseResponse(items) {
+function parseResponse(items, singleItem) {
+    if (singleItem) {
+        items = [items];
+    }
+    
     for (var i = 0; i < items.length; i++) {
         items[i].title = items[i].large_data.ItemAttributes.Title;
         items[i].productURL = items[i].large_data.DetailPageURL;
@@ -13,6 +17,10 @@ function parseResponse(items) {
         } else {
             items[i].image = "";
         }
+    }
+
+    if (singleItem) {
+        return items[0]
     }
     return items;
 }

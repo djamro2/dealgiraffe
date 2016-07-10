@@ -125,10 +125,6 @@ body {
 	font-family: 'Hind Siliguri', sans-serif;
 }
 
-.main-navbar {
-	background: #333;
-}
-
 .main-navbar-list {
 	color: white;
 	list-style: none;
@@ -139,6 +135,13 @@ body {
 .main-navbar-list a {
 	text-underline: none;
 	text-decoration: none;
+}
+
+.main-navbar-list .dropdown-item {
+	display: none;
+	padding: .4rem 1rem;
+	border-bottom: 1px solid #999;
+	cursor: pointer;
 }
 
 .main-navbar-list-item {
@@ -331,11 +334,23 @@ body {
 @media(max-width: 520px) {
 	.main-navbar-list-item {
 		display: block;
-		text-align: center;
+		text-align: left;
+		border-right: none;
+		border-bottom: none;
+		/* changed on toggle */
+		padding: 0;
+		visibility: hidden;
+		height: 0;
 	}
 
-	.main-navbar-list-item:not(.last-item) {
-		border-bottom: 1px solid #999;
+	.main-navbar-list-item.shown {
+		padding: .1rem .75rem;
+		visibility: visible;
+		height: inherit;
+	}
+
+	.main-navbar-list .dropdown-item {
+		display: block;
 	}
 
 	.product-content-container {

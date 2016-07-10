@@ -41,9 +41,13 @@ const styles = {
 };
 
 function ProductText({classChild, bulletPoints, summary, link}) {
+    var summaryObj = {
+        __html: summary
+    };
+
     return (
         <div className={classChild}>
-            <p className="summary">{summary}</p>
+            <p className="summary" dangerouslySetInnerHTML={summaryObj}></p>
             <ul>
                 {bulletPoints.map(function(item, i){
                     return (

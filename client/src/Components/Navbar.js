@@ -1,29 +1,54 @@
 
 import React from 'react';
 import navbarTabsConfig from '../config/navbarTabs';
+import $ from 'jquery';
 let navbarTabs = navbarTabsConfig;
 
-const styles = {};
+const styles = {
+    container: {
+        background: '#333'
+    },
+    dropdown: {
+        textAlign: 'right'
+    }
+};
 
 class Navbar extends React.Component {
+    // switch the state of showTabs, which decides to add a class or not
+    toggleTabs() {
+        this.setState({
+            showTabs: !(this.state.showTabs)
+        });
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            showTabs: false
+        };
+        this.toggleTabs = this.toggleTabs.bind(this);
+    }
 
     componentWillMount() {
         if (this.props && this.props.navbarTabs) {
             navbarTabs = this.props.navbarTabs;
         }
-        if (this.props.style) {
-            styles.parentStyles = this.props.style;
-        }
     }
 
     render() {
         return (
-            <div className="main-navbar" style={styles.parentStyles}>
+            <div style={styles.container}>
                 <ul className="main-navbar-list">
+                    <li className="dropdown-item" style={styles.dropdown} onClick={this.toggleTabs}>
+                        <i className="fa fa-bars fa-lg" aria-hidden="true"></i>
+                    </li>
                     {navbarTabs.map(function(item, i) {
                         let extraClasses = "";
                         if (i === (navbarTabs.length-1)) {
                             extraClasses += " last-item";
+                        }
+                        if (this.state.showTabs) {
+                            extraClasses += " shown"
                         }
                         const className = "main-navbar-list-item white" + extraClasses;
                         return (

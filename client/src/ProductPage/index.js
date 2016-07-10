@@ -13,6 +13,7 @@ import Footer from '../Components/Footer';
 import ProductInfo from './ProductInfo';
 import ProductGraph from './ProductGraph';
 import muiTheme from '../lib/defaultMuiTheme';
+import parseResponse from '../lib/parseResponse';
 
 function setPageTitle(product) {
     let title = '';
@@ -42,6 +43,7 @@ function FullPage({product}) {
 
 var params = queryString.parse(location.search);
 $.get("/api/GetProduct/" + params.id, function(product){
+    product = parseResponse(product, true);
     setPageTitle(product);
     ReactDOM.render(
         <FullPage product={product} />,
