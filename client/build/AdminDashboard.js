@@ -1084,7 +1084,7 @@
 	/**
 	 * Keeps track of the current owner.
 	 *
-	 * The current owner is the component who should own any Components that are
+	 * The current owner is the component who should own any components that are
 	 * currently being constructed.
 	 */
 
@@ -2438,8 +2438,8 @@
 	var injectedMixins = [];
 
 	/**
-	 * Composite Components are higher-level Components that compose other composite
-	 * or native Components.
+	 * Composite components are higher-level components that compose other composite
+	 * or native components.
 	 *
 	 * To create a new type of `ReactClass`, pass a specification of
 	 * your new class to `React.createClass`. The only requirement of your class
@@ -2740,7 +2740,7 @@
 	function validateTypeDef(Constructor, typeDef, location) {
 	  for (var propName in typeDef) {
 	    if (typeDef.hasOwnProperty(propName)) {
-	      // use a warning instead of an invariant so Components
+	      // use a warning instead of an invariant so components
 	      // don't show up in prod but only in __DEV__
 	      process.env.NODE_ENV !== 'production' ? warning(typeof typeDef[propName] === 'function', '%s: %s type `%s` is invalid; it must be a function, usually from ' + 'React.PropTypes.', Constructor.displayName || 'ReactClass', ReactPropTypeLocationNames[location], propName) : void 0;
 	    }
@@ -3002,7 +3002,7 @@
 	_assign(ReactClassComponent.prototype, ReactComponent.prototype, ReactClassMixin);
 
 	/**
-	 * Module for creating composite Components.
+	 * Module for creating composite components.
 	 *
 	 * @class ReactClass
 	 */
@@ -3662,7 +3662,7 @@
 	    var validType = typeof type === 'string' || typeof type === 'function';
 	    // We warn in this case but don't throw. We expect the element creation to
 	    // succeed and there will likely be errors in render.
-	    process.env.NODE_ENV !== 'production' ? warning(validType, 'React.createElement: type should not be null, undefined, boolean, or ' + 'number. It should be a string (for DOM elements) or a ReactClass ' + '(for composite Components).%s', getDeclarationErrorAddendum()) : void 0;
+	    process.env.NODE_ENV !== 'production' ? warning(validType, 'React.createElement: type should not be null, undefined, boolean, or ' + 'number. It should be a string (for DOM elements) or a ReactClass ' + '(for composite components).%s', getDeclarationErrorAddendum()) : void 0;
 
 	    var element = ReactElement.createElement.apply(this, arguments);
 
@@ -3805,7 +3805,7 @@
 
 	/**
 	 * Collection of methods that allow declaration and validation of props that are
-	 * supplied to React Components. Example usage:
+	 * supplied to React components. Example usage:
 	 *
 	 *   var Props = require('ReactPropTypes');
 	 *   var MyArticle = React.createClass({
@@ -4370,7 +4370,7 @@
 	var internalInstanceKey = '__reactInternalInstance$' + Math.random().toString(36).slice(2);
 
 	/**
-	 * Drill down (through composites and empty Components) until we get a native or
+	 * Drill down (through composites and empty components) until we get a native or
 	 * native text component.
 	 *
 	 * This is pretty polymorphic but unavoidable with the current structure we have
@@ -6970,7 +6970,7 @@
 	  // Batching is necessary here in order to ensure that all event handlers run
 	  // before the next rerender (including event handlers attached to ancestor
 	  // elements instead of directly on the input). Without this, controlled
-	  // Components don't work properly in conjunction with event bubbling because
+	  // components don't work properly in conjunction with event bubbling because
 	  // the component is rerendered and the value reverted before all the event
 	  // handlers can run. See https://github.com/facebook/react/issues/708.
 	  ReactUpdates.batchedUpdates(runEventInBatch, event);
@@ -7341,7 +7341,7 @@
 
 	function runBatchedUpdates(transaction) {
 	  var len = transaction.dirtyComponentsLength;
-	  !(len === dirtyComponents.length) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Expected flush transaction\'s stored dirty-Components length (%s) to ' + 'match dirty-Components array length (%s).', len, dirtyComponents.length) : invariant(false) : void 0;
+	  !(len === dirtyComponents.length) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Expected flush transaction\'s stored dirty-components length (%s) to ' + 'match dirty-components array length (%s).', len, dirtyComponents.length) : invariant(false) : void 0;
 
 	  // Since reconciling a component higher in the owner hierarchy usually (not
 	  // always -- see shouldComponentUpdate()) will reconcile children, reconcile
@@ -7433,7 +7433,7 @@
 	  // _renderValidatedComponent) assume that calls to render aren't nested;
 	  // verify that that's the case. (This is called by each top-level update
 	  // function, like setProps, setState, forceUpdate, etc.; creation and
-	  // destruction of top-level Components is guarded in ReactMount.)
+	  // destruction of top-level components is guarded in ReactMount.)
 
 	  if (!batchingStrategy.isBatchingUpdates) {
 	    batchingStrategy.batchedUpdates(enqueueUpdate, component);
@@ -7869,7 +7869,7 @@
 	  var nextEmpty = nextElement === null || nextElement === false;
 
 	  return(
-	    // This has a few false positives w/r/t empty Components.
+	    // This has a few false positives w/r/t empty components.
 	    prevEmpty || nextEmpty || nextElement._owner !== prevElement._owner || nextElement.ref !== prevElement.ref
 	  );
 	};
@@ -7906,10 +7906,10 @@
 	var invariant = __webpack_require__(8);
 
 	/**
-	 * ReactOwners are capable of storing references to owned Components.
+	 * ReactOwners are capable of storing references to owned components.
 	 *
-	 * All Components are capable of //being// referenced by owner Components, but
-	 * only ReactOwner Components are capable of //referencing// owned Components.
+	 * All components are capable of //being// referenced by owner components, but
+	 * only ReactOwner components are capable of //referencing// owned components.
 	 * The named reference is known as a "ref".
 	 *
 	 * Refs are available when mounted and updated during reconciliation.
@@ -8488,7 +8488,7 @@
 	    }
 
 	    if (from === to) {
-	      // Nothing pertains to our managed Components.
+	      // Nothing pertains to our managed components.
 	      return null;
 	    }
 
@@ -9021,7 +9021,7 @@
 	var setTextContent = __webpack_require__(82);
 
 	function getNodeAfter(parentNode, node) {
-	  // Special case for text Components, which return [open, close] comments
+	  // Special case for text components, which return [open, close] comments
 	  // from getNativeNode.
 	  if (Array.isArray(node)) {
 	    node = node[1];
@@ -10432,7 +10432,7 @@
 
 	/**
 	 * Creates a new React class that is idempotent and capable of containing other
-	 * React Components. It accepts event listeners and DOM properties that are
+	 * React components. It accepts event listeners and DOM properties that are
 	 * valid according to `DOMProperty`.
 	 *
 	 *  - Event listeners: `onClick`, `onMouseDown`, etc.
@@ -11023,7 +11023,7 @@
 	         * take advantage of React's reconciliation for styling and <title>
 	         * management. So we just document it and throw in dangerous cases.
 	         */
-	         true ? process.env.NODE_ENV !== 'production' ? invariant(false, '<%s> tried to unmount. Because of cross-browser quirks it is ' + 'impossible to unmount some top-level Components (eg <html>, ' + '<head>, and <body>) reliably and efficiently. To fix this, have a ' + 'single top-level component that never unmounts render these ' + 'elements.', this._tag) : invariant(false) : void 0;
+	         true ? process.env.NODE_ENV !== 'production' ? invariant(false, '<%s> tried to unmount. Because of cross-browser quirks it is ' + 'impossible to unmount some top-level components (eg <html>, ' + '<head>, and <body>) reliably and efficiently. To fix this, have a ' + 'single top-level component that never unmounts render these ' + 'elements.', this._tag) : invariant(false) : void 0;
 	        break;
 	    }
 
@@ -12767,7 +12767,7 @@
 
 	function warnIfValueIsNull(props) {
 	  if (props != null && props.value === null && !didWarnValueNull) {
-	    process.env.NODE_ENV !== 'production' ? warning(false, '`value` prop on `input` should not be null. ' + 'Consider using the empty string to clear the component or `undefined` ' + 'for uncontrolled Components.') : void 0;
+	    process.env.NODE_ENV !== 'production' ? warning(false, '`value` prop on `input` should not be null. ' + 'Consider using the empty string to clear the component or `undefined` ' + 'for uncontrolled components.') : void 0;
 
 	    didWarnValueNull = true;
 	  }
@@ -12824,11 +12824,11 @@
 	        didWarnCheckedLink = true;
 	      }
 	      if (props.checked !== undefined && props.defaultChecked !== undefined && !didWarnCheckedDefaultChecked) {
-	        process.env.NODE_ENV !== 'production' ? warning(false, '%s contains an input of type %s with both checked and defaultChecked props. ' + 'Input elements must be either controlled or uncontrolled ' + '(specify either the checked prop, or the defaultChecked prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-Components', owner && owner.getName() || 'A component', props.type) : void 0;
+	        process.env.NODE_ENV !== 'production' ? warning(false, '%s contains an input of type %s with both checked and defaultChecked props. ' + 'Input elements must be either controlled or uncontrolled ' + '(specify either the checked prop, or the defaultChecked prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components', owner && owner.getName() || 'A component', props.type) : void 0;
 	        didWarnCheckedDefaultChecked = true;
 	      }
 	      if (props.value !== undefined && props.defaultValue !== undefined && !didWarnValueDefaultValue) {
-	        process.env.NODE_ENV !== 'production' ? warning(false, '%s contains an input of type %s with both value and defaultValue props. ' + 'Input elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-Components', owner && owner.getName() || 'A component', props.type) : void 0;
+	        process.env.NODE_ENV !== 'production' ? warning(false, '%s contains an input of type %s with both value and defaultValue props. ' + 'Input elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled input ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components', owner && owner.getName() || 'A component', props.type) : void 0;
 	        didWarnValueDefaultValue = true;
 	      }
 	      warnIfValueIsNull(props);
@@ -12859,11 +12859,11 @@
 	      var owner = inst._currentElement._owner;
 
 	      if ((initialValue || !inst._wrapperState.controlled) && controlled && !didWarnUncontrolledToControlled) {
-	        process.env.NODE_ENV !== 'production' ? warning(false, '%s is changing an uncontrolled input of type %s to be controlled. ' + 'Input elements should not switch from uncontrolled to controlled (or vice versa). ' + 'Decide between using a controlled or uncontrolled input ' + 'element for the lifetime of the component. More info: https://fb.me/react-controlled-Components', owner && owner.getName() || 'A component', props.type) : void 0;
+	        process.env.NODE_ENV !== 'production' ? warning(false, '%s is changing an uncontrolled input of type %s to be controlled. ' + 'Input elements should not switch from uncontrolled to controlled (or vice versa). ' + 'Decide between using a controlled or uncontrolled input ' + 'element for the lifetime of the component. More info: https://fb.me/react-controlled-components', owner && owner.getName() || 'A component', props.type) : void 0;
 	        didWarnUncontrolledToControlled = true;
 	      }
 	      if (inst._wrapperState.controlled && (defaultValue || !controlled) && !didWarnControlledToUncontrolled) {
-	        process.env.NODE_ENV !== 'production' ? warning(false, '%s is changing a controlled input of type %s to be uncontrolled. ' + 'Input elements should not switch from controlled to uncontrolled (or vice versa). ' + 'Decide between using a controlled or uncontrolled input ' + 'element for the lifetime of the component. More info: https://fb.me/react-controlled-Components', owner && owner.getName() || 'A component', props.type) : void 0;
+	        process.env.NODE_ENV !== 'production' ? warning(false, '%s is changing a controlled input of type %s to be uncontrolled. ' + 'Input elements should not switch from controlled to uncontrolled (or vice versa). ' + 'Decide between using a controlled or uncontrolled input ' + 'element for the lifetime of the component. More info: https://fb.me/react-controlled-components', owner && owner.getName() || 'A component', props.type) : void 0;
 	        didWarnControlledToUncontrolled = true;
 	      }
 	    }
@@ -12889,7 +12889,7 @@
 	  var returnValue = LinkedValueUtils.executeOnChange(props, event);
 
 	  // Here we use asap to wait until all updates have propagated, which
-	  // is important when using controlled Components within layers:
+	  // is important when using controlled components within layers:
 	  // https://github.com/facebook/react/issues/1698
 	  ReactUpdates.asap(forceUpdateIfMounted, this);
 
@@ -13009,7 +13009,7 @@
 
 	/**
 	 * Provide a linked `value` attribute for controlled forms. You should not use
-	 * this outside of the ReactDOM controlled form Components.
+	 * this outside of the ReactDOM controlled form components.
 	 */
 	var LinkedValueUtils = {
 	  checkPropTypes: function (tagName, props, owner) {
@@ -13243,7 +13243,7 @@
 
 	function warnIfValueIsNull(props) {
 	  if (props != null && props.value === null && !didWarnValueNull) {
-	    process.env.NODE_ENV !== 'production' ? warning(false, '`value` prop on `select` should not be null. ' + 'Consider using the empty string to clear the component or `undefined` ' + 'for uncontrolled Components.') : void 0;
+	    process.env.NODE_ENV !== 'production' ? warning(false, '`value` prop on `select` should not be null. ' + 'Consider using the empty string to clear the component or `undefined` ' + 'for uncontrolled components.') : void 0;
 
 	    didWarnValueNull = true;
 	  }
@@ -13353,7 +13353,7 @@
 	    };
 
 	    if (props.value !== undefined && props.defaultValue !== undefined && !didWarnValueDefaultValue) {
-	      process.env.NODE_ENV !== 'production' ? warning(false, 'Select elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled select ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-Components') : void 0;
+	      process.env.NODE_ENV !== 'production' ? warning(false, 'Select elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled select ' + 'element and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components') : void 0;
 	      didWarnValueDefaultValue = true;
 	    }
 	  },
@@ -13448,7 +13448,7 @@
 
 	function warnIfValueIsNull(props) {
 	  if (props != null && props.value === null && !didWarnValueNull) {
-	    process.env.NODE_ENV !== 'production' ? warning(false, '`value` prop on `textarea` should not be null. ' + 'Consider using the empty string to clear the component or `undefined` ' + 'for uncontrolled Components.') : void 0;
+	    process.env.NODE_ENV !== 'production' ? warning(false, '`value` prop on `textarea` should not be null. ' + 'Consider using the empty string to clear the component or `undefined` ' + 'for uncontrolled components.') : void 0;
 
 	    didWarnValueNull = true;
 	  }
@@ -13493,7 +13493,7 @@
 	        didWarnValueLink = true;
 	      }
 	      if (props.value !== undefined && props.defaultValue !== undefined && !didWarnValDefaultVal) {
-	        process.env.NODE_ENV !== 'production' ? warning(false, 'Textarea elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled textarea ' + 'and remove one of these props. More info: ' + 'https://fb.me/react-controlled-Components') : void 0;
+	        process.env.NODE_ENV !== 'production' ? warning(false, 'Textarea elements must be either controlled or uncontrolled ' + '(specify either the value prop, or the defaultValue prop, but not ' + 'both). Decide between using a controlled or uncontrolled textarea ' + 'and remove one of these props. More info: ' + 'https://fb.me/react-controlled-components') : void 0;
 	        didWarnValDefaultVal = true;
 	      }
 	      warnIfValueIsNull(props);
@@ -14260,13 +14260,13 @@
 	    instance = ReactEmptyComponent.create(instantiateReactComponent);
 	  } else if (typeof node === 'object') {
 	    var element = node;
-	    !(element && (typeof element.type === 'function' || typeof element.type === 'string')) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Element type is invalid: expected a string (for built-in Components) ' + 'or a class/function (for composite Components) but got: %s.%s', element.type == null ? element.type : typeof element.type, getDeclarationErrorAddendum(element._owner)) : invariant(false) : void 0;
+	    !(element && (typeof element.type === 'function' || typeof element.type === 'string')) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Element type is invalid: expected a string (for built-in components) ' + 'or a class/function (for composite components) but got: %s.%s', element.type == null ? element.type : typeof element.type, getDeclarationErrorAddendum(element._owner)) : invariant(false) : void 0;
 
 	    // Special case string values
 	    if (typeof element.type === 'string') {
 	      instance = ReactNativeComponent.createInternalComponent(element);
 	    } else if (isInternalComponentType(element.type)) {
-	      // This is temporarily available for custom Components that are not string
+	      // This is temporarily available for custom components that are not string
 	      // representations. I.e. ART. Once those are updated to use the string
 	      // representation, we can drop this code path.
 	      instance = new element.type(element);
@@ -14284,7 +14284,7 @@
 	  }
 
 	  // These two fields are used by the DOM and ART diffing algorithms
-	  // respectively. Instead of using expandos on Components, we should be
+	  // respectively. Instead of using expandos on components, we should be
 	  // storing the state needed by the diffing algorithms elsewhere.
 	  instance._mountIndex = 0;
 	  instance._mountImage = null;
@@ -14438,7 +14438,7 @@
 
 	/**
 	 * An incrementing ID assigned to each component when it is mounted. This is
-	 * used to enforce the order in which `ReactUpdates` updates dirty Components.
+	 * used to enforce the order in which `ReactUpdates` updates dirty components.
 	 *
 	 * @private
 	 */
@@ -14509,7 +14509,7 @@
 	    var inst = this._constructComponent(publicProps, publicContext);
 	    var renderedElement;
 
-	    // Support functional Components
+	    // Support functional components
 	    if (!shouldConstruct(Component) && (inst == null || inst.render == null)) {
 	      renderedElement = inst;
 	      warnIfInvalidElement(Component, renderedElement);
@@ -14612,7 +14612,7 @@
 	        }
 	      }
 	    } else {
-	      // This can still be an instance in case of factory Components
+	      // This can still be an instance in case of factory components
 	      // but we'll count this as time spent rendering as the more common case.
 	      if (process.env.NODE_ENV !== 'production') {
 	        if (this._debugID !== 0) {
@@ -14756,7 +14756,7 @@
 	    // leaks a reference to the public instance.
 	    ReactInstanceMap.remove(inst);
 
-	    // Some existing Components rely on inst.props even after they've been
+	    // Some existing components rely on inst.props even after they've been
 	    // destroyed (in event handlers).
 	    // TODO: inst.props = null;
 	    // TODO: inst.state = null;
@@ -15187,11 +15187,11 @@
 	   */
 	  attachRef: function (ref, component) {
 	    var inst = this.getPublicInstance();
-	    !(inst != null) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Stateless function Components cannot have refs.') : invariant(false) : void 0;
+	    !(inst != null) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'Stateless function components cannot have refs.') : invariant(false) : void 0;
 	    var publicComponentInstance = component.getPublicInstance();
 	    if (process.env.NODE_ENV !== 'production') {
 	      var componentName = component && component.getName ? component.getName() : 'a component';
-	      process.env.NODE_ENV !== 'production' ? warning(publicComponentInstance != null, 'Stateless function Components cannot be given refs ' + '(See ref "%s" in %s created by %s). ' + 'Attempts to access this ref will fail.', ref, componentName, this.getName()) : void 0;
+	      process.env.NODE_ENV !== 'production' ? warning(publicComponentInstance != null, 'Stateless function components cannot be given refs ' + '(See ref "%s" in %s created by %s). ' + 'Attempts to access this ref will fail.', ref, componentName, this.getName()) : void 0;
 	    }
 	    var refs = inst.refs === emptyObject ? inst.refs = {} : inst.refs;
 	    refs[ref] = publicComponentInstance;
@@ -15224,7 +15224,7 @@
 	  /**
 	   * Get the publicly accessible representation of this component - i.e. what
 	   * is exposed by refs and returned by render. Can be null for stateless
-	   * Components.
+	   * components.
 	   *
 	   * @return {ReactComponent} the public component instance.
 	   * @internal
@@ -16564,7 +16564,7 @@
 	var validateDOMNesting = __webpack_require__(131);
 
 	/**
-	 * Text nodes violate a couple assumptions that React makes about Components:
+	 * Text nodes violate a couple assumptions that React makes about components:
 	 *
 	 *  - When mounting text into the DOM, adjacent text nodes are merged.
 	 *  - Text nodes cannot be assigned a React root ID.
@@ -16572,7 +16572,7 @@
 	 * This component is used to wrap strings between comment nodes so that they
 	 * can undergo the same reconciliation that is applied to elements.
 	 *
-	 * TODO: Investigate representing React Components in the DOM with text nodes.
+	 * TODO: Investigate representing React components in the DOM with text nodes.
 	 *
 	 * @class ReactDOMTextComponent
 	 * @extends ReactComponent
@@ -16766,7 +16766,7 @@
 
 	  /**
 	   * Call the provided function in a context within which calls to `setState`
-	   * and friends are batched such that Components aren't updated unnecessarily.
+	   * and friends are batched such that components aren't updated unnecessarily.
 	   */
 	  batchedUpdates: function (callback, a, b, c, d, e) {
 	    var alreadyBatchingUpdates = ReactDefaultBatchingStrategy.isBatchingUpdates;
@@ -16848,7 +16848,7 @@
 	  var nativeEventTarget = getEventTarget(bookKeeping.nativeEvent);
 	  var targetInst = ReactDOMComponentTree.getClosestInstanceFromNode(nativeEventTarget);
 
-	  // Loop through the hierarchy, in case there's any nested Components.
+	  // Loop through the hierarchy, in case there's any nested components.
 	  // It's important that we build the array of ancestors before calling any
 	  // event handlers, because event handlers can modify the DOM, leading to
 	  // inconsistencies with ReactMount's node cache. See #1105.
@@ -19745,7 +19745,7 @@
 
 	/**
 	 * Temporary (?) hack so that we can store all top-level pending updates on
-	 * composites instead of having to worry about different types of Components
+	 * composites instead of having to worry about different types of components
 	 * here.
 	 */
 	var topLevelRootCounter = 1;
@@ -19789,7 +19789,7 @@
 	  _instancesByReactRootID: instancesByReactRootID,
 
 	  /**
-	   * This is a hook provided to support rendering React Components while
+	   * This is a hook provided to support rendering React components while
 	   * ensuring that the apparent scroll position of its `container` does not
 	   * change.
 	   *
@@ -19889,7 +19889,7 @@
 	    // Check if it quacks like an element
 	    nextElement != null && nextElement.props !== undefined ? ' This may be caused by unintentionally loading two independent ' + 'copies of React.' : '') : invariant(false) : void 0;
 
-	    process.env.NODE_ENV !== 'production' ? warning(!container || !container.tagName || container.tagName.toUpperCase() !== 'BODY', 'render(): Rendering Components directly into document.body is ' + 'discouraged, since its children are often manipulated by third-party ' + 'scripts and browser extensions. This may lead to subtle ' + 'reconciliation issues. Try rendering into a container element created ' + 'for your app.') : void 0;
+	    process.env.NODE_ENV !== 'production' ? warning(!container || !container.tagName || container.tagName.toUpperCase() !== 'BODY', 'render(): Rendering components directly into document.body is ' + 'discouraged, since its children are often manipulated by third-party ' + 'scripts and browser extensions. This may lead to subtle ' + 'reconciliation issues. Try rendering into a container element created ' + 'for your app.') : void 0;
 
 	    var nextWrappedElement = ReactElement(TopLevelWrapper, null, null, null, null, null, nextElement);
 
@@ -19915,7 +19915,7 @@
 	    var containerHasNonRootReactChild = hasNonRootReactChild(container);
 
 	    if (process.env.NODE_ENV !== 'production') {
-	      process.env.NODE_ENV !== 'production' ? warning(!containerHasNonRootReactChild, 'render(...): Replacing React-rendered children with a new root ' + 'component. If you intended to update the children of this node, ' + 'you should instead have the existing children update their state ' + 'and render the new Components instead of calling ReactDOM.render.') : void 0;
+	      process.env.NODE_ENV !== 'production' ? warning(!containerHasNonRootReactChild, 'render(...): Replacing React-rendered children with a new root ' + 'component. If you intended to update the children of this node, ' + 'you should instead have the existing children update their state ' + 'and render the new components instead of calling ReactDOM.render.') : void 0;
 
 	      if (!containerHasReactMarkup || reactRootElement.nextSibling) {
 	        var rootElementSibling = reactRootElement;
@@ -20029,7 +20029,7 @@
 	        var diffIndex = firstDifferenceIndex(normalizedMarkup, rootMarkup);
 	        var difference = ' (client) ' + normalizedMarkup.substring(diffIndex - 20, diffIndex + 20) + '\n (server) ' + rootMarkup.substring(diffIndex - 20, diffIndex + 20);
 
-	        !(container.nodeType !== DOC_NODE_TYPE) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'You\'re trying to render a component to the document using ' + 'server rendering but the checksum was invalid. This usually ' + 'means you rendered a different component type or props on ' + 'the client from the one on the server, or your render() ' + 'methods are impure. React cannot handle this case due to ' + 'cross-browser quirks by rendering at the document root. You ' + 'should look for environment dependent code in your Components ' + 'and ensure the props are the same client and server side:\n%s', difference) : invariant(false) : void 0;
+	        !(container.nodeType !== DOC_NODE_TYPE) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'You\'re trying to render a component to the document using ' + 'server rendering but the checksum was invalid. This usually ' + 'means you rendered a different component type or props on ' + 'the client from the one on the server, or your render() ' + 'methods are impure. React cannot handle this case due to ' + 'cross-browser quirks by rendering at the document root. You ' + 'should look for environment dependent code in your components ' + 'and ensure the props are the same client and server side:\n%s', difference) : invariant(false) : void 0;
 
 	        if (process.env.NODE_ENV !== 'production') {
 	          process.env.NODE_ENV !== 'production' ? warning(false, 'React attempted to reuse markup in a container but the ' + 'checksum was invalid. This generally means that you are ' + 'using server rendering and the markup generated on the ' + 'server was not what the client was expecting. React injected ' + 'new markup to compensate which works but you have lost many ' + 'of the benefits of server rendering. Instead, figure out ' + 'why the markup being generated is different on the client ' + 'or server:\n%s', difference) : void 0;
@@ -22136,7 +22136,7 @@
 	/**
 	 * We used to allow keyed objects to serve as a collection of ReactElements,
 	 * or nested sets. This allowed us a way to explicitly key a set or fragment of
-	 * Components. This is now being replaced with an opaque data structure.
+	 * components. This is now being replaced with an opaque data structure.
 	 * The upgrade path is to call React.addons.createFragment({ key: value }) to
 	 * create a keyed fragment. The resulting data structure is an array.
 	 */
@@ -22161,7 +22161,7 @@
 	      return object;
 	    }
 
-	    !(object.nodeType !== 1) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'React.addons.createFragment(...): Encountered an invalid child; DOM ' + 'elements are not valid children of React Components.') : invariant(false) : void 0;
+	    !(object.nodeType !== 1) ? process.env.NODE_ENV !== 'production' ? invariant(false, 'React.addons.createFragment(...): Encountered an invalid child; DOM ' + 'elements are not valid children of React components.') : invariant(false) : void 0;
 
 	    var result = [];
 
@@ -22296,7 +22296,8 @@
 	  'insert': 45,
 	  'delete': 46,
 	  'command': 91,
-	  'right click': 93,
+	  'left command': 91,
+	  'right command': 93,
 	  'numpad *': 106,
 	  'numpad +': 107,
 	  'numpad -': 109,
@@ -22337,7 +22338,7 @@
 	  'escape': 27,
 	  'spc': 32,
 	  'pgup': 33,
-	  'pgdn': 33,
+	  'pgdn': 34,
 	  'ins': 45,
 	  'del': 46,
 	  'cmd': 91
@@ -25220,7 +25221,7 @@
 	   */
 	  anchorOrigin: _propTypes2.default.origin,
 	  /**
-	   * Should be used to pass `MenuItem` Components.
+	   * Should be used to pass `MenuItem` components.
 	   */
 	  children: _react.PropTypes.node,
 	  /**
@@ -25878,7 +25879,7 @@
 	   * is added to the DOM. In order for transitions to
 	   * work, wrap the menu inside a `ReactTransitionGroup`.
 	   */
-	  animated: (0, _deprecatedPropType2.default)(_react.PropTypes.bool, 'Instead, use a [Popover](/#/Components/popover).'),
+	  animated: (0, _deprecatedPropType2.default)(_react.PropTypes.bool, 'Instead, use a [Popover](/#/components/popover).'),
 	  /**
 	   * If true, the width of the menu will be set automatically
 	   * according to the widths of its children,
@@ -25954,7 +25955,7 @@
 	  /**
 	   * This is the placement of the menu relative to the `IconButton`.
 	   */
-	  openDirection: (0, _deprecatedPropType2.default)(_propTypes2.default.corners, 'Instead, use a [Popover](/#/Components/popover).'),
+	  openDirection: (0, _deprecatedPropType2.default)(_propTypes2.default.corners, 'Instead, use a [Popover](/#/components/popover).'),
 	  /**
 	   * Override the inline-styles of selected menu items.
 	   */
@@ -57279,7 +57280,7 @@
 	  }
 
 	  // The nested styles for drop-down-menu are modified by toolbar and possibly
-	  // other user Components, so it will give full access to its js styles rather
+	  // other user components, so it will give full access to its js styles rather
 	  // than just the parent.
 
 
@@ -57647,7 +57648,7 @@
 	/**
 	 *  BeforeAfterWrapper
 	 *    An alternative for the ::before and ::after css pseudo-elements for
-	 *    Components whose styles are defined in javascript instead of css.
+	 *    components whose styles are defined in javascript instead of css.
 	 *
 	 *  Usage: For the element that we want to apply before and after elements to,
 	 *    wrap its children with BeforeAfterWrapper. For example:
