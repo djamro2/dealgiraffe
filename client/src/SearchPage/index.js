@@ -37,9 +37,9 @@ function FullPage({searchQuery, products, numberOfItems, searching}) {
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
             <div className="main-col search-page">
-                <Banner style={{margin: '0 .5rem'}} />
-                <Navbar style={{margin: '0 .5rem'}} />
-                <SearchBox style={{margin: '0 .5rem'}} searchQuery={searchQuery} />
+                <Banner />
+                <Navbar />
+                <SearchBox searchQuery={searchQuery} />
                 {onSearchedItems}
                 <Footer />
             </div>

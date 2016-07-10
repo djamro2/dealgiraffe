@@ -18,9 +18,9 @@ function FullPage({products}) {
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
             <div className="main-col">
-                <Banner style={{margin: '0 .5rem'}} />
-                <Navbar style={{margin: '0 .5rem'}} />
-                <SearchBox style={{margin: '0 .5rem'}} />
+                <Banner />
+                <Navbar />
+                <SearchBox />
                 <ProductItemsGrid products={products}/>
                 <Footer />
             </div>

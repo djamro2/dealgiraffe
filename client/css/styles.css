@@ -91,14 +91,6 @@ body {
 	font-size: 1.2em!important;
 }
 
-.banner {
-	max-height: 5em;
-}
-
-.banner img {
-	max-height: 5em;
-}
-
 .container-all {
 	background: rgb(240, 240, 240);
 }
@@ -274,7 +266,12 @@ body {
 	display: inline-block;
 	width: 250px;
 	height: 350px;
-	margin: 1rem .5rem;
+	margin: 1rem 0;
+	margin-right: .35rem;
+}
+
+.product-items li:nth-child(3n+3) {
+	margin-right: 0;
 }
 
 .search-box {
