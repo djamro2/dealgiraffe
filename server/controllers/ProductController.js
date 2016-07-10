@@ -166,6 +166,7 @@ module.exports.GetGraphicsPageProducts = function(req, res) {
 // given a searchQuery, orderByValue, currentPage, and amountPerPage, find a set of items
 // that matches the query
 module.exports.GetSearchItems = function(req, res) {
+	console.log('Searching yo');
 	var searchQuery = req.query.searchQuery;
 	var orderBy = req.query.orderByValue;
 
@@ -217,6 +218,7 @@ module.exports.GetSearchItems = function(req, res) {
 				console.log("Error: " + err);
 				return res.status(500).send("Error: " + err);
 			}
+			console.log('Finished af');
 			res.json({products: foundProducts, count: count});
 		});
 	}
