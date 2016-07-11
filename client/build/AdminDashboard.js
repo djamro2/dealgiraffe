@@ -22296,8 +22296,7 @@
 	  'insert': 45,
 	  'delete': 46,
 	  'command': 91,
-	  'left command': 91,
-	  'right command': 93,
+	  'right click': 93,
 	  'numpad *': 106,
 	  'numpad +': 107,
 	  'numpad -': 109,
@@ -22338,7 +22337,7 @@
 	  'escape': 27,
 	  'spc': 32,
 	  'pgup': 33,
-	  'pgdn': 34,
+	  'pgdn': 33,
 	  'ins': 45,
 	  'del': 46,
 	  'cmd': 91

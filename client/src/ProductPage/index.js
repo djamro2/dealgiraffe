@@ -25,7 +25,7 @@ function setPageTitle(product) {
     if (title) {
         document.title = title;
     }
-};
+}
 
 function FullPage({product}) {
     return (
@@ -39,7 +39,7 @@ function FullPage({product}) {
             </div>
         </MuiThemeProvider>
     );
-};
+}
 
 var params = queryString.parse(location.search);
 $.get("/api/GetProduct/" + params.id, function(product){

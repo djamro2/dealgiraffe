@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Paper from 'material-ui/Paper';
+import truncateText from './../lib/truncateText';
 
 const styles = {
     card: {
@@ -15,7 +16,7 @@ const styles = {
     imgLink: {
         width: 'inherit'
     },
-    titleSpan: {
+    title: {
         position: 'absolute',
         bottom: 0,
         left: 0,
@@ -26,30 +27,33 @@ const styles = {
         textDecoration: 'none',
         color: 'black',
         fontWeight: 600
+    },
+    price: {
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        padding: '.35rem .5rem',
+        fontWeight: '600',
+        backgroundColor: 'rgba(0, 188, 212, .8)',
+        borderBottomLeftRadius: '5px',
+        borderLeft: '1px solid black',
+        borderBottom: '1px solid black'
     }
-};
-
-// titles longer than maxLimit or 30 should be taken as a substring and have '...' added on the end
-const truncateTitle = function(title, maxLimit) {
-    var result = title;
-    var defaultLimit = 30;
-    if (title.length > (maxLimit || defaultLimit)) {
-        result = title.substring(0, (maxLimit || defaultLimit));
-        result += '...';
-    }
-    return result;
 };
 
 class ProductCard extends React.Component {
     render () {
         var product = this.props.product;
-        var title = truncateTitle(product.title, 50);
+        var title = truncateText(product.title, 50);
         return (
             <Paper style={styles.card} zDepth={2} >
+                <span style={styles.price}>
+                    {product.priceFormatted}
+                </span>
                 <a href={product.pageURL} style={styles.imgLink}>
                     <img style={styles.img} src={product.image} alt={product.title} />
                 </a>
-                <span style={styles.titleSpan}>
+                <span style={styles.title}>
                     <a href={product.pageURL} style={styles.titleLink}>{title}</a>
                 </span>
             </Paper>

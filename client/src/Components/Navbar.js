@@ -1,7 +1,6 @@
 
 import React from 'react';
 import navbarTabsConfig from '../config/navbarTabs';
-import $ from 'jquery';
 let navbarTabs = navbarTabsConfig;
 
 const styles = {
@@ -43,6 +42,11 @@ class Navbar extends React.Component {
                         <i className="fa fa-bars fa-lg" aria-hidden="true"></i>
                     </li>
                     {navbarTabs.map(function(item, i) {
+                        // if a tab to hide, return false
+                        if (this.props.hideTabs && this.props.hideTabs.indexOf(item.name) > -1) {
+                            return false;
+                        }
+
                         let extraClasses = "";
                         if (i === (navbarTabs.length-1)) {
                             extraClasses += " last-item";
@@ -61,6 +65,6 @@ class Navbar extends React.Component {
             </div>
         );
     }
-};
+}
 
 export default Navbar;

@@ -8,7 +8,8 @@ const styles = {
     container: {
         display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'space-between'
     }
 };
 
@@ -56,20 +57,23 @@ class SearchOptions extends React.Component {
 
         // add <MenuItem value="price" primaryText="Price" />
         return (
-            <div style={styles.container}>
-                <span className="pdl-8">Show items {firstItem} - {lastItem} out of {this.props.numberOfItems}</span>
-                <span className="flex"></span>
-                <span className="pdt-8 bold">Order by:</span>
-                <DropDownMenu id="orderBy" className="mgr-12" value={this.state.orderByValue} onChange={this.handleOrderByChange}>
-                    <MenuItem value="relevance" primaryText="Relevance" />
-                    <MenuItem value="alphabetical" primaryText="Alphabetical" />
-                    <MenuItem value="popular" primaryText="Popular" />
-                    <MenuItem value="recent" primaryText="Recently Added" />
-                </DropDownMenu>
-                <span className="pdt-8 bold">Page:</span>
-                <DropDownMenu id="pageNumber" className="mgr-12" value={this.state.currentPage} onChange={this.handlePageNumberChange}>
-                    {PageMenuItems}
-                </DropDownMenu>
+            <div style={styles.container} className="search-options">
+                <span className="search-options-left">
+                    <span className="pdl-8">Show items {firstItem} - {lastItem} out of {this.props.numberOfItems}</span>
+                </span>
+                <span className="search-options-right">
+                    <span className="pdt-8 bold">Order by:</span>
+                    <DropDownMenu id="orderBy" className="mgr-12" value={this.state.orderByValue} onChange={this.handleOrderByChange}>
+                        <MenuItem value="relevance" primaryText="Relevance" />
+                        <MenuItem value="alphabetical" primaryText="Alphabetical" />
+                        <MenuItem value="popular" primaryText="Popular" />
+                        <MenuItem value="recent" primaryText="Recently Added" />
+                    </DropDownMenu>
+                    <span className="pdt-8 bold">Page:</span>
+                    <DropDownMenu id="pageNumber" className="mgr-12" value={this.state.currentPage} onChange={this.handlePageNumberChange}>
+                        {PageMenuItems}
+                    </DropDownMenu>
+                </span>
             </div>
         );
     }

@@ -160,6 +160,7 @@ body {
 	padding: 1rem;
 	display: flex;
 	flex-direction: row;
+	align-items: flex-start;
 }
 
 .product-content-container .card {
@@ -312,6 +313,20 @@ body {
 
 /* anything smaller than 700px */
 @media(max-width: 700px) {
+	.search-options {
+		flex-direction: column!important;
+		justify-content: center!important;
+	}
+
+	.search-options .search-options-left {
+		text-align: center;
+		padding-top: 1rem;
+	}
+
+	.search-options .search-options-right {
+		text-align: center;
+	}
+
 	.product-content-container .product-text-right {
 		display: none!important;
 	}

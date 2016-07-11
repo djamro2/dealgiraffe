@@ -10,14 +10,17 @@ var moment     = require('moment');
 // local resources
 var IndexedProduct = require('../server/models/IndexedProduct');
 var QueueTask      = require('../server/models/QueueTask');
-var local_codes    = require('../local_codes');
 var settings       = require('./settings');
 var app            = express();
 
 // global properties
 var self = this;
 self.cycleCount = 0;
-var prodAdv     = aws.createProdAdvClient(local_codes.a, local_codes.b, local_codes.c);
+var prodAdv = aws.createProdAdvClient(
+    process.env.AWS_ACCESS_KEY_ID,
+    process.env.AWS_SECRET_ACCESS_KEY,
+    'dealgira-20'
+);
 
 // connect to mongoose
 mongoose.connect('mongodb://localhost/DealGiraffe');
@@ -28,7 +31,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // open server for listening
-var server = app.listen(local_codes.port_updater, local_codes.internal_ip, function(){
+var updaterPort = process.env.UPDATER_PORT || 3001;
+var internalIP = process.env.INTERNAL_IP || 'localhost';
+var server = app.listen(updaterPort, internalIP, function(){
     var host = server.address().address;
     var port = server.address().port;
     console.log('App listening at http://%s:%s', host, port);
@@ -60,7 +65,6 @@ var getLargeProductData = function(asin, callback) {
     };
 
     prodAdv.call("ItemLookup", params, function(err, item_response) {
-
         if (err) {
             log("Error with an item lookup for getting large product data with asin: " + asin);
             return;
@@ -72,11 +76,8 @@ var getLargeProductData = function(asin, callback) {
     });
 };
 
-/*
- * Parse through the offers data and return the three sets of prices as an object
- */
+// Parse through the offers data and return the three sets of prices as an object
 var getPricingData = function(offers_item) {
-
     // object to be returned
     var result = {
         price_amazon_new: 0,

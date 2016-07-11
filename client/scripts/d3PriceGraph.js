@@ -25,11 +25,11 @@ var yAxis = d3.svg.axis()
 var area = d3.svg.area()
     .x(function(d) { return xScale(d.date_parsed); })
     .y0(height - margins.bottom)
-    .y1(function(d) { return yScale(d.price); });
+    .y1(function(d) { return yScale(d.priceDollars); });
 
 var line = d3.svg.line()
     .x(function(d) { return xScale(d.date_parsed); })
-    .y(function(d) { return yScale(d.price) + 1.5; });
+    .y(function(d) { return yScale(d.priceDollars) + 1.5; });
 
 var graph;
 
@@ -47,20 +47,21 @@ var parseDate = function(datetime){
 };
 
 // Helper function to process the data and return it in array form
-// Will be data relevant to the 'type' passed in
-var processData = function(data, type) {
-    var result = [];
-    switch (type) {
-        case 'price_new':
-            result = data.price_amazon_new;
-            result.forEach(function(d){
-                d.price = d.price/100;
-                d.date_parsed = parseDate(d.date);
-            });
-            break;
-        // add more in the future
+var processData = function(data) {
+    var dataType = 'price_amazon_new';
+    if (data.price_amazon_new && data.price_amazon_new[0].price !== 0) {
+        // nothing to change
+    } else if (data.price_third_new && data.price_third_new[0].price !== 0) {
+        dataType = 'price_third_new';
+    } else if (data.price_third_used && data.price_third_used[0].price !== 0 ) {
+        dataType = 'price_third_used';
     }
 
+    var result = data[dataType];
+    result.forEach(function(d){
+        d.priceDollars = d.price/100; // convert from expression in cents to dollars
+        d.date_parsed = parseDate(d.date);
+    });
     return result;
 };
 
@@ -172,8 +173,8 @@ var draw_data_area = function(data) {
 var draw_null_area = function(data, x_domain_max) {
     // data to be in place of data where there are no values yet
     var data_null = [
-        {price: data[data.length-1].price, date_parsed: x_domain_max},           /* start */
-        {price: data[data.length-1].price, date_parsed: parseDate( new Date())}  /* end */
+        {priceDollars: data[data.length-1].priceDollars, date_parsed: x_domain_max},           /* start */
+        {priceDollars: data[data.length-1].priceDollars, date_parsed: parseDate( new Date())}  /* end */
     ];
 
     graph.append("path")
@@ -194,12 +195,12 @@ var draw_outline_area_path = function(data) {
 var renderGraph = function(data, graph) {
 
     // obtain the correct data
-    var data_price_new = processData(data, 'price_new');
+    var data_price_new = processData(data);
 
     // update the domain for the scales
     var x_domain_min = d3.min(data_price_new, function(d){return d.date_parsed;});
     var x_domain_max = d3.max(data_price_new, function(d){return d.date_parsed;});
-    var y_domain = d3.extent(data_price_new, function(d){return d.price});
+    var y_domain = d3.extent(data_price_new, function(d){return d.priceDollars});
 
     y_domain = pad_y_domain(y_domain);
     xScale.domain([x_domain_min, parseDate( new Date())]);

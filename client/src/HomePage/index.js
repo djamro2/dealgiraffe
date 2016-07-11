@@ -19,14 +19,14 @@ function FullPage({products}) {
         <MuiThemeProvider muiTheme={muiTheme}>
             <div className="main-col">
                 <Banner />
-                <Navbar />
+                <Navbar hideTabs={['Search']} />
                 <SearchBox />
                 <ProductItemsGrid products={products}/>
                 <Footer />
             </div>
         </MuiThemeProvider>
     );
-};
+}
 
 $.get("/api/GetHomepageProducts/", function(products){
     products = parseResponse(products);

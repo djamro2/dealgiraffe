@@ -3,7 +3,6 @@ var aws = require('aws-lib');
 var path = require('path');
 
 var settings = require('./../../updater/settings');
-var local_codes = require('../../local_codes');
 var IndexedProduct = require('../models/IndexedProduct');
 var getProductDbSize = require('./../lib/getProductDbSize');
 var getProductDbInfo = require('./../lib/getProductDbInfo');

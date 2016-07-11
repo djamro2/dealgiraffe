@@ -9,12 +9,13 @@ var flash          = require('connect-flash');
 var handlebars     = require('express-handlebars');
 
 // local resources
-var local_codes    = require('./local_codes');
 var initPassport   = require('./server/passport/init');
 var app            = express();
 
 // open server for listening
-var server = app.listen(local_codes.port_site, local_codes.internal_ip, function(){
+var port = process.env.DEALGIRAFFE_PORT || 3000;
+var internalIP = process.env.INTERNAL_IP || 'localhost';
+var server = app.listen(port, internalIP, function(){
     var host = server.address().address;
     var port = server.address().port;
     console.log('DealGiraffe listening at http://%s:%s', host, port);

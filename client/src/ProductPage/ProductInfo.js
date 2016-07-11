@@ -3,8 +3,8 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-
 import formatPrice from '../lib/formatPrice';
+import truncateText from '../lib/truncateText';
 
 // return an array of all the available prices
 const getPricingInfo = function(product) {
@@ -35,19 +35,25 @@ const getPricingInfo = function(product) {
 };
 
 const styles = {
-    readMoreStyle: {
+    seeMore: {
         minWidth: '50%'
+    },
+    readMore: {
+        color: 'rgb(0, 188, 212)',
+        cursor: 'pointer',
+        paddingLeft: '.5rem'
     }
 };
 
-function ProductText({classChild, bulletPoints, summary, link}) {
+function ProductText({classChild, bulletPoints, link, summary, summaryLimit}) {
+    summary = truncateText(summary, summaryLimit);
     var summaryObj = {
         __html: summary
     };
 
-    return (
-        <div className={classChild}>
-            <p className="summary" dangerouslySetInnerHTML={summaryObj}></p>
+    var bulletPointsMarkup;
+    if (bulletPoints) {
+        bulletPointsMarkup = (
             <ul>
                 {bulletPoints.map(function(item, i){
                     return (
@@ -55,9 +61,23 @@ function ProductText({classChild, bulletPoints, summary, link}) {
                     );
                 }.bind(this))}
             </ul>
+        )
+    }
+
+    var readMore;
+    if (summaryLimit !== -1 && (summary.length >= summaryLimit)) {
+        readMore = <span onClick={this.showAllSummary} style={styles.readMore}>read more</span>;
+    }
+
+    return (
+        <div className={classChild}>
+            <span className="summary" dangerouslySetInnerHTML={summaryObj} />
+            {readMore}
+            <br/>
+            {bulletPointsMarkup}
             <div className="read-more-container">
                 <a href={link}>
-                    <RaisedButton label="Read More" primary={true} style={styles.readMoreStyle} />
+                    <RaisedButton label="See More" primary={true} style={styles.seeMore} />
                 </a>
             </div>
         </div>
@@ -65,11 +85,24 @@ function ProductText({classChild, bulletPoints, summary, link}) {
 }
 
 class ProductInfo extends React.Component {
+    // clicked 'read more', set the summaryLimit to -1 (meaning no limit)
+    showAllSummary(){
+        this.setState({
+            summaryLimit: -1
+        });
+    }
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            summaryLimit: 250
+        };
+        this.showAllSummary = this.showAllSummary.bind(this);
+        ProductText = ProductText.bind(this);
+    }
+    
     render() {
-
         var product, productImage, productTitle, bulletPoints, summary, prices, link;
-
         try {
             product = this.props.product;
             productImage = product.large_data.LargeImage.URL;
@@ -85,13 +118,13 @@ class ProductInfo extends React.Component {
         return (
             <Paper zDepth={2}>
                 <div className="product-content-container">
-                    <Card className="card">
+                    <Paper zDepth={2} className="card">
                         <a href={link}>
                             <CardMedia overlay={<CardTitle title={productTitle} />} >
                                 <img src={productImage} />
                             </CardMedia>
                         </a>
-                    </Card>
+                    </Paper>
                     <div className="product-info">
                         <div className="prices-container">
                             {prices.map(function(item, i) {
@@ -105,14 +138,16 @@ class ProductInfo extends React.Component {
                             summary={summary}
                             bulletPoints={bulletPoints}
                             link={link}
+                            summaryLimit={this.state.summaryLimit}
                         />
                     </div>
                 </div>
                 <ProductText
                     classChild="product-text-bottom"
-                    summary={summary}
                     bulletPoints={bulletPoints}
                     link={link}
+                    summary={summary}
+                    summaryLimit={this.state.summaryLimit}
                 />
             </Paper>
         );
