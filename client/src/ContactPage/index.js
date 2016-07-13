@@ -8,6 +8,7 @@ injectTapEventPlugin(); /* remove this after React 1.0 comes out */
 // puts all the individual Components into final version
 import Banner from '../Components/Banner';
 import Navbar from '../Components/Navbar';
+import Info from './Info';
 import Footer from '../Components/Footer';
 import muiTheme from '../lib/defaultMuiTheme';
 
@@ -17,6 +18,7 @@ function FullPage({items}) {
             <div className="main-col contact-page">
                 <Banner />
                 <Navbar />
+                <Info />
                 <Footer />
             </div>
         </MuiThemeProvider>

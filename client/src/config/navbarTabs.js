@@ -4,7 +4,7 @@ const navbarTabs = [
     {name: 'Home', link: '/'},
     {name: 'Search', link: '/search'},
     {name: 'Graphics Cards', link: '/graphicscards'},
-    {name: 'Contact', link: '/contact'}
+    {name: 'Contact/About', link: '/contact'}
 ];
 
 module.exports = navbarTabs;
