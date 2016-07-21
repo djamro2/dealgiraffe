@@ -54,7 +54,6 @@ const toEnglish = function(bool) {
 };
 
 const QueryTable = React.createClass({
-
     handleDelete: function(id) {
         $.ajax({
             type: "DELETE",
@@ -78,6 +77,7 @@ const QueryTable = React.createClass({
             }.bind(this)
         });
     },
+    
     handleTogglePause: function(id) {
         $.ajax({
             type: "POST",
@@ -101,6 +101,7 @@ const QueryTable = React.createClass({
             }.bind(this)
         });
     },
+    
     componentWillMount: function() {
         this.setState({
             queueItems: [
@@ -108,6 +109,7 @@ const QueryTable = React.createClass({
             ]
         });
     },
+    
     componentDidMount: function() {
         var serverResponse = $.get("/api/GetAllQueueItems", function(response){
             this.setState({
@@ -115,13 +117,11 @@ const QueryTable = React.createClass({
             });
         }.bind(this));  
     },
+    
     render: function() {
         return (
-
             <div className="table-container">
-
                 <div className="table-flex" style={styles.tableFlex}>
-
                     <div className="table-flex-column" style={styles.tableFlexColumn}>
                         <div className="table-flex-column-item table-flex-title" style={styles.tableFlexColumnItem}>Search Query</div>
                         {this.state.queueItems.map(function(item, i){

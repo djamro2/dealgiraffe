@@ -6,22 +6,32 @@ import AddProductItem from './AddProductItem';
 import AddQueryItem from './AddQueryItem';
 
 const AddItemDialog = React.createClass({
-
     componentWillMount: function() {
         this.setState({
-            open: this.props.open,
+            open: (this.props && this.props.open) || false,
             formFields: null
         });
     },
+
     handleClose: function() {
         this.setState({
             open: false
         });
     },
+
     handleSubmit: function() {
+        var url = '';
+        if (this.props.title === "Add Query") {
+            url = '/api/AddQueueItem';
+        } else if (this.props.title === "Add Product") {
+            url = '/api/AddProductItem';
+        } else {
+            return console.error('Not submitting because title is incorrect');
+        }
+
         $.ajax({
             type: "POST",
-            url: "/api/AddQueueItem",
+            url: url,
             data: this.state.formFields,
             success: function(result) {
                 this.setState({
@@ -31,18 +41,20 @@ const AddItemDialog = React.createClass({
             }.bind(this)
         });
     },
+
     componentWillReceiveProps: function(nextProps) {
         this.setState({
             open: nextProps.open
         });
     },
+
     getFormFields: function(formFields) {
         this.setState({
             formFields: formFields
         });
     },
-    render: function() {
 
+    render: function() {
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -57,18 +69,13 @@ const AddItemDialog = React.createClass({
             />
         ];
 
+        var innerContent;
         if (this.props.title === "Add Query") {
-            return (
-                <Dialog
-                    title={this.props.title}
-                    actions={actions}
-                    modal={false}
-                    open={this.state.open}
-                    onRequestClose={this.handleClose}
-                >
-                    <AddQueryItem handleInputChange={this.getFormFields} />
-                </Dialog>
-            );
+            innerContent = <AddQueryItem handleInputChange={this.getFormFields} />;
+        } else if (this.props.title === "Add Product") {
+            innerContent = <AddProductItem handleInputChange={this.getFormFields} />;
+        } else {
+            innerContent = <AddProductItem handleInputChange={this.getFormFields} />;
         }
 
         return (
@@ -79,7 +86,7 @@ const AddItemDialog = React.createClass({
                 open={this.state.open}
                 onRequestClose={this.handleClose}
             >
-                <AddProductItem/>
+                {innerContent}
             </Dialog>
         );
     }

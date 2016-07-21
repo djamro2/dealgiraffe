@@ -1,6 +1,9 @@
 
 // titles longer than maxLimit or 30 should be taken as a substring and have '...' added on the end
 const truncateText = function(text, maxLimit) {
+    if (!text) {
+        return '';
+    }
     if (maxLimit == -1) {
         return text;
     }

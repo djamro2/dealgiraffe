@@ -11,6 +11,7 @@ var moment     = require('moment');
 var IndexedProduct = require('../server/models/IndexedProduct');
 var QueueTask      = require('../server/models/QueueTask');
 var settings       = require('./settings');
+var getPricingData = require('../server/lib/getPricingData');
 var app            = express();
 
 // global properties
@@ -76,49 +77,6 @@ var getLargeProductData = function(asin, callback) {
     });
 };
 
-// Parse through the offers data and return the three sets of prices as an object
-var getPricingData = function(offers_item) {
-    // object to be returned
-    var result = {
-        price_amazon_new: 0,
-        price_third_new: 0,
-        price_third_used: 0
-    };
-
-    // check valid
-    if (!offers_item) {
-        log("Offers item did not exist!");
-        return;
-    }
-
-    // get price amazon new
-    if (offers_item.Offers &&
-        offers_item.Offers.Offer &&
-        offers_item.Offers.Offer.OfferListing.Price.Amount) {
-        result.price_amazon_new = offers_item.Offers.Offer.OfferListing.Price.Amount;
-    } else {
-        log("Could not get the price_amazon_new data for asin: " + offers_item.ASIN);
-    }
-
-    // get price third new
-    if (offers_item.OfferSummary &&
-        offers_item.OfferSummary.LowestNewPrice) {
-        result.price_third_new = offers_item.OfferSummary.LowestNewPrice.Amount;
-    } else {
-        log("Could not get the price_third_new data for asin: " + offers_item.ASIN);
-    }
-
-    // get price third used
-    if (offers_item.OfferSummary &&
-        offers_item.OfferSummary.LowestUsedPrice) {
-        result.price_third_used = offers_item.OfferSummary.LowestUsedPrice.Amount;
-    } else {
-        log("Could not get the price_third_used data for asin: " + offers_item.ASIN);
-    }
-
-    return result;
-};
-
 // Reusable function to add a product to the list of indexed products, based on it's asin
 // If force_add it set to true, no conditions will checked, added as long as it exists
 var addToProductsIndex = function(offers_item, callback) {
@@ -127,7 +85,7 @@ var addToProductsIndex = function(offers_item, callback) {
         log("No valid item given in addToProductsIndex");
         return;
     }
-
+    
     // initial fields for new item
     var newProductParams = {
         asin: offers_item.ASIN,

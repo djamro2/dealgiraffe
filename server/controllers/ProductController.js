@@ -6,6 +6,13 @@ var settings = require('./../../updater/settings');
 var IndexedProduct = require('../models/IndexedProduct');
 var getProductDbSize = require('./../lib/getProductDbSize');
 var getProductDbInfo = require('./../lib/getProductDbInfo');
+var getPricingData   = require('./../lib/getPricingData');
+
+var prodAdv = aws.createProdAdvClient(
+	"AKIAINTF3MOSQXWXGW6A",
+	"cLbFOjFa4Ien31imdzfFMvIvUXbUBogBZaBLSLJU",
+	'dealgira-20'
+);
 
 // back-end function to parse through a product and make the important info easily accessible
 var get_product_parameters = function(product) {
@@ -41,6 +48,61 @@ var incrementPageViews = function(dbItem) {
 		if (err) {
 			console.log('Error: ' + err);
 		}
+	});
+};
+
+// add product normally by ASIN
+module.exports.AddProductItem = function(req, res) {
+	var asin = req.body.asin;
+	var params = {
+		ResponseGroup: "Large",
+		ItemId: asin
+	};
+
+	prodAdv.call("ItemLookup", params, function(error, item_response) {
+		if (error) {
+			console.log("Error with asin: " + asin + ". Error: " + error);
+			return res.json({error: 'Error getting Large response group'});
+		}
+
+		// initial fields for new item
+		var newProductParams = {
+			asin: asin,
+			large_data: item_response.Items.Item,
+			hidden: false,
+			force_frontpage: false,
+			page_views: 0,
+			price_amazon_new: [],
+			price_third_new: [],
+			price_third_used: [],
+			offers_data: false, /* still need to get */
+			query: false
+		};
+
+		// get all the offer data
+		params.ResponseGroup = "OfferFull";
+		prodAdv.call("ItemLookup", params, function(error, offers_data) {
+			if (error) {
+				console.log("Error with asin: " + asin + ". Error: " + error);
+				return res.json({error: 'Error getting OfferFull response group'});
+			}
+
+			// handle updating the pricing for this object
+			var prices = getPricingData(offers_data.Items.Item);
+			newProductParams.price_amazon_new.push({price: prices.price_amazon_new, date: new Date()});
+			newProductParams.price_third_new.push({price: prices.price_third_new, date: new Date()});
+			newProductParams.price_third_used.push({price: prices.price_third_used, date: new Date()});
+			newProductParams.offers_data = offers_data;
+
+			var newProduct = new IndexedProduct(newProductParams);
+			newProduct.save(function(error, newProduct){
+				if (error) {
+					console.log("Error with asin: " + asin + ". Error: " + error);
+					return res.json({error: 'Error saving new item'});
+				}
+				res.json(newProduct);
+			});
+		});
 	});
 };
 
@@ -165,7 +227,6 @@ module.exports.GetGraphicsPageProducts = function(req, res) {
 // given a searchQuery, orderByValue, currentPage, and amountPerPage, find a set of items
 // that matches the query
 module.exports.GetSearchItems = function(req, res) {
-	console.log('Searching yo');
 	var searchQuery = req.query.searchQuery;
 	var orderBy = req.query.orderByValue;
 
@@ -217,7 +278,6 @@ module.exports.GetSearchItems = function(req, res) {
 				console.log("Error: " + err);
 				return res.status(500).send("Error: " + err);
 			}
-			console.log('Finished af');
 			res.json({products: foundProducts, count: count});
 		});
 	}

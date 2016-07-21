@@ -131,9 +131,7 @@ const ProductTable = React.createClass({
 
         return (
             <div className="table-container">
-
                 <div className="table-flex" style={styles.tableFlex}>
-
                     <div className="table-flex-column" style={styles.tableFlexColumn}>
                         <div className="table-flex-column-item table-flex-title"
                              style={styles.tableFlexColumnItem}

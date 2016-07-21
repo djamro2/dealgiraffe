@@ -12,19 +12,19 @@ const styles = {
 };
 
 const QueryControls = React.createClass({
-
     handleOpen: function(){
         this.setState(
             {openDialog: true}
         );
     },
+    
     componentWillMount: function() {
         this.setState({
             openDialog: false
         });
     },
+    
     render: function() {
-
         return (
             <div>
                 <QueryTable />

@@ -4,6 +4,8 @@ import ProductTable from './ProductTable';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+import AddItemDialog from './AddItemDialog';
 
 const styles = {
     buttonRow: {
@@ -14,33 +16,37 @@ const styles = {
 
 // child of ModuleContent
 const ProductControls = React.createClass({
-
     getMaxPages: function() {
         if (!this.state || !this.state.totalProducts) {
             return 0;
         }
         return (Math.ceil(this.state.totalProducts/this.state.amtPerPage));
     },
+
     handleOpen: function(){
         this.setState(
             {openDialog: true}
         );
     },
+
     handleAmountPerPageChange: function(evt) {
         this.setState({
             amtPerPage: evt.target.value
         });
     },
+
     handleProductOrderByChange: function(evt, index, value){
         this.setState({
             productOrderBy: value
         });
     },
+
     handleProductPageChange: function(evt) {
         this.setState({
             productPage: evt.target.value
         });
     },
+
     componentWillMount: function() {
         this.setState({
             openDialog: false,
@@ -50,6 +56,7 @@ const ProductControls = React.createClass({
             amtPerPage: 10
         });
     },
+
     componentDidMount: function() {
         $.get("/api/GetAllProductInfo", function(response){
             this.setState({
@@ -57,6 +64,7 @@ const ProductControls = React.createClass({
             });
         }.bind(this));
     },
+
     render: function() {
         return (
             <div>
@@ -98,6 +106,19 @@ const ProductControls = React.createClass({
                     amtPerPage={this.state.amtPerPage}
                     productPage={this.state.productPage}
                     productOrderBy={this.state.productOrderBy}
+                />
+
+                <div style={styles.buttonRow}>
+                    <RaisedButton
+                        label="Add Product"
+                        primary={true}
+                        onTouchTap={this.handleOpen}
+                    />
+                </div>
+
+                <AddItemDialog
+                    title="Add Product"
+                    open={this.state.openDialog}
                 />
 
             </div>

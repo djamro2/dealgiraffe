@@ -10,6 +10,14 @@
           <option name="port" value="22" />
         </fileTransfer>
       </webServer>
+      <webServer id="eb52b1d2-ac38-49f6-b849-3bb37afcdefd" name="DealGiraffe" url="http://45.55.248.21">
+        <fileTransfer host="45.55.248.21" port="22" privateKey="C:\Users\djamr\.ssh\digitalocean_main.ppk" accessType="SFTP" username="root" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>

@@ -11,12 +11,13 @@ const styles = {
 };
 
 const AddQueryItem = React.createClass({
-
     handleChange: function(evt) {
-        var nextState = this.state; nextState[evt.target.id] = evt.target.value;
+        var nextState = this.state; 
+        nextState[evt.target.id] = evt.target.value;
         this.setState(nextState);
         this.props.handleInputChange(nextState);
     },
+    
     componentWillMount: function() {
         this.setState({
             searchQuery: '',
@@ -24,6 +25,7 @@ const AddQueryItem = React.createClass({
             category: ''
         });
     },
+    
     render: function() {
         return (
             <div style={styles.textFieldContainer}>
@@ -48,7 +50,6 @@ const AddQueryItem = React.createClass({
             </div>
         );
     }
-
 });
 
 export default AddQueryItem;

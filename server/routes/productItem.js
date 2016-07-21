@@ -11,6 +11,9 @@ var isAuthenticated = function (req, res, next) {
 };
 
 module.exports = function(app) {
+    // add a product by asin
+    app.post('/api/AddProductItem', ProductController.AddProductItem);
+
     // return a specific product
     app.get('/api/GetProduct/:id', ProductController.GetProduct);
 
