@@ -1,6 +1,6 @@
 // Jasmine testing ProductTable
 
-describe("ProductTable", function () {
+describe("ProductTableItems", function () {
 
     beforeEach(function () {
         // add mock data here

@@ -1,17 +1,22 @@
 
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import QueryTable from './QueryTable'
-import AddItemDialog from './AddItemDialog';
+import Paper from 'material-ui/Paper';
+import QueryItems from './QueryItems'
+import AddItemDialog from './RaisedInputDialog';
 
 const styles = {
     buttonRow: {
         paddingTop: '15px',
         textAlign: 'right'
+    },
+    container: {
+        padding: '1rem',
+        marginTop: '2rem'
     }
 };
 
-const QueryControls = React.createClass({
+const QueryModule = React.createClass({
     handleOpen: function(){
         this.setState(
             {openDialog: true}
@@ -26,8 +31,8 @@ const QueryControls = React.createClass({
     
     render: function() {
         return (
-            <div>
-                <QueryTable />
+            <Paper zDepth={2} style={styles.container}>
+                <QueryItems />
                 <div style={styles.buttonRow}>
                     <RaisedButton
                         label="Add Query"
@@ -35,14 +40,10 @@ const QueryControls = React.createClass({
                         onTouchTap={this.handleOpen}
                     />
                 </div>
-                <AddItemDialog
-                    title="Add Query"
-                    open={this.state.openDialog}
-                />
-            </div>
+            </Paper>
         );
     }
 
 });
 
-export default QueryControls;
+export default QueryModule;

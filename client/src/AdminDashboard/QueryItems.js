@@ -53,7 +53,7 @@ const toEnglish = function(bool) {
     return "yes";
 };
 
-const QueryTable = React.createClass({
+const QueryItems = React.createClass({
     handleDelete: function(id) {
         $.ajax({
             type: "DELETE",
@@ -220,14 +220,10 @@ const QueryTable = React.createClass({
                             );
                         }.bind(this))}
                     </div>
-
                 </div>
-
             </div>
-
         );
     }
-
 });
 
-export default QueryTable;
+export default QueryItems;

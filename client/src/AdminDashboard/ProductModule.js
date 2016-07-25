@@ -1,21 +1,26 @@
 
 import React from 'react';
-import ProductTable from './ProductTable';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
-import AddItemDialog from './AddItemDialog';
+import Paper from 'material-ui/Paper';
+import AddItemDialog from './RaisedInputDialog';
+import ProductItems from './ProductItems';
 
 const styles = {
     buttonRow: {
         paddingTop: '15px',
         textAlign: 'right'
+    },
+    container: {
+        padding: '1rem',
+        marginTop: '2rem'
     }
 };
 
 // child of ModuleContent
-const ProductControls = React.createClass({
+const ProductModule = React.createClass({
     getMaxPages: function() {
         if (!this.state || !this.state.totalProducts) {
             return 0;
@@ -23,9 +28,12 @@ const ProductControls = React.createClass({
         return (Math.ceil(this.state.totalProducts/this.state.amtPerPage));
     },
 
-    handleOpen: function(){
+    handleAddProduct: function(){
         this.setState(
-            {openDialog: true}
+            {
+                openDialog: true,
+                dialogTitle: 'Add Product'
+            }
         );
     },
 
@@ -66,8 +74,10 @@ const ProductControls = React.createClass({
     },
 
     render: function() {
+        var dialogTitle = (this.state && this.state.dialogTitle) || 'Add Product';
+        
         return (
-            <div>
+            <Paper zDepth={2} style={styles.container}>
                 <div className="table-controls-container align-right">
                     <span>
                         <span className="select-label">Order By: </span>
@@ -102,28 +112,23 @@ const ProductControls = React.createClass({
                     </span>
                 </div>
 
-                <ProductTable
+                <ProductItems
                     amtPerPage={this.state.amtPerPage}
                     productPage={this.state.productPage}
                     productOrderBy={this.state.productOrderBy}
+                    dialogControls={this.props.dialogControls}
                 />
 
                 <div style={styles.buttonRow}>
                     <RaisedButton
                         label="Add Product"
                         primary={true}
-                        onTouchTap={this.handleOpen}
+                        onTouchTap={this.handleAddProduct}
                     />
                 </div>
-
-                <AddItemDialog
-                    title="Add Product"
-                    open={this.state.openDialog}
-                />
-
-            </div>
+            </Paper>
         );
     }
 });
 
-export default ProductControls;
+export default ProductModule;

@@ -38,7 +38,6 @@ const getFormattedDate = function(date, format) {
 
 // return the total number of price points
 const getPricePoints = function(item) {
-
     var num_amazon_new, num_third_new, num_third_used;
     num_amazon_new = item.price_amazon_new.length;
     num_third_new = item.price_third_new.length;
@@ -70,7 +69,18 @@ const getPageRange = function(productPage, amtPerPage) {
     return {start: start, end: end};
 };
 
-const ProductTable = React.createClass({
+const ProductItems = React.createClass({
+    // 'Add Video' clicked. Bring up the correct modal
+    handleAddVideo: function() {
+        var dialogControls = this.props.dialogControls;
+        var inputs = [
+            {id: 'youtubeVideo', text: 'Embedded YouTube Link'}
+        ];
+        dialogControls.createDialog('Add Video URL', inputs, function(results) {
+            console.log('YouTube Video link: ' + results.youtubeVideo);
+        });
+    },
+
     handleToggleFrontPage: function(id) {
         $.ajax({
             type: "POST",
@@ -93,6 +103,7 @@ const ProductTable = React.createClass({
             }.bind(this)
         });
     },
+
     handlePrioritizeProduct: function(id) {
         $.ajax({
             type: "POST",
@@ -103,6 +114,7 @@ const ProductTable = React.createClass({
             }.bind(this)
         });
     },
+
     componentDidMount: function() {
         var pageRange = getPageRange(this.props.productPage, this.props.amtPerPage);
         var path = "/api/GetProducts/" + String(pageRange.start) + "/" + String(pageRange.end) + "/" + String(this.props.productOrderBy);
@@ -112,6 +124,7 @@ const ProductTable = React.createClass({
             });
         }.bind(this));
     },
+
     componentWillReceiveProps: function(nextProps) {
         var pageRange = getPageRange(nextProps.productPage, nextProps.amtPerPage);
         var path = "/api/GetProducts/" + String(pageRange.start) + "/" + String(pageRange.end) + "/" + String(nextProps.productOrderBy);
@@ -121,6 +134,7 @@ const ProductTable = React.createClass({
             });
         }.bind(this));
     },
+
     render: function() {
         // don't do anything if state doesn't exist yet
         if (!this.state || !this.state.products || !this.state.products.map) {
@@ -259,18 +273,15 @@ const ProductTable = React.createClass({
                                 >
                                     <MenuItem primaryText="Prioritize" onClick={() => this.handlePrioritizeProduct(item._id)} />
                                     <MenuItem primaryText="Front Page" onClick={() => this.handleToggleFrontPage(item._id)} />
+                                    <MenuItem primaryText="Add Video" onClick={() => this.handleAddVideo()} />
                                 </IconMenu>
                             );
                         }.bind(this))}
                     </div>
-
                 </div>
-
             </div>
-
         );
     }
-
 });
 
-export default ProductTable;
+export default ProductItems;

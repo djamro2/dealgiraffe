@@ -1,20 +1,23 @@
 
 import React from 'react';
 import Divider from 'material-ui/Divider';
+import Paper from 'material-ui/Paper';
 import numeral from 'numeral';
 import formatDate from '../lib/formatDate';
 
 const styles = {
-    styleContainer: {
+    container: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        padding: '1rem',
+        marginTop: '2rem'
     },
-    styleLeft: {
+    leftStats: {
         paddingRight: '10px',
         flexGrow: 1
     },
-    styleRight: {
+    rightStats: {
         paddingLeft: '10px',
         flexGrow: 1
     }
@@ -26,7 +29,6 @@ const formatSize = function(size) {
 };
 
 const GeneralStats = React.createClass({
-
     componentWillMount: function() {
         this.setState({
             totalProducts: 0,
@@ -36,6 +38,7 @@ const GeneralStats = React.createClass({
             dbSize: 0
         });
     },
+
     componentDidMount: function() {
         $.get("/api/GetAllProductInfo", function(response){
             this.setState({
@@ -46,15 +49,15 @@ const GeneralStats = React.createClass({
             });
         }.bind(this));
     },
-    render: function() {
 
+    render: function() {
         if (!this.state) {
             return false;
         }
 
         return (
-            <div style={styles.styleContainer}>
-                <div style={styles.styleLeft}>
+            <Paper zDepth={2} style={styles.container}>
+                <div style={styles.leftStats}>
                     <p>Total Items: {this.state.totalProducts} </p>
                     <Divider />
                     <p>Last Run Time: {this.state.lastTimeUpdated} </p>
@@ -63,13 +66,13 @@ const GeneralStats = React.createClass({
                     <Divider />
                     <p>Page Views This Week: {this.state.totalViewsWeek} </p>
                 </div>
-                <div style={styles.styleRight}>
+                <div style={styles.rightStats}>
                     <p>Database Size: {this.state.dbSize} </p>
                     <Divider />
                     <p>Cycle Time: {numeral(Number(this.state.cycleTime)).format('0,0')}ms</p>
                     <Divider />
                 </div>
-            </div>
+            </Paper>
         );
     }
 });

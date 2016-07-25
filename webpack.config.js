@@ -11,7 +11,7 @@ const config = {
     entry: {
         AdminDashboard: [
             'webpack-hot-middleware/client',
-            './client/src/AdminDashboard.js'
+            './client/src/AdminDashboard/index.js'
         ],
         ContactPage: [
             'webpack-hot-middleware/client',
