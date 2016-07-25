@@ -29,12 +29,20 @@ const ProductModule = React.createClass({
     },
 
     handleAddProduct: function(){
-        this.setState(
-            {
-                openDialog: true,
-                dialogTitle: 'Add Product'
-            }
-        );
+        var dialogControls = this.props.dialogControls;
+        var inputs = [
+            {id: 'asin', text: 'ASIN'}
+        ]
+        dialogControls.createDialog('Add Product', inputs, function(results){
+            $.ajax({
+                type: "POST",
+                url: '/api/AddProductItem',
+                data: results,
+                success: function(result) {
+                    location.reload();
+                }.bind(this)
+            });
+        });
     },
 
     handleAmountPerPageChange: function(evt) {

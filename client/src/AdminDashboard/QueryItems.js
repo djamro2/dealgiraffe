@@ -40,7 +40,7 @@ const maxLength = function(text, limit) {
 // return none if last day is 1969, otherwise format correctly date
 const getFormattedDate = function(date, format) {
     var dateObj = new Date(date);
-    if ( !isNaN(dateObj.getFullYear()) && dateObj.getFullYear() === 1969) {
+    if (!isNaN(dateObj.getFullYear()) && dateObj.getFullYear() === 1969) {
         return "none";
     }
     return formatDate(date, format);
@@ -60,7 +60,6 @@ const QueryItems = React.createClass({
             url: "/api/DeleteQueueItem",
             data: {id: id},
             success: function(result) {
-
                 var oldQueueItems = this.state.queueItems;
                 var newQueueItems = [];
                 for (var i = 0; i < oldQueueItems.length; i++) {
@@ -84,7 +83,6 @@ const QueryItems = React.createClass({
             url: "/api/TogglePauseQueueItem",
             data: {id: id},
             success: function(result) {
-
                 var oldQueueItems = this.state.queueItems;
                 var newQueueItems = [];
                 for (var i = 0; i < oldQueueItems.length; i++) {
@@ -105,7 +103,7 @@ const QueryItems = React.createClass({
     componentWillMount: function() {
         this.setState({
             queueItems: [
-                {searchQuery:'loading...'}
+                {searchQuery: 'loading...'}
             ]
         });
     },
@@ -119,6 +117,11 @@ const QueryItems = React.createClass({
     },
     
     render: function() {
+        if (!this.state || !this.state.queueItems 
+            || this.state.queueItems.length === 0 || this.state.queueItems[0].searchQuery === 'loading...') {
+            return false;
+        }
+
         return (
             <div className="table-container">
                 <div className="table-flex" style={styles.tableFlex}>

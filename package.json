@@ -25,6 +25,7 @@
     "express-handlebars": "^3.0.0",
     "express-session": "^1.11.3",
     "flexboxgrid": "^6.3.0",
+    "jquery": "^3.1.0",
     "material-ui": "^0.15.0",
     "moment": "^2.13.0",
     "mongoose": "^4.4.17",
@@ -38,7 +39,9 @@
     "react-flexbox-grid": "^0.9.6",
     "react-router": "^2.4.1",
     "react-tap-event-plugin": "^1.0.0",
-    "style-loader": "^0.13.1"
+    "style-loader": "^0.13.1",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.12.1"
   },
   "devDependencies": {
     "babel-core": "^6.9.0",

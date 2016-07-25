@@ -14,6 +14,9 @@ module.exports = function(app) {
     // add a product by asin
     app.post('/api/AddProductItem', ProductController.AddProductItem);
 
+    // add a video to the existing product
+    app.post('/api/AddProductVideo', ProductController.AddProductVideo);
+
     // return a specific product
     app.get('/api/GetProduct/:id', ProductController.GetProduct);
 

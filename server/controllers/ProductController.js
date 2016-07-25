@@ -7,10 +7,11 @@ var IndexedProduct = require('../models/IndexedProduct');
 var getProductDbSize = require('./../lib/getProductDbSize');
 var getProductDbInfo = require('./../lib/getProductDbInfo');
 var getPricingData   = require('./../lib/getPricingData');
+var localCodes = require('./../../local_codes.js');
 
 var prodAdv = aws.createProdAdvClient(
-	"AKIAINTF3MOSQXWXGW6A",
-	"cLbFOjFa4Ien31imdzfFMvIvUXbUBogBZaBLSLJU",
+	localCodes.accessKey,
+	localCodes.secretKey,
 	'dealgira-20'
 );
 
@@ -105,6 +106,23 @@ module.exports.AddProductItem = function(req, res) {
 		});
 	});
 };
+
+// given a variable 'youtubeVideo' and 'asin', add the link to the item
+module.exports.AddProductVideo = function(req, res) {
+	var asin = req.body.asin;
+	var youtubeVideo  = req.body.youtubeVideo;
+	IndexedProduct.findOne({asin: asin})
+		.exec(function(err, product) {
+			product.YoutubeVideo = youtubeVideo;
+			product.save(function(err, result) {
+				if (err) {
+					res.error(err);
+				}
+
+				res.json(result);
+			});
+		});
+}
 
 // Use asin to find an indexed product and set hidden to true
 module.exports.DeleteProduct = function(req, res) {

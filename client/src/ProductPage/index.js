@@ -2,6 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import queryString from 'query-string';
+import $ from 'jquery';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin(); /* remove this after React 1.0 comes out */
@@ -10,6 +11,7 @@ injectTapEventPlugin(); /* remove this after React 1.0 comes out */
 import Banner from '../Components/Banner';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
+import VideoReview from '../Components/VideoReview';
 import ProductInfo from './ProductInfo';
 import ProductGraph from './ProductGraph';
 import muiTheme from '../lib/defaultMuiTheme';
@@ -28,12 +30,18 @@ function setPageTitle(product) {
 }
 
 function FullPage({product}) {
+    var videoReview;
+    if (product.YoutubeVideo) {
+        videoReview = <VideoReview product={product} />
+    }
+
     return (
         <MuiThemeProvider muiTheme={muiTheme}>
             <div className="main-col">
                 <Banner />
                 <Navbar />
                 <ProductInfo product={product}/>
+                {videoReview}
                 <ProductGraph product={product}/>
                 <Footer />
             </div>

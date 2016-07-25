@@ -18,7 +18,7 @@ class ProductGraph extends React.Component {
     render() {
         return (
             <Paper>
-                <h2 className="paper-label">Price Graph</h2>
+                <h2 className="module-title">Price Graph</h2>
                 <div className="price-graph-container">
                     <svg id="price-graph"></svg>
                 </div>

@@ -71,13 +71,21 @@ const getPageRange = function(productPage, amtPerPage) {
 
 const ProductItems = React.createClass({
     // 'Add Video' clicked. Bring up the correct modal
-    handleAddVideo: function() {
+    handleAddVideo: function(asin) {
         var dialogControls = this.props.dialogControls;
         var inputs = [
             {id: 'youtubeVideo', text: 'Embedded YouTube Link'}
         ];
         dialogControls.createDialog('Add Video URL', inputs, function(results) {
-            console.log('YouTube Video link: ' + results.youtubeVideo);
+            results.asin = asin;
+            $.ajax({
+                type: "POST",
+                url: '/api/AddProductVideo',
+                data: results,
+                success: function(result) {
+                    dialogControls.closeDialog();
+                }.bind(this)
+            });
         });
     },
 
@@ -273,7 +281,7 @@ const ProductItems = React.createClass({
                                 >
                                     <MenuItem primaryText="Prioritize" onClick={() => this.handlePrioritizeProduct(item._id)} />
                                     <MenuItem primaryText="Front Page" onClick={() => this.handleToggleFrontPage(item._id)} />
-                                    <MenuItem primaryText="Add Video" onClick={() => this.handleAddVideo()} />
+                                    <MenuItem primaryText="Add Video" onClick={() => this.handleAddVideo(item.asin)} />
                                 </IconMenu>
                             );
                         }.bind(this))}
