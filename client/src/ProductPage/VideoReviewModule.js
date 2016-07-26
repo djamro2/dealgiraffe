@@ -14,11 +14,11 @@ const styles = {
 	}
 }
 
-class VideoReview extends React.Component {
+class VideoReviewModule extends React.Component {
 	render() {
 		var product = this.props.product;
 		if (!product || !product.YoutubeVideo) {
-			return false;
+			return '';
 		}
 
 		return (
@@ -31,4 +31,4 @@ class VideoReview extends React.Component {
 	}
 }
 
-export default VideoReview;
+export default VideoReviewModule;

@@ -116,7 +116,25 @@ module.exports.AddProductVideo = function(req, res) {
 			product.YoutubeVideo = youtubeVideo;
 			product.save(function(err, result) {
 				if (err) {
-					res.error(err);
+					res.status(500).send(err);
+				}
+
+				res.json(result);
+			});
+		});
+}
+
+// given an asin and array of links, set the UsefulLinks attribute
+module.exports.AddProductLinks = function(req, res) {
+	var asin = req.body.asin;
+	var usefulLinks = req.body.usefulLinks;
+	IndexedProduct.findOne({asin: asin})
+		.exec(function(err, product) {
+			product.UsefulLinks = usefulLinks;
+			product.markModified('UsefulLinks')
+			product.save(function(err, result) {
+				if (err) {
+					res.status(500).send(err);
 				}
 
 				res.json(result);

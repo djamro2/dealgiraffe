@@ -29,18 +29,27 @@ class AdminDashboard extends React.Component {
             openDialog: false,
             dialogTitle: '',
             dialogInputs: [],
-            dialogCallback: undefined
+            dialogSubmitCallback: undefined,
+            dialogAddRow: undefined,
+            dialogPreviousState: undefined
         };
+
         this.createDialog = this.createDialog.bind(this);
         this.closeDialog = this.closeDialog.bind(this);
     }
 
-    createDialog(title, inputs, callback) {
+    // create the dialog that shows up
+    // title - String
+    // input - Array of objects {id: '', text: ''}
+    // submitCallback - function called when submit is clicked
+    // addRow - function called when Add Row is clicked, will update the inputs[] variable
+    createDialog(title, inputs, submitCallback, addRow) {
         this.setState({
             openDialog: true,
             dialogTitle: title,
             dialogInputs: inputs,
-            dialogCallback: callback
+            dialogSubmitCallback: submitCallback,
+            dialogAddRow: addRow
         });
     }
 
@@ -52,6 +61,7 @@ class AdminDashboard extends React.Component {
 
     render() {
         var dialogControls = {
+            addRowsToDialog: this.addRowsToDialog,
             createDialog: this.createDialog,
             closeDialog: this.closeDialog
         };
@@ -65,9 +75,11 @@ class AdminDashboard extends React.Component {
                     <ProductModule dialogControls={dialogControls} />
                     <RaisedInputDialog
                         open={this.state.openDialog}
+                        previousState={this.state.dialogPreviousState}
                         title={this.state.dialogTitle}
                         inputs={this.state.dialogInputs}
-                        callback={this.state.dialogCallback}
+                        submitCallback={this.state.dialogSubmitCallback}
+                        addRow={this.state.dialogAddRow}
                         dialogControls={dialogControls}
                         style={styles.dialog}
                     />

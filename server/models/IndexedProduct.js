@@ -8,6 +8,7 @@ module.exports = mongoose.model('IndexedProduct', {
     item_clicks: Number,
     asin: String,
     YoutubeVideo: String,
+    UsefulLinks: [{title: String, url: String}],
     force_frontpage: Boolean,
     query: Object,
     large_data: Object,

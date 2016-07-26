@@ -13,21 +13,40 @@ const styles = {
 class RaisedInputDialog extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            inputs: []
+        };
 
+        this.setInputs = this.setInputs.bind(this);
+        this.handleAddRow = this.handleAddRow.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
     }
 
+    setInputs(inputs) {
+        var state = this.state;
+        state.inputs = inputs;
+        for (var i = 0 ; i < inputs.length; i++) {
+            if (!state[inputs[i].id]) {
+                state[inputs[i].id] = '';
+            }
+        }
+        this.setState(state);
+    }
+
     componentWillReceiveProps(nextProps) {
         // state variables need to be set to be put into TextField
         if (nextProps.inputs) {
-            var state = this.state;
-            for (var i = 0 ; i < nextProps.inputs.length; i++) {
-                state[nextProps.inputs[i].id] = '';
-            }
-            this.setState(state);
+            this.setInputs(nextProps.inputs);
+        }
+    }
+
+    handleAddRow() {
+        if (this.props.addRow) {
+            this.setInputs(this.props.addRow(this.state));
+        } else {
+            console.error('No add row callback');
         }
     }
 
@@ -43,10 +62,11 @@ class RaisedInputDialog extends React.Component {
     }
 
     handleSubmit() {
-        this.props.callback(this.state);
+        this.props.submitCallback(this.state);
     }
 
     render() {
+        var inputs = this.state.inputs;
         const actions = [
             <FlatButton
                 label="Cancel"
@@ -61,11 +81,20 @@ class RaisedInputDialog extends React.Component {
             />
         ];
 
+        if (this.props.addRow) {
+            actions.splice(1, 0, (
+                <FlatButton
+                    label="Add Row(s)"
+                    primary={true}
+                    keyboardFocused={true}
+                    onTouchTap={this.handleAddRow}
+                />
+            ));
+        }
+
         var textFields = [];
-        var inputs = this.props.inputs;
         for (var i = 0; i < inputs.length; i++) {
             var id = inputs[i].id;
-
             textFields.push (
                 <TextField
                     key={id}
@@ -77,6 +106,7 @@ class RaisedInputDialog extends React.Component {
                 />
             );
         }
+
         var openDialog = this.props.open;
 
         return (

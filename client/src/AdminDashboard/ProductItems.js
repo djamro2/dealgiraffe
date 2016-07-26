@@ -89,6 +89,50 @@ const ProductItems = React.createClass({
         });
     },
 
+    // 'Add Links' clicked. Bring up the modal
+    handleAddLinks: function(asin) {
+        var dialogControls = this.props.dialogControls;
+        var inputs = [
+            {id: 'link1a', text: 'Title Link #1'},
+            {id: 'link1b', text: 'URL Link #1'},
+        ];
+
+        var submitCallback = function(state) {
+            var params = {
+                asin: asin,
+                usefulLinks: []
+            }; 
+            for (var i = 1; state['link' + i + 'a']; i++) {
+                params.usefulLinks.push({
+                    title: (state['link' + i + 'a']),
+                    url: (state['link' + i + 'b'])
+                });
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/api/AddProductLinks',
+                data: params,
+                success: function(result) {
+                    dialogControls.closeDialog();
+                }.bind(this)
+            });
+        };
+
+        var addRows = function(state) {
+            var inputNum = (inputs.length / 2) + 1;
+            inputs.push(
+                {id: ('link' + inputNum + 'a'), text: 'Title Link #' + inputNum}
+            );
+            inputs.push(
+                {id: ('link' + inputNum + 'b'), text: 'URL Link #' + inputNum}
+            );
+            return inputs;
+        };
+
+        dialogControls.createDialog('Add Helpful Links', inputs, submitCallback, addRows);
+    },
+
     handleToggleFrontPage: function(id) {
         $.ajax({
             type: "POST",
@@ -282,6 +326,8 @@ const ProductItems = React.createClass({
                                     <MenuItem primaryText="Prioritize" onClick={() => this.handlePrioritizeProduct(item._id)} />
                                     <MenuItem primaryText="Front Page" onClick={() => this.handleToggleFrontPage(item._id)} />
                                     <MenuItem primaryText="Add Video" onClick={() => this.handleAddVideo(item.asin)} />
+                                    <MenuItem primaryText="Add Links" onClick={() => this.handleAddLinks(item.asin)} />
+                                    <MenuItem primaryText="Add Other Prices" onClick={() => this.handleAddOtherPrices(item.asin)} />
                                 </IconMenu>
                             );
                         }.bind(this))}
