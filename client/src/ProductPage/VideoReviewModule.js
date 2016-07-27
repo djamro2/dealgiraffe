@@ -11,6 +11,7 @@ const styles = {
 	title: {
 		width: '100%',
 		textAlign: 'left',
+		margin: 0
 	}
 }
 
@@ -18,14 +19,14 @@ class VideoReviewModule extends React.Component {
 	render() {
 		var product = this.props.product;
 		if (!product || !product.YoutubeVideo) {
-			return '';
+			return null;
 		}
 
 		return (
 			<Paper zDepth={2} style={styles.container} >
-				<h2 style={styles.title} class="module-title">Featured Video Review</h2>
+				<h2 style={styles.title} className="module-title">Featured Video Review</h2>
 				<iframe width="560" height="315" src={product.YoutubeVideo} 
-					frameborder="0" allowFullScreen></iframe>
+					frameBorder="0" allowFullScreen></iframe>
 			</Paper>
 		);
 	}

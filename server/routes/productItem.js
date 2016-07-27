@@ -14,6 +14,7 @@ module.exports = function(app) {
     app.post('/api/HideProduct/:id', isAuthenticated, ProductController.HideProduct);
     app.post('/api/ToggleFrontPageProduct', isAuthenticated, ProductController.ToggleFrontPageProduct);
     app.post('/api/AddProductLinks', isAuthenticated, ProductController.AddProductLinks);
+    app.post('/api/AddProductOtherPrices', isAuthenticated, ProductController.AddProductOtherPrices);
 
     app.get('/api/GetProduct/:id', ProductController.GetProduct);
     app.get('/api/GetProducts/:startpage/:endpage/:sortby', ProductController.GetProducts);

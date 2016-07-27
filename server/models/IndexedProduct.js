@@ -9,6 +9,7 @@ module.exports = mongoose.model('IndexedProduct', {
     asin: String,
     YoutubeVideo: String,
     UsefulLinks: [{title: String, url: String}],
+    OtherPrices: [{price: String, url: String}],
     force_frontpage: Boolean,
     query: Object,
     large_data: Object,

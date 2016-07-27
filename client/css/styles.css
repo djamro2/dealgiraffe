@@ -22,7 +22,16 @@ body {
 /* reusable classes */
 
 .module-title {
-	padding: 1rem;
+	padding: 0 1rem 1.5rem 1rem;
+	margin: 0;
+}
+
+.no-link-underline {
+	text-decoration: none;
+}
+
+.no-link-underline a {
+	text-decoration: none;
 }
 
 .right-align-row {
@@ -154,6 +163,26 @@ body {
 .main-navbar-list-item:hover {
 	background: #999;
 	cursor: pointer;
+}
+
+.price-comparison-table {
+	margin: auto;
+}
+
+.price-comparison-table, th, td {
+	border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.price-comparison-table th {
+	min-width: 175px;
+	text-align: center;
+	padding: .5rem 0;
+}
+
+.price-comparison-table td {
+	text-align: center;
+	padding: .5rem 0;
 }
 
 .product-content-container {

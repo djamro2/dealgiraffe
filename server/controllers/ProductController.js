@@ -142,6 +142,24 @@ module.exports.AddProductLinks = function(req, res) {
 		});
 }
 
+// given an asin and array of other prices, set the OtherPrices attribute
+module.exports.AddProductOtherPrices = function(req, res) {
+	var asin = req.body.asin;
+	var otherPrices = req.body.otherPrices;
+	IndexedProduct.findOne({asin: asin})
+		.exec(function(err, product) {
+			product.OtherPrices = otherPrices;
+			product.markModified('OtherPrices')
+			product.save(function(err, result) {
+				if (err) {
+					res.status(500).send(err);
+				}
+
+				res.json(result);
+			});
+		});
+}
+
 // Use asin to find an indexed product and set hidden to true
 module.exports.DeleteProduct = function(req, res) {
 	var asin = req.params.id;

@@ -133,6 +133,49 @@ const ProductItems = React.createClass({
         dialogControls.createDialog('Add Helpful Links', inputs, submitCallback, addRows);
     },
 
+    handleAddOtherPrices: function(asin) {
+        var dialogControls = this.props.dialogControls;
+        var inputs = [
+            {id: 'price1a', text: 'Price #1'},
+            {id: 'price1b', text: 'Price #1 Link'},
+        ];
+
+        var submitCallback = function(state) {
+            var params = {
+                asin: asin,
+                otherPrices: []
+            }; 
+            for (var i = 1; state['price' + i + 'a']; i++) {
+                params.otherPrices.push({
+                    price: (state['price' + i + 'a']),
+                    url: (state['price' + i + 'b'])
+                });
+            }
+
+            $.ajax({
+                type: "POST",
+                url: '/api/AddProductOtherPrices',
+                data: params,
+                success: function(result) {
+                    dialogControls.closeDialog();
+                }.bind(this)
+            });
+        };
+
+        var addRows = function(state) {
+            var inputNum = (inputs.length / 2) + 1;
+            inputs.push(
+                {id: ('price' + inputNum + 'a'), text: 'Price #' + inputNum}
+            );
+            inputs.push(
+                {id: ('price' + inputNum + 'b'), text: 'Price #' + inputNum + ' Link'}
+            );
+            return inputs;
+        };
+
+        dialogControls.createDialog('Add Other Prices', inputs, submitCallback, addRows);
+    },
+
     handleToggleFrontPage: function(id) {
         $.ajax({
             type: "POST",

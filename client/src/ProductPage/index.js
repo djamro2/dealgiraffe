@@ -11,7 +11,9 @@ injectTapEventPlugin(); /* remove this after React 1.0 comes out */
 import Banner from '../Components/Banner';
 import Navbar from '../Components/Navbar';
 import Footer from '../Components/Footer';
+import PriceComparisonModule from './PriceComparisonModule';
 import VideoReviewModule from './VideoReviewModule';
+import UsefulLinksModule from './UsefulLinksModule';
 import ProductInfo from './ProductInfo';
 import ProductGraph from './ProductGraph';
 import muiTheme from '../lib/defaultMuiTheme';
@@ -36,7 +38,9 @@ function FullPage({product}) {
                 <Banner />
                 <Navbar />
                 <ProductInfo product={product}/>
-                <VideoReviewModule product={product}/>
+                <PriceComparisonModule product={product} />
+                <VideoReviewModule product={product} />
+                <UsefulLinksModule product={product} />
                 <ProductGraph product={product}/>
                 <Footer />
             </div>
