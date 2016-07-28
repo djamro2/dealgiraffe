@@ -9,7 +9,7 @@ const config = {
 
     // the file(s) to transpile
     entry: {
-        AdminDashboard: ['./client/src/AdminDashboard.js'],
+        AdminDashboard: ['./client/src/AdminDashboard/index.js'],
         ContactPage: ['./client/src/ContactPage/index.js'],
         GraphicsCardsPage: ['./client/src/GraphicsCardsPage/index.js'],
         HomePage: ['./client/src/HomePage/index.js'],

@@ -29,6 +29,8 @@ const parseOtherPrices = function(product) {
 			otherPrices[i].store = 'Walmart';
 		} else if (otherPrices[i].url.indexOf('target') > -1) {
 			otherPrices[i].store = 'Target';
+		} else if (otherPrices[i].url.indexOf('ebay') > -1) {
+			otherPrices[i].store = 'Ebay';
 		}
 	}
 
