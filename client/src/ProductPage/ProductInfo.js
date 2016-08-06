@@ -95,7 +95,7 @@ class ProductInfo extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            summaryLimit: 250
+            summaryLimit: 350
         };
         this.showAllSummary = this.showAllSummary.bind(this);
         ProductText = ProductText.bind(this);
@@ -113,6 +113,11 @@ class ProductInfo extends React.Component {
             prices = getPricingInfo(product);
         } catch (e) {
             console.error(e);
+        }
+
+        // truncate title
+        if (productTitle) {
+            //productTitle = truncateText(productTitle, 70); // works, but need to have truncateText end at words
         }
 
         return (

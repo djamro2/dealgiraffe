@@ -61,6 +61,10 @@ class Navbar extends React.Component {
                             </a>
                         );
                     }.bind(this))}
+                    <li className="flex"></li>
+                    <li className="main-navbar-list-item">
+                        <a href="https://twitter.com/Deal_Giraffe"><i className="fa fa-twitter white"></i></a>
+                    </li>
                 </ul>
             </div>
         );

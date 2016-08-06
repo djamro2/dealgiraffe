@@ -15,32 +15,52 @@ const styles = {
 	}
 };
 
+// specific function for pulling the name out of the url. May be special cases
+const getStoreName = function(url) {
+	var store = '';
+	if (!url) {
+		return store;
+	}
+
+	// special cases (name is different than url)
+	if (url.indexOf('bestbuy') > -1) {
+		return 'Best Buy';
+	}
+
+	var endingIndex = -1;
+	var domainTypes = ['.com', '.net', '.io', '.co.uk', '.org'];
+	for (var i = 0; (i < domainTypes.length) && (endingIndex === -1); i++) {
+		endingIndex = url.indexOf(domainTypes[i]);
+	}
+
+	// sanity check
+	if (endingIndex === -1) {
+		return store;
+	}
+
+	var startingIndex = endingIndex-1;
+	while(url.charAt(startingIndex) !== '.' && startingIndex !== 0) {
+		startingIndex--;
+	}
+	store = url.substring(startingIndex+1, endingIndex);
+	store = store.charAt(0).toUpperCase() + store.slice(1);
+
+	return store;
+};
+
 // return an object featuring all of the other prices with extra attributes
 const parseOtherPrices = function(product) {
 	var otherPrices = product.OtherPrices;
 	for (var i = 0; i < otherPrices.length; i++) {
-		if (otherPrices[i].url.indexOf('bestbuy') > -1) {
-			otherPrices[i].store = 'Best Buy';
-		} else if (otherPrices[i].url.indexOf('amazon') > -1) {
-			otherPrices[i].store = 'Amazon';
-		} else if (otherPrices[i].url.indexOf('newegg') > -1) {
-			otherPrices[i].store = 'Newegg';
-		} else if (otherPrices[i].url.indexOf('walmart') > -1) {
-			otherPrices[i].store = 'Walmart';
-		} else if (otherPrices[i].url.indexOf('target') > -1) {
-			otherPrices[i].store = 'Target';
-		} else if (otherPrices[i].url.indexOf('ebay') > -1) {
-			otherPrices[i].store = 'Ebay';
-		}
+		otherPrices[i].store = getStoreName(otherPrices[i].url);
 	}
-
 	return otherPrices;
 };
 
 class PriceComparisonModule extends React.Component {
 	render() {
 		var product = this.props.product;
-		if (!product || !product.OtherPrices) {
+		if (!product || !product.OtherPrices || product.OtherPrices.length === 0) {
 			return null;
 		}
 
@@ -62,7 +82,7 @@ class PriceComparisonModule extends React.Component {
 							<tr key={i}>
 								<td>{priceObj.store}</td>
 								<td>{priceObj.price}</td>
-								<td><a href={priceObj.url}>Link</a></td>
+								<td><a href={priceObj.url} className="product-comparison-link">Link</a></td>
 							</tr>
 						);
 					}.bind(this))}

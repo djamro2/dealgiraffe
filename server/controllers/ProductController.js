@@ -62,7 +62,7 @@ module.exports.AddProductItem = function(req, res) {
 
 	prodAdv.call("ItemLookup", params, function(error, item_response) {
 		if (error) {
-			console.log("Error with asin: " + asin + ". Error: " + error);
+			console.log("Error with asin: " + asin + ". " + error);
 			return res.json({error: 'Error getting Large response group'});
 		}
 
